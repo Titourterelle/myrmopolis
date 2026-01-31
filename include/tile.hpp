@@ -1,10 +1,10 @@
-#ifndef __TILE__
-#define __TILE__
+#ifndef TILE
+#define TILE
 
 class Tile
 {
     public:
-        Tile();
+        Tile() noexcept;
 };
 
 #endif

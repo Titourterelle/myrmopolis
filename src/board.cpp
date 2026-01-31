@@ -2,12 +2,13 @@
 
 #include <iostream>
 
-Board::Board(const int row, const int column)
+Board::Board(const int row, const int column, const int ant)
 {
     setDimensions(row, column);
     createTiles();
-    std::cout << "Création d'un board, this -> " << this << std::endl;
-    
+    addAnts(ant);
+    std::cout << "Création d'un board" << std::endl;
+
 }
 
 void Board::setDimensions(const int row, const int column)
@@ -40,5 +41,13 @@ void Board::createTiles() noexcept
         {
             tiles.at(r).push_back(Tile());
         }
+    }
+}
+
+void Board::addAnts(const int numberOfAnts) noexcept
+{
+    for(auto i = 0; i < numberOfAnts; ++i)
+    {
+        ants.push_back(Ant());
     }
 }

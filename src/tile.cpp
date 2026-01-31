@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-Tile::Tile()
+Tile::Tile() noexcept
 {
-    std::cout << "Création d'une tuile, this -> " << this << std::endl;
+    std::cout << "Création d'une tuile" << std::endl;
 }
