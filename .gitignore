@@ -40,3 +40,6 @@ prog
 
 # debug information files
 *.dwo
+
+# Cache
+.cache

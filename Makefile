@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -W -Wall -Wextra -Wfloat-equal -MMD -MP
+CXXFLAGS = -W -Wall -Wextra -Wfloat-equal -MMD -MP -std=c++20
 EXEC = prog
 SRC = $(wildcard src/*.cpp)
 OBJ = $(notdir $(SRC:.cpp=.o))

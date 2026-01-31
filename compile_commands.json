@@ -1,0 +1,59 @@
+[
+  {
+    "file": "src/board.cpp",
+    "arguments": [
+      "g++",
+      "-o",
+      "board.o",
+      "-c",
+      "src/board.cpp",
+      "-W",
+      "-Wall",
+      "-Wextra",
+      "-Wfloat-equal",
+      "-MMD",
+      "-MP",
+      "-std=c++20"
+    ],
+    "directory": "/home/titourterelle/Documents/code/ants-simulation",
+    "output": "board.o"
+  },
+  {
+    "file": "src/main.cpp",
+    "arguments": [
+      "g++",
+      "-o",
+      "main.o",
+      "-c",
+      "src/main.cpp",
+      "-W",
+      "-Wall",
+      "-Wextra",
+      "-Wfloat-equal",
+      "-MMD",
+      "-MP",
+      "-std=c++20"
+    ],
+    "directory": "/home/titourterelle/Documents/code/ants-simulation",
+    "output": "main.o"
+  },
+  {
+    "file": "src/tile.cpp",
+    "arguments": [
+      "g++",
+      "-o",
+      "tile.o",
+      "-c",
+      "src/tile.cpp",
+      "-W",
+      "-Wall",
+      "-Wextra",
+      "-Wfloat-equal",
+      "-MMD",
+      "-MP",
+      "-std=c++20"
+    ],
+    "directory": "/home/titourterelle/Documents/code/ants-simulation",
+    "output": "tile.o"
+  }
+]
