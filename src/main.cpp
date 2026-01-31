@@ -1,9 +1,9 @@
 #include "../include/board.hpp"
-
-#include <iostream>
+#include "../include/tile.hpp"
 
 int main()
 {
     Board board(25, 25);
+    Tile tile;
     return 0;
 }
