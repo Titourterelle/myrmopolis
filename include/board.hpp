@@ -9,7 +9,7 @@
 class Board
 {
     public:
-        Board(const int row, const int column, const int ant = 100);
+        Board(const int row, const int column, const int ant);
 
     private:
         void setDimensions(const int row, const int column);
