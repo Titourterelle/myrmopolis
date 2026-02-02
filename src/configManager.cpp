@@ -7,6 +7,8 @@
 
 ConfigManager::ConfigManager(const std::string fileName) : configFileName(fileName)
 {
+    createSelectedSettings();
+
     configStream.open(configFileName);
     if(configStream)
     {
@@ -19,15 +21,14 @@ ConfigManager::ConfigManager(const std::string fileName) : configFileName(fileNa
     }
 }
 
-void ConfigManager::getSettings()
+void ConfigManager::getSettings() noexcept
 {
-    std::string option;
-    std::string value;
-
     std::string line;
 
     while(std::getline(configStream, line))
     {
+        std::string option;
+        std::string value;
         std::istringstream iss(line);
         iss >> option >> value;
         std::cout << option << " | " << value << std::endl;
@@ -44,5 +45,13 @@ void ConfigManager::getSettings()
         {
             std::cerr << "Valeur invalide, ligne ignorée" << std::endl;
         }
+    }
+}
+
+void ConfigManager::createSelectedSettings() noexcept
+{
+    for(const auto& setting : stringToSettings)
+    {
+        selectedSettings.insert({setting.second, NULL});
     }
 }

@@ -13,11 +13,12 @@ class ConfigManager
         ConfigManager(const std::string fileName);
         
     private:
-        void getSettings();
+        void getSettings() noexcept;
+        void createSelectedSettings() noexcept;
 
         const std::string configFileName;
         std::ifstream configStream;
-        std::unordered_map<Settings, int> selectedSettings = {{Settings::Row, NULL}, {Settings::Column, NULL}, {Settings::nbAnts, NULL}};
+        std::unordered_map<Settings, int> selectedSettings;
 };
 
 #endif
