@@ -1,9 +1,14 @@
 #include "../include/board.hpp"
 #include "../include/configManager.hpp"
 
+#include <string>
+
 int main()
 {
-    //Board board(3, 3, 5);
-    ConfigManager CM("config.ant");
+    std::string filename = "config.ant";
+    ConfigManager CM(filename);
+
+    Board board(CM.getSettings());
+
     return 0;
 }

@@ -3,13 +3,14 @@
 
 #include "tile.hpp"
 #include "ant.hpp"
+#include "settings.hpp"
 
 #include <vector>
 
 class Board
 {
     public:
-        Board(const int row, const int column, const int ant);
+        Board(const std::unordered_map<Settings, int>& settings);
 
     private:
         void setDimensions(const int row, const int column);

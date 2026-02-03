@@ -11,9 +11,10 @@ class ConfigManager
 {
     public:
         ConfigManager(const std::string fileName);
+        const std::unordered_map<Settings, int>& getSettings() const noexcept;
         
     private:
-        void getSettings() noexcept;
+        void importSettings() noexcept;
         void createSelectedSettings() noexcept;
 
         const std::string configFileName;

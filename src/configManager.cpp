@@ -13,7 +13,7 @@ ConfigManager::ConfigManager(const std::string fileName) : configFileName(fileNa
     if(configStream)
     {
         std::cout << "Le fichier est ouvert" << std::endl;
-        getSettings();
+        importSettings();
     }
     else
     {
@@ -21,7 +21,12 @@ ConfigManager::ConfigManager(const std::string fileName) : configFileName(fileNa
     }
 }
 
-void ConfigManager::getSettings() noexcept
+const std::unordered_map<Settings, int>& ConfigManager::getSettings() const noexcept
+{
+    return selectedSettings;
+}
+
+void ConfigManager::importSettings() noexcept
 {
     std::string line;
 
@@ -31,7 +36,6 @@ void ConfigManager::getSettings() noexcept
         std::string value;
         std::istringstream iss(line);
         iss >> option >> value;
-        std::cout << option << " | " << value << std::endl;
 
         try
         {

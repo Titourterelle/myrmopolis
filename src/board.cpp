@@ -1,14 +1,25 @@
 #include "../include/board.hpp"
 
 #include <iostream>
+#include <stdexcept>
 
-Board::Board(const int row, const int column, const int ant)
+Board::Board(const std::unordered_map<Settings, int>& settings)
 {
-    setDimensions(row, column);
-    createTiles();
-    addAnts(ant);
-    std::cout << "Création d'un board" << std::endl;
+    try
+    {
+        row = settings.at(Settings::Row);
+        column = settings.at(Settings::Column);
+        const int ant = settings.at(Settings::nbAnts);
 
+        setDimensions(row, column);
+        createTiles();
+        addAnts(ant);
+        std::cout << "Création d'un board" << std::endl;
+    }
+    catch(const std::out_of_range &err)
+    {
+        std::cerr << "Erreur : Un paramètre est manquant dans le fichier de configuration" << std::endl;
+    }
 }
 
 void Board::setDimensions(const int row, const int column)
