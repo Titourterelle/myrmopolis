@@ -3,7 +3,7 @@
 
 #include "tile.hpp"
 
-class AntHill : public Tile
+class Anthill : public Tile
 {
     
 };
