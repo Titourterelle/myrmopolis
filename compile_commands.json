@@ -19,6 +19,25 @@
     "output": "ant.o"
   },
   {
+    "file": "src/anthill.cpp",
+    "arguments": [
+      "g++",
+      "-o",
+      "anthill.o",
+      "-c",
+      "src/anthill.cpp",
+      "-W",
+      "-Wall",
+      "-Wextra",
+      "-Wfloat-equal",
+      "-MMD",
+      "-MP",
+      "-std=c++20"
+    ],
+    "directory": "/home/titourterelle/Documents/code/ants-simulation",
+    "output": "anthill.o"
+  },
+  {
     "file": "src/board.cpp",
     "arguments": [
       "g++",

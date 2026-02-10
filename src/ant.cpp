@@ -12,7 +12,7 @@ bool Ant::isTransportingFood() const noexcept
     return transportFood;
 }
 
-void Ant::move(Tile &nextTile) noexcept
+void Ant::move(Tile& nextTile) noexcept
 {
     actualTile = &nextTile;
 }

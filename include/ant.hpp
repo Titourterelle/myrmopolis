@@ -10,7 +10,7 @@ class Ant
         bool isTransportingFood() const noexcept;
     
     private:
-        void move(Tile &nextTile) noexcept;
+        void move(Tile& nextTile) noexcept;
         void pickFood() noexcept;
         void dropFood() noexcept;
 

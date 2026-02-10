@@ -6,12 +6,13 @@
 #include "settings.hpp"
 
 #include <vector>
+#include <memory>
 
 class Board
 {
     public:
         Board(const std::unordered_map<Settings, int>& settings);
-        const std::vector<Tile> getAdjacentTiles(const Tile& actualTile) const;
+        const std::vector<Tile*> getAdjacentTiles(const Tile& actualTile) const;
 
     private:
         void setDimensions(const int row, const int column);
@@ -21,7 +22,7 @@ class Board
         int row;
         int column;
         
-        std::vector<std::vector<Tile>> tiles;
+        std::vector<std::vector<std::unique_ptr<Tile>>> tiles;
         std::vector<Ant> ants;
 };
 
