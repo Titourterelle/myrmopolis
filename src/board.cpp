@@ -16,12 +16,12 @@ Board::Board(const std::unordered_map<Settings, int>& settings)
         setDimensions(row, column);
         createTiles();
         addAnts(ant);
-        std::cout << "Création d'un board" << std::endl;
     }
     catch(const std::out_of_range &err)
     {
-        std::cerr << "Erreur : Un paramètre est manquant dans le fichier de configuration" << std::endl;
+        throw std::runtime_error("At least one setting is missing. Can't create a board");
     }
+    std::cout << "Création d'un board" << std::endl;
 }
 
 const std::vector<Tile*> Board::getAdjacentTiles(const Tile& actualTile) const
