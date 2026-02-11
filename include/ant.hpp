@@ -6,7 +6,7 @@
 class Ant
 {
     public:
-        Ant() noexcept;
+        explicit Ant() noexcept;
         bool isTransportingFood() const noexcept;
     
     private:

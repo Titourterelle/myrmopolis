@@ -6,7 +6,7 @@
 class Anthill : public Tile
 {
     public:
-        Anthill(const int row, const int column) noexcept;
+        explicit Anthill(const int row, const int column) noexcept;
 };
 
 #endif

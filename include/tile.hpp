@@ -11,7 +11,7 @@ class Tile
             bool operator==(const Coordinates& otherCoordinates) const noexcept;
         };
 
-        Tile(const int row, const int column) noexcept;
+        explicit Tile(const int row, const int column) noexcept;
         const Coordinates& getCoordinates() const noexcept;
 
         bool operator==(const Tile& otherTile) const noexcept;
