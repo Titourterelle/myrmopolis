@@ -5,10 +5,10 @@
 
 int main()
 {
-    std::string filename = "config.ant";
-    ConfigManager CM(filename);
+    std::string filename{"config.ant"};
+    ConfigManager CM{filename};
 
-    Board board(CM.getSettings());
+    Board board{CM.getSettings()};
 
     return 0;
 }

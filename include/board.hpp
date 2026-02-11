@@ -15,15 +15,16 @@ class Board
         const std::vector<Tile*> getAdjacentTiles(const Tile& actualTile) const;
 
     private:
-        void setDimensions(const int row, const int column);
+        void checkSettings() const;
         void createTiles() noexcept;
         void addAnts(const int numberOfAnts) noexcept;
 
-        int row;
-        int column;
-        
+        const int row;
+        const int column;
+        const Tile::Coordinates anthillCoordinates;
+
         std::vector<std::vector<std::unique_ptr<Tile>>> tiles;
-        std::vector<Ant> ants;
+        std::vector<std::unique_ptr<Ant>> ants;
 };
 
 #endif

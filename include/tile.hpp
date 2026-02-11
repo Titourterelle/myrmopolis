@@ -27,8 +27,6 @@ class Tile
 
         bool operator==(const Tile& otherTile) const noexcept;
 
-        
-
     private:
         const Coordinates position;
 };
