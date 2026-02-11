@@ -2,6 +2,18 @@
 
 #include <iostream>
 
+bool Tile::Coordinates::operator==(const Coordinates& otherCoordinates) const noexcept
+{
+    if(rowNumber == otherCoordinates.rowNumber && columnNumber == otherCoordinates.columnNumber)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
 Tile::Tile(const int row, const int column) noexcept : position(Coordinates(row, column))
 {
     std::cout << "Création d'une tuile de coordonnées : " << position.columnNumber << ", " << position.rowNumber << std::endl;

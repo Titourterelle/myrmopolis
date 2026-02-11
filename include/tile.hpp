@@ -8,18 +8,7 @@ class Tile
         {
             int rowNumber;
             int columnNumber;
-
-            bool operator==(const Coordinates& otherCoordinates) const noexcept
-            {
-                if(rowNumber == otherCoordinates.rowNumber && columnNumber == otherCoordinates.columnNumber)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
+            bool operator==(const Coordinates& otherCoordinates) const noexcept;
         };
 
         Tile(const int row, const int column) noexcept;

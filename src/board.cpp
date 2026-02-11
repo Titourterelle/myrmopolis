@@ -1,5 +1,5 @@
 #include "../include/board.hpp"
-// #include "../include/anthill.hpp"
+#include "../include/anthill.hpp"
 
 #include <iostream>
 #include <memory>
@@ -91,7 +91,7 @@ void Board::createTiles() noexcept
         {
             if(anthillCoordinates.rowNumber == r && anthillCoordinates.columnNumber == c)
             {
-                tiles.at(r).push_back(std::make_unique<Tile>(r, c)); // TODO : Create an Anthill
+                tiles.at(r).push_back(std::make_unique<Anthill>(r, c));
             }
             else
             {
