@@ -9,13 +9,11 @@
 Board::Board(const std::unordered_map<Settings, int>& settings) :
     row(settings.at(Settings::Row)),
     column(settings.at(Settings::Column)),
-    anthillCoordinates(Tile::Coordinates(settings.at(Settings::anthillRow), settings.at(Settings::anthillColumn)))
+    anthillCoordinates(Tile::Coordinates(settings.at(Settings::anthillRow), settings.at(Settings::anthillColumn))),
+    initialNumberOfAnts(settings.at(Settings::nbAnts))
 {
-    const int ant{settings.at(Settings::nbAnts)};
-
     checkSettings();
     createTiles();
-    addAnts(ant);
     std::cout << "Création d'un board" << std::endl;
 }
 
@@ -74,11 +72,15 @@ void Board::checkSettings() const
 {
     if(row <= 0 || column <= 0)
     {
-        throw std::invalid_argument("The dimensions cannot be negative");
+        throw std::runtime_error("The dimensions are invalid");
     }
     if(anthillCoordinates.rowNumber < 0 || anthillCoordinates.rowNumber >= row || anthillCoordinates.columnNumber < 0 || anthillCoordinates.columnNumber >= column)
     {
-        throw std::invalid_argument("The anthill cannot be set in the board");
+        throw std::runtime_error("The anthill cannot be set in the board");
+    }
+    if(initialNumberOfAnts <= 0)
+    {
+        throw std::runtime_error("The initial number of ants is invalid");
     }
 }
 
@@ -91,20 +93,12 @@ void Board::createTiles() noexcept
         {
             if(anthillCoordinates.rowNumber == r && anthillCoordinates.columnNumber == c)
             {
-                tiles.at(r).push_back(std::make_unique<Anthill>(r, c));
+                tiles.at(r).push_back(std::make_unique<Anthill>(r, c, initialNumberOfAnts));
             }
             else
             {
                 tiles.at(r).push_back(std::make_unique<Tile>(r, c));
             }
         }
-    }
-}
-
-void Board::addAnts(const int numberOfAnts) noexcept
-{
-    for(auto i = 0; i < numberOfAnts; ++i)
-    {
-        ants.push_back(std::make_unique<Ant>());
     }
 }

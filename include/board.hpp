@@ -2,7 +2,6 @@
 #define BOARD
 
 #include "tile.hpp"
-#include "ant.hpp"
 #include "settings.hpp"
 
 #include <vector>
@@ -17,14 +16,13 @@ class Board
     private:
         void checkSettings() const;
         void createTiles() noexcept;
-        void addAnts(const int numberOfAnts) noexcept;
 
         const int row;
         const int column;
         const Tile::Coordinates anthillCoordinates;
+        const int initialNumberOfAnts;
 
         std::vector<std::vector<std::unique_ptr<Tile>>> tiles;
-        std::vector<std::unique_ptr<Ant>> ants;
 };
 
 #endif
