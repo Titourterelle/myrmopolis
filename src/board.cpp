@@ -14,6 +14,7 @@ Board::Board(const std::unordered_map<Settings, int>& settings) :
 {
     checkSettings();
     createTiles();
+    initColonies();
     std::cout << "Création d'un board" << std::endl;
 }
 
@@ -93,12 +94,20 @@ void Board::createTiles() noexcept
         {
             if(anthillCoordinates.rowNumber == r && anthillCoordinates.columnNumber == c)
             {
-                tiles.at(r).push_back(std::make_unique<Anthill>(r, c, initialNumberOfAnts));
+                tiles.at(r).push_back(std::make_unique<Anthill>(r, c));
             }
             else
             {
                 tiles.at(r).push_back(std::make_unique<Tile>(r, c));
             }
         }
+    }
+}
+
+void Board::initColonies() noexcept
+{
+    for(auto i = 0; i < numberOfColonies; ++i)
+    {
+        colonies.push_back(std::make_unique<Colony>(initialNumberOfAnts));
     }
 }

@@ -3,10 +3,12 @@
 
 #include "tile.hpp"
 
+class Colony;
+
 class Ant
 {
     public:
-        explicit Ant() noexcept;
+        explicit Ant(Colony &colony) noexcept;
         bool isTransportingFood() const noexcept;
     
     private:
@@ -15,6 +17,7 @@ class Ant
         void dropFood() noexcept;
 
         Tile *actualTile = nullptr;
+        const Colony *colony;
         bool transportFood = false;
 };
 

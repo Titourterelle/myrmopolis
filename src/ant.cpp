@@ -1,8 +1,9 @@
 #include "../include/ant.hpp"
+#include "../include/colony.hpp"
 
 #include <iostream>
 
-Ant::Ant() noexcept
+Ant::Ant(Colony &colony) noexcept : colony(&colony)
 {
     std::cout << "Création d'une fourmi" << std::endl;
 }
