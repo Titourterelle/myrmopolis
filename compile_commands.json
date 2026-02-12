@@ -57,6 +57,25 @@
     "output": "board.o"
   },
   {
+    "file": "src/colony.cpp",
+    "arguments": [
+      "g++",
+      "-o",
+      "colony.o",
+      "-c",
+      "src/colony.cpp",
+      "-W",
+      "-Wall",
+      "-Wextra",
+      "-Wfloat-equal",
+      "-MMD",
+      "-MP",
+      "-std=c++20"
+    ],
+    "directory": "/home/titourterelle/Documents/code/ants-simulation",
+    "output": "colony.o"
+  },
+  {
     "file": "src/configManager.cpp",
     "arguments": [
       "g++",
