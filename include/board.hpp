@@ -1,5 +1,4 @@
-#ifndef BOARD
-#define BOARD
+#pragma once
 
 #include "colony.hpp"
 #include "tile.hpp"
@@ -28,5 +27,3 @@ class Board
         std::vector<std::unique_ptr<Colony>> colonies;
         std::vector<std::vector<std::unique_ptr<Tile>>> tiles;
 };
-
-#endif

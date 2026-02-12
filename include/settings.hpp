@@ -1,5 +1,4 @@
-#ifndef SETTINGS
-#define SETTINGS
+#pragma once
 
 #include <unordered_map>
 #include <string>
@@ -21,5 +20,3 @@ const std::unordered_map<std::string, Settings> stringToSettings
     {"anthill-row", Settings::anthillRow},
     {"anthill-column", Settings::anthillColumn}
 };
-
-#endif

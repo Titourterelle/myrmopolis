@@ -1,5 +1,4 @@
-#ifndef ANT
-#define ANT
+#pragma once
 
 #include "tile.hpp"
 
@@ -20,5 +19,3 @@ class Ant
         const Colony *colony;
         bool transportFood = false;
 };
-
-#endif

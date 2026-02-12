@@ -1,5 +1,4 @@
-#ifndef CONFIG_MANAGER
-#define CONFIG_MANAGER
+#pragma once
 
 #include "settings.hpp"
 
@@ -21,5 +20,3 @@ class ConfigManager
         std::ifstream configStream;
         std::unordered_map<Settings, int> selectedSettings;
 };
-
-#endif

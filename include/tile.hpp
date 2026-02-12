@@ -1,5 +1,4 @@
-#ifndef TILE
-#define TILE
+#pragma once
 
 class Tile
 {
@@ -19,5 +18,3 @@ class Tile
     private:
         const Coordinates position;
 };
-
-#endif

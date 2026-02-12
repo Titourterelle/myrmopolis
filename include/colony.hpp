@@ -1,5 +1,4 @@
-#ifndef COLONY
-#define COLONY
+#pragma once
 
 #include "ant.hpp"
 #include "anthill.hpp"
@@ -17,5 +16,3 @@ class Colony
         std::vector<Anthill*> anthills;
         std::vector<std::unique_ptr<Ant>> ants;
 };
-
-#endif
