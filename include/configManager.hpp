@@ -2,21 +2,21 @@
 
 #include "settings.hpp"
 
-#include <unordered_map>
 #include <string>
 #include <fstream>
+#include <nlohmann/json.hpp>
 
 class ConfigManager
 {
     public:
         explicit ConfigManager(const std::string fileName);
-        const std::unordered_map<Settings, int>& getSettings() const noexcept;
+        const SimulationSettings& getSettings() const noexcept;
         
     private:
-        void importSettings() noexcept;
-        void createSelectedSettings() noexcept;
+        void importSettings();
 
-        const std::string configFileName;
+        const std::string configFilename;
         std::ifstream configStream;
-        std::unordered_map<Settings, int> selectedSettings;
+        nlohmann::json configJSON;
+        SimulationSettings settings;
 };

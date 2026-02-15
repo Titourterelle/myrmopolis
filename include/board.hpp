@@ -4,26 +4,27 @@
 #include "tile.hpp"
 #include "settings.hpp"
 
+#include <unordered_map>
+#include <utility>
 #include <vector>
 #include <memory>
 
 class Board
 {
     public:
-        explicit Board(const std::unordered_map<Settings, int>& settings);
+        explicit Board(const SimulationSettings& settings);
         const std::vector<Tile*> getAdjacentTiles(const Tile& actualTile) const;
 
     private:
         void checkSettings() const;
+        void initializeAnthillMap() noexcept;
         void createTiles() noexcept;
         void initColonies() noexcept;
 
-        const int row;
-        const int column;
-        const Tile::Coordinates anthillCoordinates;
-        const int numberOfColonies{1}; // TODO : Modifier les settings pour ajouter ce nouveau paramètre (par defaut 1)
-        const int initialNumberOfAnts;
+        const std::pair<int, int> dimensions;
+        const SimulationSettings simulationSettings;
 
+        std::unordered_map<std::string, Tile::Coordinates> startingAnthills;
         std::vector<std::unique_ptr<Colony>> colonies;
         std::vector<std::vector<std::unique_ptr<Tile>>> tiles;
 };

@@ -5,15 +5,18 @@ class Tile
     public:
         struct Coordinates
         {
-            int rowNumber;
-            int columnNumber;
-            bool operator==(const Coordinates& otherCoordinates) const noexcept;
+            int x;
+            int y;
+            bool operator==(const Coordinates& other) const noexcept
+            {
+                return (x == other.x && y == other.y);
+            }
         };
 
-        explicit Tile(const int row, const int column) noexcept;
+        explicit Tile(const int x, const int y) noexcept;
         const Coordinates& getCoordinates() const noexcept;
 
-        bool operator==(const Tile& otherTile) const noexcept;
+        bool operator==(const Tile& otherTile) const noexcept; 
 
     private:
         const Coordinates position;

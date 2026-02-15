@@ -1,22 +1,24 @@
 #pragma once
 
-#include <unordered_map>
 #include <string>
+#include <vector>
 
-enum class Settings
-        {
-            Row,
-            Column,
-            nbAnts,
-            anthillRow,
-            anthillColumn
-        };
-
-const std::unordered_map<std::string, Settings> stringToSettings
+struct BoardSettings
 {
-    {"row", Settings::Row},
-    {"column", Settings::Column},
-    {"ants", Settings::nbAnts},
-    {"anthill-row", Settings::anthillRow},
-    {"anthill-column", Settings::anthillColumn}
+    int row;
+    int column;
+};
+
+struct ColonySettings
+{
+    std::string name;
+    int xAnthill;
+    int yAnthill;
+    int initialNumberOfAnts;
+};
+
+struct SimulationSettings
+{
+    BoardSettings board;
+    std::vector<ColonySettings> colonies;
 };

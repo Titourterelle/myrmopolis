@@ -2,21 +2,9 @@
 
 #include <iostream>
 
-bool Tile::Coordinates::operator==(const Coordinates& otherCoordinates) const noexcept
+Tile::Tile(const int x, const int y) noexcept : position(Coordinates(x, y))
 {
-    if(rowNumber == otherCoordinates.rowNumber && columnNumber == otherCoordinates.columnNumber)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
-
-Tile::Tile(const int row, const int column) noexcept : position(Coordinates(row, column))
-{
-    std::cout << "Création d'une tuile de coordonnées : " << position.columnNumber << ", " << position.rowNumber << std::endl;
+    std::cout << "Création d'une tuile de coordonnées : " << position.x << ", " << position.y << std::endl;
 }
 
 const Tile::Coordinates& Tile::getCoordinates() const noexcept
@@ -26,12 +14,5 @@ const Tile::Coordinates& Tile::getCoordinates() const noexcept
 
 bool Tile::operator==(const Tile& otherTile) const noexcept
 {
-    if(this->getCoordinates() == otherTile.getCoordinates())
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return (this->getCoordinates() == otherTile.getCoordinates());
 }

@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-Ant::Ant(Colony &colony) noexcept : colony(&colony)
+Ant::Ant(Colony& colony) noexcept : colony(&colony)
 {
     std::cout << "Création d'une fourmi" << std::endl;
 }

@@ -1,61 +1,56 @@
 #include "../include/configManager.hpp"
 
 #include <iostream>
-#include <sstream>
 #include <stdexcept>
 #include <string>
 
-ConfigManager::ConfigManager(const std::string fileName) : configFileName(fileName)
+ConfigManager::ConfigManager(const std::string filename) : configFilename(filename)
 {
-    createSelectedSettings();
+    configStream.open(configFilename);
+    if(!configStream)
+    {
+        throw std::runtime_error("Cannot open the config file");
+    }
 
-    configStream.open(configFileName);
-    if(configStream)
-    {
-        std::cout << "Le fichier est ouvert" << std::endl;
-        importSettings();
-    }
-    else
-    {
-        throw std::runtime_error("Impossible d'ouvrir le fichier");
-    }
+    std::cout << "The file is open" << std::endl;
+    importSettings();
 }
 
-const std::unordered_map<Settings, int>& ConfigManager::getSettings() const noexcept
+const SimulationSettings& ConfigManager::getSettings() const noexcept
 {
-    return selectedSettings;
+    return settings;
 }
 
-void ConfigManager::importSettings() noexcept
+void ConfigManager::importSettings()
 {
-    std::string line;
-
-    while(std::getline(configStream, line))
+    try
     {
-        std::string option;
-        std::string value;
-        std::istringstream iss(line);
-        iss >> option >> value;
+        configStream >> configJSON;
 
-        try
+        settings.board.row = configJSON.at("board").at("row").get<int>();
+        settings.board.column = configJSON.at("board").at("column").get<int>();
+
+        for(const auto& colony : configJSON.at("colonies"))
         {
-        selectedSettings.at(stringToSettings.at(option)) = std::stoi(value);
-        }
-        catch (const std::out_of_range &err)
-        {
-            std::cerr << "Option invalide, ligne ignorée" << std::endl;
-        }
-        catch (const std::invalid_argument &err)
-        {
-            std::cerr << "Valeur invalide, ligne ignorée" << std::endl;
+            ColonySettings colonySettings;
+            colonySettings.name = colony.at("name").get<std::string>();
+            colonySettings.xAnthill = colony.at("anthill").at(0);
+            colonySettings.yAnthill = colony.at("anthill").at(1);
+            colonySettings.initialNumberOfAnts = colony.at("initialAnts");
+
+            settings.colonies.push_back(colonySettings);
         }
     }
-}
-
-void ConfigManager::createSelectedSettings() noexcept
-{
-    for(const auto& setting : stringToSettings)
+    catch(const nlohmann::json::parse_error &e)
     {
-        selectedSettings.insert({setting.second, NULL});
+        throw std::runtime_error("Invalid JSON format");
+    }
+    catch(const nlohmann::json::out_of_range &e)
+    {
+        throw std::runtime_error("Missing required configuration field");
+    }
+    catch(const nlohmann::json::type_error &e)
+    {
+        throw std::runtime_error("Invalid type in the configuration file");
     }
 }

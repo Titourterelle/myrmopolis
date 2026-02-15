@@ -5,7 +5,7 @@
 
 int main()
 {
-    std::string filename{"config.ant"};
+    std::string filename{"config.json"};
     ConfigManager CM{filename};
 
     Board board{CM.getSettings()};

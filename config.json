@@ -1,0 +1,13 @@
+{
+    "board":{
+        "row": 4,
+        "column": 5
+    },
+    "colonies":[
+        {
+            "name":"Galactic Empire",
+            "anthill":[0, 0],
+            "initialAnts":10
+        }
+    ]
+}

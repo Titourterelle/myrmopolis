@@ -13,7 +13,7 @@
       "-Wfloat-equal",
       "-MMD",
       "-MP",
-      "-std=c++20"
+      "-std=c++23"
     ],
     "directory": "/home/titourterelle/Documents/code/ants-simulation",
     "output": "ant.o"
@@ -32,7 +32,7 @@
       "-Wfloat-equal",
       "-MMD",
       "-MP",
-      "-std=c++20"
+      "-std=c++23"
     ],
     "directory": "/home/titourterelle/Documents/code/ants-simulation",
     "output": "anthill.o"
@@ -51,7 +51,7 @@
       "-Wfloat-equal",
       "-MMD",
       "-MP",
-      "-std=c++20"
+      "-std=c++23"
     ],
     "directory": "/home/titourterelle/Documents/code/ants-simulation",
     "output": "board.o"
@@ -70,7 +70,7 @@
       "-Wfloat-equal",
       "-MMD",
       "-MP",
-      "-std=c++20"
+      "-std=c++23"
     ],
     "directory": "/home/titourterelle/Documents/code/ants-simulation",
     "output": "colony.o"
@@ -89,7 +89,7 @@
       "-Wfloat-equal",
       "-MMD",
       "-MP",
-      "-std=c++20"
+      "-std=c++23"
     ],
     "directory": "/home/titourterelle/Documents/code/ants-simulation",
     "output": "configManager.o"
@@ -108,7 +108,7 @@
       "-Wfloat-equal",
       "-MMD",
       "-MP",
-      "-std=c++20"
+      "-std=c++23"
     ],
     "directory": "/home/titourterelle/Documents/code/ants-simulation",
     "output": "main.o"
@@ -127,7 +127,7 @@
       "-Wfloat-equal",
       "-MMD",
       "-MP",
-      "-std=c++20"
+      "-std=c++23"
     ],
     "directory": "/home/titourterelle/Documents/code/ants-simulation",
     "output": "tile.o"

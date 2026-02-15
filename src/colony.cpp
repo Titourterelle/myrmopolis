@@ -3,7 +3,8 @@
 #include <stdexcept>
 #include <iostream>
 
-Colony::Colony(const int initialNumberOfAnts)
+Colony::Colony(const std::string name, const int initialNumberOfAnts) :
+    name(name)
 {
     if(initialNumberOfAnts <= 0)
     {
