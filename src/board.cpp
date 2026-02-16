@@ -31,44 +31,49 @@ const std::vector<Tile*> Board::getAdjacentTiles(const Tile& actualTile) const
     bool right {false};
     bool left {false};
 
-    if(actualTileCoordinates.y != 0)
-    {
-        down = true;
-        adjacentTiles.push_back(tiles[actualTileCoordinates.y - 1][actualTileCoordinates.x].get());
-    }
-    if(actualTileCoordinates.y + 1 != dimensions.second)
-    {
-        up = true;
-        adjacentTiles.push_back(tiles[actualTileCoordinates.y + 1][actualTileCoordinates.x].get());
-    }
     if(actualTileCoordinates.x != 0)
     {
         left = true;
-        adjacentTiles.push_back(tiles[actualTileCoordinates.y][actualTileCoordinates.x - 1].get());
+        adjacentTiles.push_back(tiles[actualTileCoordinates.x - 1][actualTileCoordinates.y].get());
     }
     if(actualTileCoordinates.x + 1 != dimensions.first)
     {
         right = true;
-        adjacentTiles.push_back(tiles[actualTileCoordinates.y][actualTileCoordinates.x + 1].get());
+        adjacentTiles.push_back(tiles[actualTileCoordinates.x + 1][actualTileCoordinates.y].get());
+    }
+    if(actualTileCoordinates.y != 0)
+    {
+        down = true;
+        adjacentTiles.push_back(tiles[actualTileCoordinates.x][actualTileCoordinates.y - 1].get());
+    }
+    if(actualTileCoordinates.y + 1 != dimensions.second)
+    {
+        up = true;
+        adjacentTiles.push_back(tiles[actualTileCoordinates.x][actualTileCoordinates.y + 1].get());
     }
 
-    if(up && right)
+    if(actualTileCoordinates.y % 2 == 0)
     {
-        adjacentTiles.push_back(tiles[actualTileCoordinates.y + 1][actualTileCoordinates.x + 1].get());
+        if(up && left)
+        {
+            adjacentTiles.push_back(tiles[actualTileCoordinates.x - 1][actualTileCoordinates.y + 1].get());
+        }
+        if(down && left)
+        {
+            adjacentTiles.push_back(tiles[actualTileCoordinates.x - 1][actualTileCoordinates.y - 1].get());
+        }
     }
-    if(up && left)
+    else
     {
-        adjacentTiles.push_back(tiles[actualTileCoordinates.y + 1][actualTileCoordinates.x - 1].get());
+        if(up && right)
+        {
+            adjacentTiles.push_back(tiles[actualTileCoordinates.x + 1][actualTileCoordinates.y + 1].get());
+        }
+        if(down && right)
+        {
+            adjacentTiles.push_back(tiles[actualTileCoordinates.x + 1][actualTileCoordinates.y - 1].get());
+        }
     }
-    if(down && left)
-    {
-        adjacentTiles.push_back(tiles[actualTileCoordinates.y - 1][actualTileCoordinates.x - 1].get());
-    }
-    if(down && right)
-    {
-        adjacentTiles.push_back(tiles[actualTileCoordinates.y - 1][actualTileCoordinates.x + 1].get());
-    }
-
     return adjacentTiles;
 }
 
