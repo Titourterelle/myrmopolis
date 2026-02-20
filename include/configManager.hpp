@@ -1,10 +1,10 @@
 #pragma once
 
 #include "settings.hpp"
+#include "json.hpp"
 
 #include <string>
 #include <fstream>
-#include <nlohmann/json.hpp>
 
 class ConfigManager
 {
