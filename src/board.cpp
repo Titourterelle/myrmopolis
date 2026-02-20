@@ -2,6 +2,8 @@
 #include "../include/anthill.hpp"
 
 #include <iostream>
+#include <map>
+#include <memory>
 #include <stdexcept>
 #include <string>
 #include <unordered_set>
@@ -13,7 +15,6 @@ Board::Board(const SimulationSettings& settings) :
     dimensions(settings.board.column, settings.board.row),
     simulationSettings(settings)
 {
-    initializeAnthillMap();
     checkSettings();
     createTiles();
     initColonies();
@@ -71,14 +72,6 @@ const std::vector<Tile*> Board::getAdjacentTiles(const Tile& actualTile) const
     return adjacentTiles;
 }
 
-void Board::initializeAnthillMap() noexcept
-{
-    for(const auto& colony : simulationSettings.colonies)
-    {
-        startingAnthills[colony.name] = Tile::Coordinates(colony.xAnthill, colony.yAnthill);
-    }
-}
-
 void Board::checkSettings() const
 {
     if(simulationSettings.board.row <= 0 || simulationSettings.board.column <= 0)
@@ -111,24 +104,24 @@ void Board::checkSettings() const
 
 void Board::createTiles() noexcept
 {
+    std::map<Tile::Coordinates, std::string> anthillOwner;
+    for(const auto& colony : simulationSettings.colonies)
+    {
+        anthillOwner.insert(std::make_pair(Tile::Coordinates(colony.xAnthill, colony.yAnthill), colony.name));
+    }
+
     for(auto c = 0; c < dimensions.first; ++c)
     {
         tiles.push_back({});
         for(auto r = 0; r < dimensions.second; ++r)
         {
             const Tile::Coordinates targetCoord{c, r};
-            bool isAnAnthill{false};
-            for(const auto& [name, coord] : startingAnthills)
+            
+            if(anthillOwner.contains(targetCoord))
             {
-                if(coord == targetCoord)
-                {
-                    isAnAnthill = true;
-                    break;
-                }
-            }
-            if(isAnAnthill)
-            {
-                tiles.at(c).push_back(std::make_unique<Anthill>(c, r));
+                auto anthill = std::make_unique<Anthill>(c, r);
+                startingAnthills.insert({anthillOwner.at(targetCoord), anthill.get()});
+                tiles.at(c).push_back(std::move(anthill));
             }
             else
             {
@@ -142,6 +135,6 @@ void Board::initColonies() noexcept
 {
     for(const auto& colony : simulationSettings.colonies)
     {
-        colonies.push_back(std::make_unique<Colony>(colony.name, colony.initialNumberOfAnts));
+        colonies.push_back(std::make_unique<Colony>(colony.name, *startingAnthills.at(colony.name), colony.initialNumberOfAnts));
     }
 }

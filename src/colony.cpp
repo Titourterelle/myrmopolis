@@ -3,9 +3,11 @@
 #include <stdexcept>
 #include <iostream>
 
-Colony::Colony(const std::string name, const int initialNumberOfAnts) :
+Colony::Colony(const std::string name, Anthill &initialAnthill, const int initialNumberOfAnts) :
     name(name)
 {
+    anthills.push_back(&initialAnthill);
+
     if(initialNumberOfAnts <= 0)
     {
         throw std::runtime_error("The initial number of ants is invalid");

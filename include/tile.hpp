@@ -7,9 +7,13 @@ class Tile
         {
             int x;
             int y;
-            bool operator==(const Coordinates& other) const noexcept
+            bool operator==(const Coordinates &other) const noexcept
             {
                 return (x == other.x && y == other.y);
+            }
+            bool operator<(const Coordinates &other) const noexcept
+            {
+                return (x < other.x || (x == other.x && y < other.y));
             }
         };
 

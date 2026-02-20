@@ -9,7 +9,7 @@
 class Colony
 {
     public:
-        explicit Colony(const std::string name, const int initialNumberOfAnts);
+        explicit Colony(const std::string name, Anthill &initialAnthill, const int initialNumberOfAnts);
     private:
         void addAnts(const int numberOfAnts) noexcept;
         
