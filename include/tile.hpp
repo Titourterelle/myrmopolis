@@ -19,9 +19,13 @@ class Tile
 
         explicit Tile(const int x, const int y) noexcept;
         const Coordinates& getCoordinates() const noexcept;
+        int getFoodQuantity() const noexcept;
+        void addFood(const int quantity = 1);
+        void removeFood(const int quantity = 1);
 
         bool operator==(const Tile& otherTile) const noexcept; 
 
     private:
         const Coordinates position;
+        int food{0};
 };

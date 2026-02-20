@@ -12,7 +12,7 @@ class Ant
     
     private:
         void move(Tile& nextTile) noexcept;
-        void pickFood() noexcept;
+        void pickFood();
         void dropFood() noexcept;
 
         Tile *actualTile = nullptr;

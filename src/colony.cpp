@@ -17,6 +17,11 @@ Colony::Colony(const std::string name, Anthill &initialAnthill, const int initia
     std::cout << "Création d'une colonie" <<std::endl;
 }
 
+const std::vector<Anthill*>& Colony::getAnthills() const noexcept
+{
+    return anthills;
+}
+
 void Colony::addAnts(const int numberOfAnts) noexcept
 {
     for(auto i = 0; i < numberOfAnts; ++i)
