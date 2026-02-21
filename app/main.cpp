@@ -1,11 +1,11 @@
-#include "../include/board.hpp"
-#include "../include/configManager.hpp"
+#include "board.hpp"
+#include "configManager.hpp"
 
 #include <string>
 
 int main()
 {
-    std::string filename{"config.json"};
+    std::string filename{"../../config.json"};
     ConfigManager CM{filename};
 
     Board board{CM.getSettings()};

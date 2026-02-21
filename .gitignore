@@ -36,10 +36,13 @@
 *.exe
 *.out
 *.app
-prog
 
 # debug information files
 *.dwo
 
 # Cache
 .cache
+
+# Build
+/out
+/build

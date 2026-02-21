@@ -1,5 +1,5 @@
-#include "../include/board.hpp"
-#include "../include/anthill.hpp"
+#include "board.hpp"
+#include "anthill.hpp"
 
 #include <iostream>
 #include <map>

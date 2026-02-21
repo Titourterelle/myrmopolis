@@ -1,4 +1,4 @@
-#include "../include/configManager.hpp"
+#include "configManager.hpp"
 
 #include <iostream>
 #include <stdexcept>

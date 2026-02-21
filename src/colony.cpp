@@ -1,4 +1,4 @@
-#include "../include/colony.hpp"
+#include "colony.hpp"
 
 #include <stdexcept>
 #include <iostream>

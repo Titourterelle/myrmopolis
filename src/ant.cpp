@@ -1,5 +1,5 @@
-#include "../include/ant.hpp"
-#include "../include/colony.hpp"
+#include "ant.hpp"
+#include "colony.hpp"
 
 #include <iostream>
 #include <stdexcept>

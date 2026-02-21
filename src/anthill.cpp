@@ -1,4 +1,4 @@
-#include "../include/anthill.hpp"
+#include "anthill.hpp"
 
 #include <iostream>
 

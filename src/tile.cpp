@@ -1,4 +1,4 @@
-#include "../include/tile.hpp"
+#include "tile.hpp"
 
 #include <iostream>
 #include <stdexcept>
