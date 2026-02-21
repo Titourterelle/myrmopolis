@@ -44,5 +44,7 @@
 .cache
 
 # Build
-/out
 /build
+
+# Clangd
+compile_commands.json
