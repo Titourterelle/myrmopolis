@@ -1,5 +1,5 @@
-#include "board.hpp"
-#include "configManager.hpp"
+#include "environment/board.hpp"
+#include "manager/configManager.hpp"
 
 #include <string>
 

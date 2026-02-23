@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ant.hpp"
-#include "anthill.hpp"
+#include "environment/anthill.hpp"
 
 #include <vector>
 #include <memory>

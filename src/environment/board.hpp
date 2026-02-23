@@ -1,9 +1,9 @@
 #pragma once
 
 #include "anthill.hpp"
-#include "colony.hpp"
 #include "tile.hpp"
-#include "settings.hpp"
+#include "simulation/colony.hpp"
+#include "manager/settings.hpp"
 
 #include <unordered_map>
 #include <utility>

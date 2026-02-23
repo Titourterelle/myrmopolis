@@ -1,6 +1,6 @@
 #pragma once
 
-#include "tile.hpp"
+#include "environment/tile.hpp"
 
 class Colony;
 
