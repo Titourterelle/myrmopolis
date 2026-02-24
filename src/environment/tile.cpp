@@ -1,4 +1,5 @@
 #include "tile.hpp"
+#include "environment/pheromones.hpp"
 
 #include <iostream>
 #include <stdexcept>
@@ -36,6 +37,23 @@ void Tile::removeFood(const int quantity)
     }
 
     food -= quantity;
+}
+
+const Pheromones& Tile::getPheromones() const noexcept
+{
+    return pheromones;
+}
+
+void Tile::addPheromones(const PheromoneType type) noexcept
+{
+    if(type == PheromoneType::Home)
+    {
+        ++pheromones.home;
+    }
+    else if(type == PheromoneType::Food)
+    {
+        ++pheromones.food;
+    }
 }
 
 bool Tile::operator==(const Tile& otherTile) const noexcept

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "environment/tile.hpp"
+#include "environment/pheromones.hpp"
 
 class Colony;
 
@@ -14,6 +15,7 @@ class Ant
         void move(Tile& nextTile) noexcept;
         void pickFood();
         void dropFood() noexcept;
+        void depositPheromones(const PheromoneType type) const noexcept;
 
         Tile *actualTile = nullptr;
         const Colony *colony;

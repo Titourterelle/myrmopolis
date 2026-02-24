@@ -38,3 +38,8 @@ void Ant::dropFood() noexcept
     actualTile->addFood();
     transportFood = false;
 }
+
+void Ant::depositPheromones(const PheromoneType type) const noexcept
+{
+    actualTile->addPheromones(type);
+}
