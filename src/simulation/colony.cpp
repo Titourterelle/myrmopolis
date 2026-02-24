@@ -26,6 +26,6 @@ void Colony::addAnts(const int numberOfAnts) noexcept
 {
     for(auto i = 0; i < numberOfAnts; ++i)
     {
-        ants.push_back(std::make_unique<Ant>(*this));
+        ants.push_back(std::make_unique<Ant>(*this, *anthills.at(0)));
     }
 }

@@ -7,7 +7,7 @@ class Colony;
 class Ant
 {
     public:
-        explicit Ant(Colony &colony) noexcept;
+        explicit Ant(Colony &colony, Tile &spawnTile) noexcept;
         bool isTransportingFood() const noexcept;
     
     private:

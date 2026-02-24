@@ -4,7 +4,7 @@
 #include <iostream>
 #include <stdexcept>
 
-Ant::Ant(Colony& colony) noexcept : colony(&colony)
+Ant::Ant(Colony& colony, Tile &spawnTile) noexcept : colony(&colony), actualTile(&spawnTile)
 {
     std::cout << "Création d'une fourmi" << std::endl;
 }
