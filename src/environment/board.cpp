@@ -11,9 +11,9 @@
 #include <utility>
 #include <vector>
 
-Board::Board(const SimulationSettings& settings) :
-    dimensions(settings.board.column, settings.board.row),
-    simulationSettings(settings)
+Board::Board(const BoardSettings& settings) :
+    dimensions(settings.column, settings.row),
+    boardSettings(settings)
 {
     checkSettings();
     createTiles();
@@ -79,14 +79,14 @@ const std::vector<Tile*> Board::getAdjacentTiles(const Tile& actualTile) const
 
 void Board::checkSettings() const
 {
-    if(simulationSettings.board.row <= 0 || simulationSettings.board.column <= 0)
+    if(boardSettings.row <= 0 || boardSettings.column <= 0)
     {
         throw std::runtime_error("The dimensions are invalid");
     }
 
     std::unordered_set<std::string> coloniesNames;
     std::set<std::pair<int, int>> anthillsCoordinates;
-    for(const auto& colony : simulationSettings.colonies)
+    for(const auto& colony : boardSettings.colonies)
     {
         if(colony.xAnthill < 0 || colony.xAnthill >= dimensions.second || colony.yAnthill < 0 || colony.yAnthill >= dimensions.first)
         {
@@ -110,7 +110,7 @@ void Board::checkSettings() const
 void Board::createTiles() noexcept
 {
     std::map<Tile::Coordinates, std::string> anthillOwner;
-    for(const auto& colony : simulationSettings.colonies)
+    for(const auto& colony : boardSettings.colonies)
     {
         anthillOwner.insert(std::make_pair(Tile::Coordinates(colony.xAnthill, colony.yAnthill), colony.name));
     }
@@ -138,7 +138,7 @@ void Board::createTiles() noexcept
 
 void Board::initColonies() noexcept
 {
-    for(const auto& colony : simulationSettings.colonies)
+    for(const auto& colony : boardSettings.colonies)
     {
         colonies.push_back(std::make_unique<Colony>(colony.name, *startingAnthills.at(colony.name), colony.initialNumberOfAnts));
     }

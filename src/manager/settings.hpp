@@ -3,11 +3,6 @@
 #include <string>
 #include <vector>
 
-struct BoardSettings
-{
-    int row;
-    int column;
-};
 
 struct ColonySettings
 {
@@ -17,8 +12,15 @@ struct ColonySettings
     int initialNumberOfAnts;
 };
 
+struct BoardSettings
+{
+    int row;
+    int column;
+    std::vector<ColonySettings> colonies;
+};
+
 struct SimulationSettings
 {
+    int numberOfBoards;
     BoardSettings board;
-    std::vector<ColonySettings> colonies;
 };

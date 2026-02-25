@@ -1,4 +1,4 @@
-#include "environment/board.hpp"
+#include "simulation/simulation.hpp"
 #include "manager/configManager.hpp"
 
 #include <string>
@@ -8,7 +8,7 @@ int main()
     std::string filename{"../../config.json"};
     ConfigManager CM{filename};
 
-    Board board{CM.getSettings()};
+    Simulation simulation{CM.getSettings()};
 
     return 0;
 }

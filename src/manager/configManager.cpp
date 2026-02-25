@@ -27,6 +27,8 @@ void ConfigManager::importSettings()
     {
         configStream >> configJSON;
 
+        settings.numberOfBoards = configJSON.at("simulation").at("numberOfBoards").get<int>();
+
         settings.board.row = configJSON.at("board").at("row").get<int>();
         settings.board.column = configJSON.at("board").at("column").get<int>();
 
@@ -38,7 +40,7 @@ void ConfigManager::importSettings()
             colonySettings.yAnthill = colony.at("anthill").at(1);
             colonySettings.initialNumberOfAnts = colony.at("initialAnts");
 
-            settings.colonies.push_back(colonySettings);
+            settings.board.colonies.push_back(colonySettings);
         }
     }
     catch(const nlohmann::json::parse_error &e)

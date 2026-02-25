@@ -1,4 +1,7 @@
 {
+    "simulation":{
+        "numberOfBoards": 1
+    },
     "board":{
         "row": 4,
         "column": 5

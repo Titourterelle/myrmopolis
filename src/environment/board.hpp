@@ -13,7 +13,7 @@
 class Board
 {
     public:
-        explicit Board(const SimulationSettings& settings);
+        explicit Board(const BoardSettings& settings);
         const std::vector<Tile*> getAdjacentTiles(const Tile& actualTile) const;
 
     private:
@@ -22,7 +22,7 @@ class Board
         void initColonies() noexcept;
 
         const std::pair<int, int> dimensions;
-        const SimulationSettings simulationSettings;
+        const BoardSettings boardSettings;
 
         std::unordered_map<std::string, Anthill*> startingAnthills;
         std::vector<std::unique_ptr<Colony>> colonies;
