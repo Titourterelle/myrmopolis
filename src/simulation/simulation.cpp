@@ -1,10 +1,12 @@
 #include "simulation.hpp"
 #include "environment/board.hpp"
 #include "manager/settings.hpp"
+#include "simulation/colony.hpp"
 
 #include <iostream>
 #include <memory>
 #include <stdexcept>
+#include <vector>
 
 Simulation::Simulation(const SimulationSettings& settings) : simulationSettings(settings)
 {
@@ -22,13 +24,23 @@ bool Simulation::isOver() const noexcept
     return (currentRound >= maxRound);
 }
 
-void Simulation::nextRound()
+void Simulation::run() noexcept
 {
-    if(isOver())
+    while (!isOver())
     {
-        throw std::runtime_error("The simulation is over, it can't simulate the next round");
+        step();
     }
+}
 
+void Simulation::step() noexcept
+{
+    for(const auto& boardColonies : colonies)
+    {
+        for(const auto& colony : boardColonies)
+        {
+            colony->step();
+        }
+    }
     ++currentRound;
 }
 
@@ -37,5 +49,9 @@ void Simulation::initBoards()
     for(auto i = 0; i < simulationSettings.numberOfBoards; ++i)
     {
         boards.push_back(std::make_unique<Board>(simulationSettings.board));
+    }
+    for(const auto& board : boards)
+    {
+        colonies.push_back(board->getColonies());
     }
 }

@@ -21,7 +21,7 @@ Board::Board(const BoardSettings& settings) :
     std::cout << "Création d'un board" << std::endl;
 }
 
-const std::vector<Tile*> Board::getAdjacentTiles(const Tile& actualTile) const
+const std::vector<Tile*> Board::getAdjacentTiles(const Tile& actualTile) const noexcept
 {
     const Tile::Coordinates actualTileCoordinates = actualTile.getCoordinates();
     std::vector<Tile*> adjacentTiles;
@@ -75,6 +75,17 @@ const std::vector<Tile*> Board::getAdjacentTiles(const Tile& actualTile) const
         }
     }
     return adjacentTiles;
+}
+
+const std::vector<Colony*> Board::getColonies() const noexcept
+{
+    std::vector<Colony*> ptrColonies;
+    for(const auto& colony : colonies)
+    {
+        ptrColonies.push_back(colony.get());
+    }
+    
+    return ptrColonies;
 }
 
 void Board::checkSettings() const

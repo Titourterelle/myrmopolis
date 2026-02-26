@@ -22,6 +22,14 @@ const std::vector<Anthill*>& Colony::getAnthills() const noexcept
     return anthills;
 }
 
+void Colony::step() const noexcept
+{
+    for(const auto& ant : ants)
+    {
+        ant->act();
+    }
+}
+
 void Colony::addAnts(const int numberOfAnts) noexcept
 {
     for(auto i = 0; i < numberOfAnts; ++i)

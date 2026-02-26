@@ -10,5 +10,7 @@ int main()
 
     Simulation simulation{CM.getSettings()};
 
+    simulation.run();
+
     return 0;
 }

@@ -10,6 +10,7 @@ class Ant
     public:
         explicit Ant(Colony &colony, Tile &spawnTile) noexcept;
         bool isTransportingFood() const noexcept;
+        void act() noexcept;
     
     private:
         void move(Tile& nextTile) noexcept;

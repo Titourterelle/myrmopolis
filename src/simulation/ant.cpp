@@ -14,6 +14,11 @@ bool Ant::isTransportingFood() const noexcept
     return transportFood;
 }
 
+void Ant::act() noexcept
+{
+    //TODO : The action of the ant for 1 turn
+}
+
 void Ant::move(Tile& nextTile) noexcept
 {
     actualTile = &nextTile;

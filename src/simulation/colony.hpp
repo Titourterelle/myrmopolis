@@ -11,6 +11,8 @@ class Colony
     public:
         explicit Colony(const std::string name, Anthill &initialAnthill, const int initialNumberOfAnts);
         const std::vector<Anthill*>& getAnthills() const noexcept;
+        void step() const noexcept;
+
     private:
         void addAnts(const int numberOfAnts) noexcept;
         
