@@ -2,7 +2,6 @@
 
 #include "environment/board.hpp"
 #include "manager/settings.hpp"
-#include "simulation/colony.hpp"
 
 #include <memory>
 #include <vector>
@@ -20,7 +19,6 @@ class Simulation
 
         const SimulationSettings simulationSettings;
         std::vector<std::unique_ptr<Board>> boards;
-        std::vector<std::vector<Colony*>> colonies;
         const int maxRound = 50;
         int currentRound = 0;
 };

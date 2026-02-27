@@ -1,7 +1,6 @@
 #include "simulation.hpp"
 #include "environment/board.hpp"
 #include "manager/settings.hpp"
-#include "simulation/colony.hpp"
 
 #include <iostream>
 #include <memory>
@@ -34,12 +33,9 @@ void Simulation::run() noexcept
 
 void Simulation::step() noexcept
 {
-    for(const auto& boardColonies : colonies)
+    for(const auto& board : boards)
     {
-        for(const auto& colony : boardColonies)
-        {
-            colony->step();
-        }
+        board->step();
     }
     ++currentRound;
 }
@@ -49,9 +45,5 @@ void Simulation::initBoards()
     for(auto i = 0; i < simulationSettings.numberOfBoards; ++i)
     {
         boards.push_back(std::make_unique<Board>(simulationSettings.board));
-    }
-    for(const auto& board : boards)
-    {
-        colonies.push_back(board->getColonies());
     }
 }

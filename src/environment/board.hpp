@@ -15,7 +15,7 @@ class Board
     public:
         explicit Board(const BoardSettings& settings);
         const std::vector<Tile*> getAdjacentTiles(const Tile& actualTile) const noexcept;
-        const std::vector<Colony*> getColonies() const noexcept;
+        void step() const noexcept;
 
     private:
         void checkSettings() const;

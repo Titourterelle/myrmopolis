@@ -77,15 +77,12 @@ const std::vector<Tile*> Board::getAdjacentTiles(const Tile& actualTile) const n
     return adjacentTiles;
 }
 
-const std::vector<Colony*> Board::getColonies() const noexcept
+void Board::step() const noexcept
 {
-    std::vector<Colony*> ptrColonies;
     for(const auto& colony : colonies)
     {
-        ptrColonies.push_back(colony.get());
+        colony->step();
     }
-    
-    return ptrColonies;
 }
 
 void Board::checkSettings() const
