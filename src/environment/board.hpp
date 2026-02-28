@@ -1,6 +1,6 @@
 #pragma once
 
-#include "anthill.hpp"
+#include "anthillTile.hpp"
 #include "tile.hpp"
 #include "simulation/colony.hpp"
 #include "manager/settings.hpp"
@@ -25,7 +25,8 @@ class Board
         const std::pair<int, int> dimensions;
         const BoardSettings boardSettings;
 
-        std::unordered_map<std::string, Anthill*> startingAnthills;
+        std::unordered_map<std::string, AnthillTile*> startingAnthills;
+        
         std::vector<std::unique_ptr<Colony>> colonies;
         std::vector<std::vector<std::unique_ptr<Tile>>> tiles;
 };

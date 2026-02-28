@@ -1,5 +1,6 @@
 #include "board.hpp"
-#include "anthill.hpp"
+#include "anthillTile.hpp"
+#include "environment/landTile.hpp"
 
 #include <iostream>
 #include <map>
@@ -132,13 +133,13 @@ void Board::createTiles() noexcept
             
             if(anthillOwner.contains(targetCoord))
             {
-                auto anthill = std::make_unique<Anthill>(c, r);
+                auto anthill = std::make_unique<AnthillTile>(c, r);
                 startingAnthills.insert({anthillOwner.at(targetCoord), anthill.get()});
                 tiles.at(c).push_back(std::move(anthill));
             }
             else
             {
-                tiles.at(c).push_back(std::make_unique<Tile>(c, r));
+                tiles.at(c).push_back(std::make_unique<LandTile>(c, r));
             }
         }
     }
@@ -148,6 +149,6 @@ void Board::initColonies() noexcept
 {
     for(const auto& colony : boardSettings.colonies)
     {
-        colonies.push_back(std::make_unique<Colony>(colony.name, *startingAnthills.at(colony.name), colony.initialNumberOfAnts));
+        colonies.push_back(std::make_unique<Colony>(colony.name, *this, *startingAnthills.at(colony.name), colony.initialNumberOfAnts));
     }
 }

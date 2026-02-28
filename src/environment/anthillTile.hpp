@@ -1,0 +1,14 @@
+#pragma once
+
+#include "tile.hpp"
+
+class AnthillTile : public Tile
+{
+    public:
+        explicit AnthillTile(const int x, const int y) noexcept;
+
+        void interact(Ant &ant) noexcept override;
+
+    private:
+        int foodReserve{0};
+};

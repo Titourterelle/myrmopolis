@@ -1,10 +1,12 @@
 #include "colony.hpp"
+#include "environment/board.hpp"
 
 #include <stdexcept>
 #include <iostream>
 
-Colony::Colony(const std::string name, Anthill &initialAnthill, const int initialNumberOfAnts) :
-    name(name)
+Colony::Colony(const std::string name, Board &board, AnthillTile &initialAnthill, const int initialNumberOfAnts) :
+    name(name),
+    board(&board)
 {
     anthills.push_back(&initialAnthill);
 
@@ -17,9 +19,14 @@ Colony::Colony(const std::string name, Anthill &initialAnthill, const int initia
     std::cout << "Création d'une colonie" <<std::endl;
 }
 
-const std::vector<Anthill*>& Colony::getAnthills() const noexcept
+const std::vector<AnthillTile*>& Colony::getAnthills() const noexcept
 {
     return anthills;
+}
+
+const Board& Colony::getBoard() const noexcept
+{
+    return *board;
 }
 
 void Colony::step() const noexcept

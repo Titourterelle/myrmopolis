@@ -1,8 +1,8 @@
 #pragma once
 
 #include "environment/tile.hpp"
-#include "environment/pheromones.hpp"
 
+class Board;
 class Colony;
 
 class Ant
@@ -11,14 +11,15 @@ class Ant
         explicit Ant(Colony &colony, Tile &spawnTile) noexcept;
         bool isTransportingFood() const noexcept;
         void act() noexcept;
-    
-    private:
-        void move(Tile& nextTile) noexcept;
         void pickFood();
         void dropFood() noexcept;
-        void depositPheromones(const PheromoneType type) const noexcept;
+
+    private:
+        void move(Tile &nextTile) noexcept;
+        
 
         Tile *actualTile = nullptr;
         const Colony *colony;
+        const Board *board;
         bool transportFood = false;
 };
