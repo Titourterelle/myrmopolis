@@ -5,23 +5,23 @@
 #include <iostream>
 #include <stdexcept>
 
-Ant::Ant(Colony &colony, Tile &spawnTile) noexcept :
+Ant::Ant(Colony &colony, Tile &spawn_tile) noexcept :
     colony(&colony),
     board(&colony.getBoard()),
-    actualTile(&spawnTile)
+    actual_tile(&spawn_tile)
 {
     std::cout << "Création d'une fourmi" << std::endl;
 }
 
 bool Ant::isTransportingFood() const noexcept
 {
-    return transportFood;
+    return is_transporting_food;
 }
 
 void Ant::act() noexcept
 {
     //TODO : Move the ant depending on the adjacent tiles
-    actualTile->interact(*this);
+    actual_tile->interact(*this);
 }
 
 void Ant::pickFood()
@@ -31,16 +31,16 @@ void Ant::pickFood()
         throw std::runtime_error("The ant is already transporting food");
     }
 
-    transportFood = true;
+    is_transporting_food = true;
 }
 
 void Ant::dropFood() noexcept
 {
-    transportFood = false;
+    is_transporting_food = false;
 }
 
 
-void Ant::move(Tile &nextTile) noexcept
+void Ant::move(Tile &next_tile) noexcept
 {
-    actualTile = &nextTile;
+    actual_tile = &next_tile;
 }

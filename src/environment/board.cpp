@@ -1,6 +1,6 @@
 #include "board.hpp"
-#include "anthillTile.hpp"
-#include "environment/landTile.hpp"
+#include "anthill_tile.hpp"
+#include "environment/land_tile.hpp"
 
 #include <iostream>
 #include <map>
@@ -12,9 +12,9 @@
 #include <utility>
 #include <vector>
 
-Board::Board(const BoardSettings& settings) :
+Board::Board(const BoardSettings &settings) :
     dimensions(settings.column, settings.row),
-    boardSettings(settings)
+    board_settings(settings)
 {
     checkSettings();
     createTiles();
@@ -22,60 +22,60 @@ Board::Board(const BoardSettings& settings) :
     std::cout << "Création d'un board" << std::endl;
 }
 
-const std::vector<Tile*> Board::getAdjacentTiles(const Tile& actualTile) const noexcept
+const std::vector<Tile*> Board::getAdjacentTiles(const Tile &tile) const noexcept
 {
-    const Tile::Coordinates actualTileCoordinates = actualTile.getCoordinates();
-    std::vector<Tile*> adjacentTiles;
+    const Tile::Coordinates base_tile_coordinates = tile.getCoordinates();
+    std::vector<Tile*> adjacent_tiles;
 
     bool up {false};
     bool down {false};
     bool right {false};
     bool left {false};
 
-    if(actualTileCoordinates.x != 0)
+    if(base_tile_coordinates.x != 0)
     {
         left = true;
-        adjacentTiles.push_back(tiles[actualTileCoordinates.x - 1][actualTileCoordinates.y].get());
+        adjacent_tiles.push_back(tiles[base_tile_coordinates.x - 1][base_tile_coordinates.y].get());
     }
-    if(actualTileCoordinates.x + 1 != dimensions.first)
+    if(base_tile_coordinates.x + 1 != dimensions.first)
     {
         right = true;
-        adjacentTiles.push_back(tiles[actualTileCoordinates.x + 1][actualTileCoordinates.y].get());
+        adjacent_tiles.push_back(tiles[base_tile_coordinates.x + 1][base_tile_coordinates.y].get());
     }
-    if(actualTileCoordinates.y != 0)
+    if(base_tile_coordinates.y != 0)
     {
         down = true;
-        adjacentTiles.push_back(tiles[actualTileCoordinates.x][actualTileCoordinates.y - 1].get());
+        adjacent_tiles.push_back(tiles[base_tile_coordinates.x][base_tile_coordinates.y - 1].get());
     }
-    if(actualTileCoordinates.y + 1 != dimensions.second)
+    if(base_tile_coordinates.y + 1 != dimensions.second)
     {
         up = true;
-        adjacentTiles.push_back(tiles[actualTileCoordinates.x][actualTileCoordinates.y + 1].get());
+        adjacent_tiles.push_back(tiles[base_tile_coordinates.x][base_tile_coordinates.y + 1].get());
     }
 
-    if(actualTileCoordinates.y % 2 == 0)
+    if(base_tile_coordinates.y % 2 == 0)
     {
         if(up && left)
         {
-            adjacentTiles.push_back(tiles[actualTileCoordinates.x - 1][actualTileCoordinates.y + 1].get());
+            adjacent_tiles.push_back(tiles[base_tile_coordinates.x - 1][base_tile_coordinates.y + 1].get());
         }
         if(down && left)
         {
-            adjacentTiles.push_back(tiles[actualTileCoordinates.x - 1][actualTileCoordinates.y - 1].get());
+            adjacent_tiles.push_back(tiles[base_tile_coordinates.x - 1][base_tile_coordinates.y - 1].get());
         }
     }
     else
     {
         if(up && right)
         {
-            adjacentTiles.push_back(tiles[actualTileCoordinates.x + 1][actualTileCoordinates.y + 1].get());
+            adjacent_tiles.push_back(tiles[base_tile_coordinates.x + 1][base_tile_coordinates.y + 1].get());
         }
         if(down && right)
         {
-            adjacentTiles.push_back(tiles[actualTileCoordinates.x + 1][actualTileCoordinates.y - 1].get());
+            adjacent_tiles.push_back(tiles[base_tile_coordinates.x + 1][base_tile_coordinates.y - 1].get());
         }
     }
-    return adjacentTiles;
+    return adjacent_tiles;
 }
 
 void Board::step() const noexcept
@@ -88,28 +88,28 @@ void Board::step() const noexcept
 
 void Board::checkSettings() const
 {
-    if(boardSettings.row <= 0 || boardSettings.column <= 0)
+    if(board_settings.row <= 0 || board_settings.column <= 0)
     {
         throw std::runtime_error("The dimensions are invalid");
     }
 
-    std::unordered_set<std::string> coloniesNames;
-    std::set<std::pair<int, int>> anthillsCoordinates;
-    for(const auto& colony : boardSettings.colonies)
+    std::unordered_set<std::string> colonies_names;
+    std::set<std::pair<int, int>> anthills_coordinates;
+    for(const auto& colony : board_settings.colonies)
     {
-        if(colony.xAnthill < 0 || colony.xAnthill >= dimensions.second || colony.yAnthill < 0 || colony.yAnthill >= dimensions.first)
+        if(colony.x_anthill < 0 || colony.x_anthill >= dimensions.second || colony.y_anthill < 0 || colony.y_anthill >= dimensions.first)
         {
             throw std::runtime_error("An anthill cannot be set in the board");
         }
-        if(colony.initialNumberOfAnts <= 0)
+        if(colony.initial_number_of_ants <= 0)
         {
             throw std::runtime_error("The initial number of ants is invalid");
         }
-        if(!coloniesNames.insert(colony.name).second)
+        if(!colonies_names.insert(colony.name).second)
         {
             throw std::runtime_error("Two colonies cannot have the same name");
         }
-        if(!anthillsCoordinates.insert(std::make_pair(colony.xAnthill, colony.yAnthill)).second)
+        if(!anthills_coordinates.insert(std::make_pair(colony.x_anthill, colony.y_anthill)).second)
         {
             throw std::runtime_error("Two anthills cannot be on the same tile");
         }
@@ -118,10 +118,10 @@ void Board::checkSettings() const
 
 void Board::createTiles() noexcept
 {
-    std::map<Tile::Coordinates, std::string> anthillOwner;
-    for(const auto& colony : boardSettings.colonies)
+    std::map<Tile::Coordinates, std::string> anthill_owner;
+    for(const auto& colony : board_settings.colonies)
     {
-        anthillOwner.insert(std::make_pair(Tile::Coordinates(colony.xAnthill, colony.yAnthill), colony.name));
+        anthill_owner.insert(std::make_pair(Tile::Coordinates(colony.x_anthill, colony.y_anthill), colony.name));
     }
 
     for(auto c = 0; c < dimensions.first; ++c)
@@ -131,10 +131,10 @@ void Board::createTiles() noexcept
         {
             const Tile::Coordinates targetCoord{c, r};
             
-            if(anthillOwner.contains(targetCoord))
+            if(anthill_owner.contains(targetCoord))
             {
                 auto anthill = std::make_unique<AnthillTile>(c, r);
-                startingAnthills.insert({anthillOwner.at(targetCoord), anthill.get()});
+                starting_anthills.insert({anthill_owner.at(targetCoord), anthill.get()});
                 tiles.at(c).push_back(std::move(anthill));
             }
             else
@@ -147,8 +147,8 @@ void Board::createTiles() noexcept
 
 void Board::initColonies() noexcept
 {
-    for(const auto& colony : boardSettings.colonies)
+    for(const auto& colony : board_settings.colonies)
     {
-        colonies.push_back(std::make_unique<Colony>(colony.name, *this, *startingAnthills.at(colony.name), colony.initialNumberOfAnts));
+        colonies.push_back(std::make_unique<Colony>(colony.name, *this, *starting_anthills.at(colony.name), colony.initial_number_of_ants));
     }
 }

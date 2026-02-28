@@ -1,14 +1,14 @@
 #include "simulation/simulation.hpp"
-#include "manager/configManager.hpp"
+#include "manager/config_manager.hpp"
 
 #include <string>
 
 int main()
 {
     std::string filename{"../../config.json"};
-    ConfigManager CM{filename};
+    ConfigManager config_manager{filename};
 
-    Simulation simulation{CM.getSettings()};
+    Simulation simulation{config_manager.getSettings()};
 
     simulation.run();
 

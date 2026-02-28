@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ant.hpp"
-#include "environment/anthillTile.hpp"
+#include "environment/anthill_tile.hpp"
 
 #include <vector>
 #include <memory>
@@ -11,13 +11,13 @@ class Board;
 class Colony
 {
     public:
-        explicit Colony(const std::string name, Board &board, AnthillTile &initialAnthill, const int initialNumberOfAnts);
+        explicit Colony(const std::string name, Board &board, AnthillTile &initialAnthill, const int initial_number_of_ants);
         const std::vector<AnthillTile*>& getAnthills() const noexcept;
         const Board& getBoard() const noexcept;
         void step() const noexcept;
 
     private:
-        void addAnts(const int numberOfAnts) noexcept;
+        void addAnts(const int number_of_ants) noexcept;
         
         std::string name;
         const Board *board = nullptr;

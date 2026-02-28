@@ -10,7 +10,7 @@ class LandTile : public Tile
 
         void interact(Ant &ant) noexcept override;
 
-        void addPheromones(const PheromoneType& type) noexcept;
+        void addPheromones(const PheromoneType &type) noexcept;
         
     private:
         void addFood(const unsigned int quantity = 1) noexcept;

@@ -8,18 +8,18 @@ class Colony;
 class Ant
 {
     public:
-        explicit Ant(Colony &colony, Tile &spawnTile) noexcept;
+        explicit Ant(Colony &colony, Tile &spawn_tile) noexcept;
         bool isTransportingFood() const noexcept;
         void act() noexcept;
         void pickFood();
         void dropFood() noexcept;
 
     private:
-        void move(Tile &nextTile) noexcept;
+        void move(Tile &next_tile) noexcept;
         
 
-        Tile *actualTile = nullptr;
+        Tile *actual_tile = nullptr;
         const Colony *colony;
         const Board *board;
-        bool transportFood = false;
+        bool is_transporting_food = false;
 };

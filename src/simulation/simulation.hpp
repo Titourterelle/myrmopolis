@@ -9,7 +9,7 @@
 class Simulation
 {
     public:
-        explicit Simulation(const SimulationSettings& settings);
+        explicit Simulation(const SimulationSettings &settings);
         void run() noexcept;
         bool isOver() const noexcept;
 
@@ -17,8 +17,8 @@ class Simulation
         void step() noexcept;
         void initBoards();
 
-        const SimulationSettings simulationSettings;
+        const SimulationSettings simulation_settings;
         std::vector<std::unique_ptr<Board>> boards;
-        const int maxRound = 50;
-        int currentRound = 0;
+        const int max_round = 50;
+        int current_round = 0;
 };

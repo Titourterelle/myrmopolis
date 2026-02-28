@@ -7,9 +7,9 @@
 #include <stdexcept>
 #include <vector>
 
-Simulation::Simulation(const SimulationSettings& settings) : simulationSettings(settings)
+Simulation::Simulation(const SimulationSettings &settings) : simulation_settings(settings)
 {
-    if(simulationSettings.numberOfBoards <= 0)
+    if(simulation_settings.number_of_boards <= 0)
     {
         throw std::runtime_error("The number of boards can't be null or negative");
     }
@@ -20,7 +20,7 @@ Simulation::Simulation(const SimulationSettings& settings) : simulationSettings(
 
 bool Simulation::isOver() const noexcept
 {
-    return (currentRound >= maxRound);
+    return (current_round >= max_round);
 }
 
 void Simulation::run() noexcept
@@ -37,13 +37,13 @@ void Simulation::step() noexcept
     {
         board->step();
     }
-    ++currentRound;
+    ++current_round;
 }
 
 void Simulation::initBoards()
 {
-    for(auto i = 0; i < simulationSettings.numberOfBoards; ++i)
+    for(auto i = 0; i < simulation_settings.number_of_boards; ++i)
     {
-        boards.push_back(std::make_unique<Board>(simulationSettings.board));
+        boards.push_back(std::make_unique<Board>(simulation_settings.board));
     }
 }

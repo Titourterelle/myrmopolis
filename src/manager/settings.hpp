@@ -7,9 +7,9 @@
 struct ColonySettings
 {
     std::string name;
-    int xAnthill;
-    int yAnthill;
-    int initialNumberOfAnts;
+    int x_anthill;
+    int y_anthill;
+    int initial_number_of_ants;
 };
 
 struct BoardSettings
@@ -21,6 +21,6 @@ struct BoardSettings
 
 struct SimulationSettings
 {
-    int numberOfBoards;
+    int number_of_boards;
     BoardSettings board;
 };

@@ -1,4 +1,4 @@
-#include "anthillTile.hpp"
+#include "anthill_tile.hpp"
 #include "simulation/ant.hpp"
 
 #include <iostream>
@@ -13,6 +13,6 @@ void AnthillTile::interact(Ant &ant) noexcept
     if(ant.isTransportingFood())
     {
         ant.dropFood();
-        ++foodReserve;
+        ++food_reserve;
     }
 }

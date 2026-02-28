@@ -10,5 +10,5 @@ class AnthillTile : public Tile
         void interact(Ant &ant) noexcept override;
 
     private:
-        int foodReserve{0};
+        int food_reserve{0};
 };

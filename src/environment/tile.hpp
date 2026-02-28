@@ -25,7 +25,7 @@ class Tile
         const Coordinates& getCoordinates() const noexcept;
         virtual void interact(Ant &ant) noexcept = 0;
 
-        bool operator==(const Tile &otherTile) const noexcept; 
+        bool operator==(const Tile &other_tile) const noexcept; 
 
     private:
         const Coordinates position;
