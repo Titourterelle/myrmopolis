@@ -16,6 +16,5 @@ class LandTile : public Tile
         void addFood(const unsigned int quantity = 1) noexcept;
         void removeFood(const unsigned int quantity = 1) noexcept;
 
-        Pheromones pheromones{0, 0};
-        int food{0};
+        int food{3};
 };

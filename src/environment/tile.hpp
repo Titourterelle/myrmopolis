@@ -1,5 +1,7 @@
 #pragma once
 
+#include "pheromones.hpp"
+
 class Ant;
 
 class Tile
@@ -23,9 +25,13 @@ class Tile
         virtual ~Tile() = default;
 
         const Coordinates& getCoordinates() const noexcept;
+        const Pheromones& getPheromones() const noexcept;
         virtual void interact(Ant &ant) noexcept = 0;
 
-        bool operator==(const Tile &other_tile) const noexcept; 
+        bool operator==(const Tile &other_tile) const noexcept;
+
+    protected:
+        Pheromones pheromones{0, 0};
 
     private:
         const Coordinates position;

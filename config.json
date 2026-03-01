@@ -3,14 +3,14 @@
         "number_of_boards": 1
     },
     "board":{
-        "row": 4,
+        "row": 5,
         "column": 5
     },
     "colonies":[
         {
             "name":"Galactic Empire",
             "anthill":[0, 0],
-            "initial_ants":10
+            "initial_ants": 1
         }
     ]
 }

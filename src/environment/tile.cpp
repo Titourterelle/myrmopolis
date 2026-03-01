@@ -1,4 +1,5 @@
 #include "tile.hpp"
+#include "environment/pheromones.hpp"
 
 #include <iostream>
 
@@ -10,6 +11,11 @@ Tile::Tile(const int x, const int y) noexcept : position(Coordinates(x, y))
 const Tile::Coordinates& Tile::getCoordinates() const noexcept
 {
     return position;
+}
+
+const Pheromones& Tile::getPheromones() const noexcept
+{
+    return pheromones;
 }
 
 bool Tile::operator==(const Tile &other_tile) const noexcept
