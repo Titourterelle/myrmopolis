@@ -1,27 +1,42 @@
-#include "config_manager.hpp"
+#include "include/config_manager.hpp"
 
-#include <iostream>
+#include <memory>
 #include <stdexcept>
 #include <string>
+#include <fstream>
 
-ConfigManager::ConfigManager(const std::string filename) : config_filename(filename)
+#include <nlohmann/json.hpp>
+
+struct ConfigManager::Impl
 {
-    config_stream.open(config_filename);
-    if(!config_stream)
+    const std::string config_filename;
+    std::ifstream config_stream;
+    nlohmann::json config_json;
+    SimulationSettings settings;
+
+    void importSettings();
+
+    Impl(const std::string filename) : config_filename(filename) {}
+};
+
+ConfigManager::ConfigManager(const std::string filename) : impl_(std::make_unique<Impl>(filename))
+{
+    impl_->config_stream.open(impl_->config_filename);
+    if(!impl_->config_stream)
     {
         throw std::runtime_error("Cannot open the config file");
     }
-
-    std::cout << "The file is open" << std::endl;
-    importSettings();
+    impl_->importSettings();
 }
+
+ConfigManager::~ConfigManager() = default;
 
 const SimulationSettings& ConfigManager::getSettings() const noexcept
 {
-    return settings;
+    return impl_->settings;
 }
 
-void ConfigManager::importSettings()
+void ConfigManager::Impl::importSettings()
 {
     try
     {

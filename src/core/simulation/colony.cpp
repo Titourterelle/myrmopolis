@@ -2,7 +2,6 @@
 #include "environment/board.hpp"
 
 #include <stdexcept>
-#include <iostream>
 
 Colony::Colony(const std::string name, Board &board, AnthillTile &initialAnthill, const int initial_number_of_ants) :
     name(name),
@@ -16,7 +15,6 @@ Colony::Colony(const std::string name, Board &board, AnthillTile &initialAnthill
     }
     
     addAnts(initial_number_of_ants);
-    std::cout << "Création d'une colonie" <<std::endl;
 }
 
 const std::vector<AnthillTile*>& Colony::getAnthills() const noexcept

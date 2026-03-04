@@ -1,12 +1,7 @@
 #include "anthill_tile.hpp"
 #include "simulation/ant.hpp"
 
-#include <iostream>
-
-AnthillTile::AnthillTile(const int x, const int y) noexcept : Tile(x, y)
-{
-    std::cout << "Cette tuile est une fourmilière" << std::endl;
-}
+AnthillTile::AnthillTile(const int x, const int y) noexcept : Tile(x, y) {}
 
 void AnthillTile::interact(Ant &ant) noexcept
 {

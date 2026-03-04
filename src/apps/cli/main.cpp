@@ -1,7 +1,5 @@
-#include "simulation/simulation.hpp"
-#include "manager/config_manager.hpp"
-
-#include <string>
+#include "simulation.hpp"
+#include "config_manager.hpp"
 
 int main()
 {

@@ -3,12 +3,7 @@
 #include "simulation/ant.hpp"
 #include "pheromones.hpp"
 
-#include <iostream>
-
-LandTile::LandTile(const int x, const int y) noexcept : Tile(x, y)
-{
-    std::cout << "Cette tuile est une tuile de terre" << std::endl;
-}
+LandTile::LandTile(const int x, const int y) noexcept : Tile(x, y) {}
 
 void LandTile::interact(Ant &ant) noexcept
 {

@@ -1,0 +1,18 @@
+#pragma once
+
+#include "settings.hpp"
+
+#include <memory>
+
+class Simulation
+{
+    public:
+        explicit Simulation(const SimulationSettings &settings);
+        ~Simulation();
+        void run() noexcept;
+        bool isOver() const noexcept;
+
+    private:
+        struct Impl;
+        std::unique_ptr<Impl> impl_;
+};

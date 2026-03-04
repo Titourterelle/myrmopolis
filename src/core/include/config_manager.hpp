@@ -2,21 +2,17 @@
 
 #include "settings.hpp"
 
-#include <nlohmann/json.hpp>
+#include <memory>
 #include <string>
-#include <fstream>
 
 class ConfigManager
 {
     public:
         explicit ConfigManager(const std::string filename);
+        ~ConfigManager();
         const SimulationSettings& getSettings() const noexcept;
         
     private:
-        void importSettings();
-
-        const std::string config_filename;
-        std::ifstream config_stream;
-        nlohmann::json config_json;
-        SimulationSettings settings;
+        struct Impl;
+        std::unique_ptr<Impl> impl_;
 };

@@ -1,12 +1,7 @@
 #include "tile.hpp"
 #include "environment/pheromones.hpp"
 
-#include <iostream>
-
-Tile::Tile(const int x, const int y) noexcept : position(Coordinates(x, y))
-{
-    std::cout << "Création d'une tuile de coordonnées : " << position.x << ", " << position.y << std::endl;
-}
+Tile::Tile(const int x, const int y) noexcept : position(Coordinates(x, y)) {}
 
 const Tile::Coordinates& Tile::getCoordinates() const noexcept
 {

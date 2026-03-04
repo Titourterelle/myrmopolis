@@ -6,7 +6,6 @@
 #include "environment/board.hpp"
 
 #include <cstddef>
-#include <iostream>
 #include <map>
 #include <random>
 #include <stdexcept>
@@ -18,9 +17,7 @@ Ant::Ant(Colony &colony, Tile &spawn_tile) noexcept :
     board(&colony.getBoard()),
     actual_tile(&spawn_tile),
     previous_tile(actual_tile)
-{
-    std::cout << "Création d'une fourmi" << std::endl;
-}
+{}
 
 bool Ant::isTransportingFood() const noexcept
 {
@@ -43,14 +40,12 @@ void Ant::act() noexcept
         {
             std::uniform_int_distribution<size_t> uni_dist(0, nearby_anthills.size() - 1);
             next_tile = nearby_anthills.at(uni_dist(gen));
-            std::cout << "&" << std::endl;
         }
         else
         {
             removeTile(adjacent_tiles, *actual_tile);
             sortTilesByPheromones(adjacent_tiles, PheromoneType::Home);
             next_tile = adjacent_tiles[0];
-            std::cout << "&&" << std::endl;
         }
     }
     else
@@ -67,13 +62,10 @@ void Ant::act() noexcept
         }
 
         next_tile = adjacent_tiles.at(index);
-        std::cout << "@" << std::endl;
     }
 
     move(*next_tile);
     actual_tile->interact(*this);
-
-    std::cout << "La fourmi se deplace vers la tuile de coordonnées " << actual_tile->getCoordinates().x << "|" << actual_tile->getCoordinates().y << std::endl;
 }
 
 void Ant::pickFood()

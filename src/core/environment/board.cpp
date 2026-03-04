@@ -2,7 +2,6 @@
 #include "anthill_tile.hpp"
 #include "environment/land_tile.hpp"
 
-#include <iostream>
 #include <map>
 #include <memory>
 #include <stdexcept>
@@ -19,7 +18,6 @@ Board::Board(const BoardSettings &settings) :
     checkSettings();
     createTiles();
     initColonies();
-    std::cout << "Création d'un board" << std::endl;
 }
 
 const std::vector<Tile*> Board::getAdjacentTiles(const Tile &tile) const noexcept
