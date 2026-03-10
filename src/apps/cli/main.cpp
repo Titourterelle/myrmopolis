@@ -8,7 +8,10 @@ int main()
 
     Simulation simulation{config_manager.getSettings()};
 
-    simulation.run();
+    while(!simulation.isOver())
+    {
+        simulation.nextStep();
+    }
 
     return 0;
 }

@@ -9,8 +9,10 @@ class Simulation
     public:
         explicit Simulation(const SimulationSettings &settings);
         ~Simulation();
-        void run() noexcept;
+
+        void nextStep();
         bool isOver() const noexcept;
+        void getCurrentBoardState() const noexcept;
 
     private:
         struct Impl;
