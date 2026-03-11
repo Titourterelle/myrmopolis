@@ -6,6 +6,8 @@
 #include <vector>
 #include <memory>
 
+namespace myrmo {
+
 class Board;
 
 class Colony
@@ -24,3 +26,5 @@ class Colony
         std::vector<AnthillTile*> anthills;
         std::vector<std::unique_ptr<Ant>> ants;
 };
+
+}

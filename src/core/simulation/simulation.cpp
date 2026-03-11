@@ -7,6 +7,8 @@
 #include <stdexcept>
 #include <vector>
 
+using namespace myrmo;
+
 struct Simulation::Impl
 {
     const SimulationSettings simulation_settings;

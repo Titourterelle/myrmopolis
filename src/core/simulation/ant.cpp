@@ -12,6 +12,8 @@
 #include <vector>
 #include <algorithm>
 
+using namespace myrmo;
+
 Ant::Ant(Colony &colony, Tile &spawn_tile) noexcept :
     colony(&colony),
     board(&colony.getBoard()),

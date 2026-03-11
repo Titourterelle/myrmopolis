@@ -7,6 +7,8 @@
 
 #include <nlohmann/json.hpp>
 
+using namespace myrmo;
+
 struct ConfigManager::Impl
 {
     const std::string config_filename;

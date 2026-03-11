@@ -2,6 +2,8 @@
 
 #include "pheromones.hpp"
 
+namespace myrmo {
+
 class Ant;
 
 class Tile
@@ -36,3 +38,5 @@ class Tile
     private:
         const Coordinates position;
 };
+
+}

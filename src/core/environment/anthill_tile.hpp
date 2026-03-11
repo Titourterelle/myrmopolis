@@ -2,6 +2,8 @@
 
 #include "tile.hpp"
 
+namespace myrmo {
+
 class AnthillTile : public Tile
 {
     public:
@@ -12,3 +14,5 @@ class AnthillTile : public Tile
     private:
         int food_reserve{0};
 };
+
+}

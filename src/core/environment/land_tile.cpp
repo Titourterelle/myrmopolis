@@ -3,6 +3,8 @@
 #include "simulation/ant.hpp"
 #include "pheromones.hpp"
 
+using namespace myrmo;
+
 LandTile::LandTile(const int x, const int y) noexcept : Tile(x, y) {}
 
 void LandTile::interact(Ant &ant) noexcept

@@ -3,6 +3,8 @@
 #include "tile.hpp"
 #include "pheromones.hpp"
 
+namespace myrmo {
+
 class LandTile : public Tile
 {
     public:
@@ -18,3 +20,5 @@ class LandTile : public Tile
 
         int food{3};
 };
+
+}

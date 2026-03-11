@@ -1,6 +1,8 @@
 #include "tile.hpp"
 #include "environment/pheromones.hpp"
 
+using namespace myrmo;
+
 Tile::Tile(const int x, const int y) noexcept : position(Coordinates(x, y)) {}
 
 const Tile::Coordinates& Tile::getCoordinates() const noexcept

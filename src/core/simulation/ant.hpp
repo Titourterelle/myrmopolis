@@ -6,6 +6,8 @@
 
 #include <vector>
 
+namespace myrmo {
+
 class Board;
 class Colony;
 
@@ -32,3 +34,5 @@ class Ant
 
         const double pheromone_sensitivity = 0.7;
 };
+
+}

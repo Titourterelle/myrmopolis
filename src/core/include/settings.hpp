@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 
+namespace myrmo {
 
 struct ColonySettings
 {
@@ -24,3 +25,5 @@ struct SimulationSettings
     int number_of_boards;
     BoardSettings board;
 };
+
+}

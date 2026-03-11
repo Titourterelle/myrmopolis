@@ -4,6 +4,8 @@
 
 #include <memory>
 
+namespace myrmo {
+
 class Simulation
 {
     public:
@@ -18,3 +20,5 @@ class Simulation
         struct Impl;
         std::unique_ptr<Impl> impl_;
 };
+
+}

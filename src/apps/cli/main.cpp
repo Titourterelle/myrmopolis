@@ -4,9 +4,9 @@
 int main()
 {
     std::string filename{"../../config.json"};
-    ConfigManager config_manager{filename};
+    myrmo::ConfigManager config_manager{filename};
 
-    Simulation simulation{config_manager.getSettings()};
+    myrmo::Simulation simulation{config_manager.getSettings()};
 
     while(!simulation.isOver())
     {

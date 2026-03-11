@@ -11,6 +11,8 @@
 #include <utility>
 #include <vector>
 
+using namespace myrmo;
+
 Board::Board(const BoardSettings &settings) :
     dimensions(settings.column, settings.row),
     board_settings(settings)

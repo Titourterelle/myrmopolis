@@ -3,6 +3,8 @@
 
 #include <stdexcept>
 
+using namespace myrmo;
+
 Colony::Colony(const std::string name, Board &board, AnthillTile &initialAnthill, const int initial_number_of_ants) :
     name(name),
     board(&board)

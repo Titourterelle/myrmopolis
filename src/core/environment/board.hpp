@@ -10,6 +10,8 @@
 #include <vector>
 #include <memory>
 
+namespace myrmo {
+
 class Board
 {
     public:
@@ -30,3 +32,5 @@ class Board
         std::vector<std::unique_ptr<Colony>> colonies;
         std::vector<std::vector<std::unique_ptr<Tile>>> tiles;
 };
+
+}

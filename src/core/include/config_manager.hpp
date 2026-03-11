@@ -5,6 +5,8 @@
 #include <memory>
 #include <string>
 
+namespace myrmo {
+
 class ConfigManager
 {
     public:
@@ -16,3 +18,5 @@ class ConfigManager
         struct Impl;
         std::unique_ptr<Impl> impl_;
 };
+
+}
