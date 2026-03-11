@@ -48,3 +48,6 @@
 
 # Clangd
 compile_commands.json
+
+# VS Code
+*.code-workspace
