@@ -1,6 +1,6 @@
 #include "board.hpp"
 #include "anthill_tile.hpp"
-#include "environment/land_tile.hpp"
+#include "land_tile.hpp"
 
 #include <map>
 #include <memory>

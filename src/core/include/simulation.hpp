@@ -14,7 +14,6 @@ class Simulation
 
         void nextStep();
         bool isOver() const noexcept;
-        void getCurrentBoardState() const noexcept;
 
     private:
         struct Impl;

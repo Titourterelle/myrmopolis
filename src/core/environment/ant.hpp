@@ -1,8 +1,8 @@
 #pragma once
 
-#include "environment/anthill_tile.hpp"
-#include "environment/tile.hpp"
-#include "environment/pheromones.hpp"
+#include "anthill_tile.hpp"
+#include "tile.hpp"
+#include "pheromones.hpp"
 
 #include <vector>
 

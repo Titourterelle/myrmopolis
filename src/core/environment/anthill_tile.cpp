@@ -1,5 +1,5 @@
 #include "anthill_tile.hpp"
-#include "simulation/ant.hpp"
+#include "ant.hpp"
 
 using namespace myrmo;
 

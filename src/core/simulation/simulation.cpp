@@ -53,12 +53,6 @@ bool Simulation::isOver() const noexcept
     return (impl_->is_over);
 }
 
-void Simulation::getCurrentBoardState() const noexcept
-{
-    // TODO : return the current state
-}
-
-
 void Simulation::Impl::step() noexcept
 {
     static int index_board = 0;

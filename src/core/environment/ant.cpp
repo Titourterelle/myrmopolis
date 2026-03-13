@@ -1,9 +1,9 @@
 #include "ant.hpp"
 #include "colony.hpp"
-#include "environment/anthill_tile.hpp"
-#include "environment/pheromones.hpp"
-#include "environment/tile.hpp"
-#include "environment/board.hpp"
+#include "anthill_tile.hpp"
+#include "pheromones.hpp"
+#include "tile.hpp"
+#include "board.hpp"
 
 #include <cstddef>
 #include <map>

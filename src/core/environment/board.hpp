@@ -3,7 +3,7 @@
 #include "settings.hpp"
 #include "anthill_tile.hpp"
 #include "tile.hpp"
-#include "simulation/colony.hpp"
+#include "colony.hpp"
 
 #include <unordered_map>
 #include <utility>

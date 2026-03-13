@@ -1,6 +1,6 @@
 #include "land_tile.hpp"
 #include "tile.hpp"
-#include "simulation/ant.hpp"
+#include "ant.hpp"
 #include "pheromones.hpp"
 
 using namespace myrmo;

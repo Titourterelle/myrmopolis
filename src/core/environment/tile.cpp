@@ -1,5 +1,5 @@
 #include "tile.hpp"
-#include "environment/pheromones.hpp"
+#include "pheromones.hpp"
 
 using namespace myrmo;
 

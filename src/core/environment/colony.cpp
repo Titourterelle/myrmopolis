@@ -1,5 +1,5 @@
 #include "colony.hpp"
-#include "environment/board.hpp"
+#include "board.hpp"
 
 #include <stdexcept>
 
