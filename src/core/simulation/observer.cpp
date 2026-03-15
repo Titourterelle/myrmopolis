@@ -1,5 +1,7 @@
 #include "observer.hpp"
 
+namespace myrmo {
+
 struct Observer::Impl
 {
     Impl() {}
@@ -7,5 +9,7 @@ struct Observer::Impl
 
 Observer::Observer() : impl_()
 {
+
+}
 
 }

@@ -1,5 +1,7 @@
-#include "settings.hpp"
 #include "simulation.hpp"
+#include "settings.hpp"
+#include "observer.hpp"
+#include "snapshot.hpp"
 
 #include "environment/board.hpp"
 
@@ -12,7 +14,10 @@ using namespace myrmo;
 struct Simulation::Impl
 {
     const SimulationSettings simulation_settings;
+
     std::vector<std::unique_ptr<Board>> boards;
+    std::vector<Observer*> observers;
+
     Board* current_board = nullptr;
     const int max_round = 50;
     int current_round = 0;
@@ -20,6 +25,7 @@ struct Simulation::Impl
 
     void step() noexcept;
     void initBoards() noexcept;
+    const snapshot::Snapshot takeSnapshot() const noexcept;
 
     Impl(SimulationSettings sim_settings) : simulation_settings(sim_settings) {}
 };
@@ -36,21 +42,24 @@ Simulation::Simulation(const SimulationSettings &settings) : impl_(std::make_uni
 Simulation::~Simulation() = default;
 
 
-void Simulation::nextStep()
+void Simulation::run()
 {
-    if(!isOver())
+    while(!impl_->is_over)
     {
         impl_->step();
-    }
-    else
-    {
-        throw std::runtime_error("The simulation is over, can't simulate the next step");
+
+        const snapshot::Snapshot snapshot = impl_->takeSnapshot();
+
+        for(auto observer : impl_->observers)
+        {
+            observer->observe(snapshot);
+        }
     }
 }
 
-bool Simulation::isOver() const noexcept
+void Simulation::addObserver(Observer &observer) noexcept
 {
-    return (impl_->is_over);
+    impl_->observers.push_back(&observer);
 }
 
 void Simulation::Impl::step() noexcept
@@ -82,4 +91,10 @@ void Simulation::Impl::initBoards() noexcept
     }
 
     current_board = boards.at(0).get();
+}
+
+const snapshot::Snapshot Simulation::Impl::takeSnapshot() const noexcept
+{
+    // TODO : create the snapshot
+    return snapshot::Snapshot();
 }

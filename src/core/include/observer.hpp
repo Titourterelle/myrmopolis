@@ -1,6 +1,10 @@
 #pragma once
 
+#include "snapshot.hpp"
+
 #include <memory>
+
+namespace myrmo {
 
 class Observer
 {
@@ -8,9 +12,11 @@ class Observer
         explicit Observer();
         virtual ~Observer();
 
-        virtual void observe() noexcept = 0;
+        virtual void observe(const snapshot::Snapshot snapshot) noexcept = 0;
 
     private:
         struct Impl;
         std::unique_ptr<Impl> impl_;
 };
+
+}

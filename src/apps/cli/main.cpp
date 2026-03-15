@@ -3,15 +3,10 @@
 
 int main()
 {
-    std::string filename{"../../config.json"};
-    myrmo::ConfigManager config_manager{filename};
+    myrmo::ConfigManager cm{"../../config.json"};
+    myrmo::Simulation sim{cm.getSettings()};
 
-    myrmo::Simulation simulation{config_manager.getSettings()};
-
-    while(!simulation.isOver())
-    {
-        simulation.nextStep();
-    }
+    sim.run();
 
     return 0;
 }

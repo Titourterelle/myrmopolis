@@ -1,6 +1,7 @@
 #pragma once
 
 #include "settings.hpp"
+#include "observer.hpp"
 
 #include <memory>
 
@@ -12,8 +13,8 @@ class Simulation
         explicit Simulation(const SimulationSettings &settings);
         ~Simulation();
 
-        void nextStep();
-        bool isOver() const noexcept;
+        void run();
+        void addObserver(Observer &observer) noexcept;
 
     private:
         struct Impl;
