@@ -5,57 +5,51 @@
 
 using namespace myrmo;
 
+// Public
+
 Colony::Colony(const std::string name, Board &board, AnthillTile &initialAnthill, const int initial_number_of_ants) :
-    name(name),
-    board(&board)
+name(name),
+board(&board)
 {
     anthills.push_back(&initialAnthill);
-
-    if(initial_number_of_ants <= 0)
-    {
+    
+    if (initial_number_of_ants <= 0) {
         throw std::runtime_error("The initial number of ants is invalid");
     }
     
     addAnts(initial_number_of_ants);
 }
 
-int Colony::getNumberOfAnts() const noexcept
-{
+void Colony::step() const noexcept {
+    for (const auto& ant : ants) {
+        ant->act();
+    }
+}
+
+int Colony::getNumberOfAnts() const noexcept {
     return ants.size();
 }
 
-const std::vector<const Ant*> Colony::getAnts() const noexcept
-{
+const Board& Colony::getBoard() const noexcept {
+    return *board;
+}
+
+const std::vector<AnthillTile*>& Colony::getAnthills() const noexcept {
+    return anthills;
+}
+
+const std::vector<const Ant*> Colony::getAnts() const noexcept {
     std::vector<const Ant*> return_ants;
-    for(const auto& ant : ants)
-    {
+    for (const auto& ant : ants) {
         return_ants.push_back(ant.get());
     }
     return return_ants;
 }
 
-const std::vector<AnthillTile*>& Colony::getAnthills() const noexcept
-{
-    return anthills;
-}
+// Private
 
-const Board& Colony::getBoard() const noexcept
-{
-    return *board;
-}
-
-void Colony::step() const noexcept
-{
-    for(const auto& ant : ants)
-    {
-        ant->act();
-    }
-}
-
-void Colony::addAnts(const int number_of_ants) noexcept
-{
-    for(auto i = 0; i < number_of_ants; ++i)
-    {
+void Colony::addAnts(const int number_of_ants) noexcept {
+    for (auto i = 0; i < number_of_ants; ++i) {
         ants.push_back(std::make_unique<Ant>(*this, *anthills.at(0)));
     }
 }

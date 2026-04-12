@@ -13,15 +13,14 @@
 
 namespace myrmo {
 
-class Board
-{
+class Board {
     public:
         explicit Board(const BoardSettings &settings);
 
-        snapshot::Snapshot createSnapshot() const noexcept;
-        const std::vector<Tile*> getAdjacentTiles(const Tile &tile) const noexcept;
-
         void step() const noexcept;
+        snapshot::Snapshot createSnapshot() const noexcept;
+
+        const std::vector<Tile*> getAdjacentTiles(const Tile &tile) const noexcept;
 
     private:
         void checkSettings() const;

@@ -6,8 +6,7 @@
 
 namespace myrmo {
 
-class Observer
-{
+class Observer {
     public:
         explicit Observer();
         virtual ~Observer();

@@ -8,22 +8,19 @@
 namespace myrmo {
     namespace snapshot {
 
-        enum class TileType
-        {
+        enum class TileType {
             Land,
             Anthill,
             Other
         };
 
-        enum class PheromoneType
-        {
+        enum class PheromoneType {
             Home,
             Food,
             Other
         };
 
-        struct Tile
-        {
+        struct Tile {
             int x;
             int y;
             
@@ -33,22 +30,19 @@ namespace myrmo {
 
         };
 
-        struct Ant
-        {
+        struct Ant {
             int x;
             int y;
         };
 
-        struct Colony
-        {
+        struct Colony {
             std::string name;
 
             std::vector<Ant> ants;
             std::vector<std::pair<int, int>> anthills_coords;
         };
 
-        struct Snapshot
-        {
+        struct Snapshot {
             int board_id;
             int step;
             int width;

@@ -2,14 +2,12 @@
 
 namespace myrmo {
 
-struct Pheromones
-{
+struct Pheromones {
     int home = 0;
     int food = 0;
 };
 
-enum class PheromoneType
-{
+enum class PheromoneType {
     Home,
     Food
 };

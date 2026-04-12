@@ -7,8 +7,7 @@
 
 namespace myrmo {
 
-class Simulation
-{
+class Simulation {
     public:
         explicit Simulation(const SimulationSettings &settings);
         ~Simulation();

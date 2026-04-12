@@ -7,11 +7,11 @@
 
 namespace myrmo {
 
-class ConfigManager
-{
+class ConfigManager {
     public:
         explicit ConfigManager(const std::string filename);
         ~ConfigManager();
+        
         const SimulationSettings& getSettings() const noexcept;
         
     private:

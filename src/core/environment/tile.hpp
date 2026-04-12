@@ -8,19 +8,15 @@ namespace myrmo {
 
 class Ant;
 
-class Tile
-{
+class Tile {
     public:
-        struct Coordinates
-        {
+        struct Coordinates {
             int x;
             int y;
-            bool operator==(const Coordinates &other) const noexcept
-            {
+            bool operator==(const Coordinates &other) const noexcept {
                 return (x == other.x && y == other.y);
             }
-            bool operator<(const Coordinates &other) const noexcept
-            {
+            bool operator<(const Coordinates &other) const noexcept {
                 return (x < other.x || (x == other.x && y < other.y));
             }
         };
@@ -28,10 +24,11 @@ class Tile
         explicit Tile(const int x, const int y) noexcept;
         virtual ~Tile() = default;
 
+        virtual void interact(Ant &ant) noexcept = 0;
+        
+        virtual std::string getType() const noexcept = 0;
         const Coordinates& getCoordinates() const noexcept;
         const Pheromones& getPheromones() const noexcept;
-        virtual std::string getType() const noexcept = 0;
-        virtual void interact(Ant &ant) noexcept = 0;
 
         bool operator==(const Tile &other_tile) const noexcept;
 

@@ -2,14 +2,12 @@
 
 namespace myrmo {
 
-struct Observer::Impl
-{
+struct Observer::Impl {
     Impl() {}
 };
 
-Observer::Observer() : impl_()
-{
+// Public
 
-}
-
+Observer::Observer() : impl_() {}
+    
 }

@@ -11,29 +11,29 @@ namespace myrmo {
 class Board;
 class Colony;
 
-class Ant
-{
+class Ant {
     public:
         explicit Ant(Colony &colony, Tile &spawn_tile) noexcept;
-        bool isTransportingFood() const noexcept;
-        const Tile::Coordinates getPosition() const noexcept;
 
         void act() noexcept;
         void pickFood();
         void dropFood() noexcept;
+        
+        bool isTransportingFood() const noexcept;
+        const Tile::Coordinates getPosition() const noexcept;
 
     private:
         void move(Tile &next_tile) noexcept;
         const std::vector<AnthillTile*> searchAnthills(const std::vector<Tile*> &tiles_list) const noexcept;
         void sortTilesByPheromones(std::vector<Tile*> &tiles_list, const PheromoneType pheromone) const noexcept;
         void removeTile(std::vector<Tile*> &tiles_list, const Tile &tile_to_remove) const noexcept;
-
+        
         Tile *actual_tile = nullptr;
         Tile *previous_tile = nullptr;
         const Colony *colony;
         const Board *board;
         bool is_transporting_food = false;
-
+        
         const double pheromone_sensitivity = 0.7;
 };
 
