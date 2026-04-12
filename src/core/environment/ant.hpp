@@ -16,6 +16,8 @@ class Ant
     public:
         explicit Ant(Colony &colony, Tile &spawn_tile) noexcept;
         bool isTransportingFood() const noexcept;
+        const Tile::Coordinates getPosition() const noexcept;
+
         void act() noexcept;
         void pickFood();
         void dropFood() noexcept;

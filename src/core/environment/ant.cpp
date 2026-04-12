@@ -26,6 +26,11 @@ bool Ant::isTransportingFood() const noexcept
     return is_transporting_food;
 }
 
+const Tile::Coordinates Ant::getPosition() const noexcept
+{
+    return actual_tile->getCoordinates();
+}
+
 void Ant::act() noexcept
 {
     static std::random_device rd;

@@ -19,6 +19,21 @@ Colony::Colony(const std::string name, Board &board, AnthillTile &initialAnthill
     addAnts(initial_number_of_ants);
 }
 
+int Colony::getNumberOfAnts() const noexcept
+{
+    return ants.size();
+}
+
+const std::vector<const Ant*> Colony::getAnts() const noexcept
+{
+    std::vector<const Ant*> return_ants;
+    for(const auto& ant : ants)
+    {
+        return_ants.push_back(ant.get());
+    }
+    return return_ants;
+}
+
 const std::vector<AnthillTile*>& Colony::getAnthills() const noexcept
 {
     return anthills;

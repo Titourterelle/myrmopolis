@@ -2,6 +2,8 @@
 
 #include "pheromones.hpp"
 
+#include "string"
+
 namespace myrmo {
 
 class Ant;
@@ -28,6 +30,7 @@ class Tile
 
         const Coordinates& getCoordinates() const noexcept;
         const Pheromones& getPheromones() const noexcept;
+        virtual std::string getType() const noexcept = 0;
         virtual void interact(Ant &ant) noexcept = 0;
 
         bool operator==(const Tile &other_tile) const noexcept;

@@ -15,6 +15,11 @@ const Pheromones& Tile::getPheromones() const noexcept
     return pheromones;
 }
 
+std::string Tile::getType() const noexcept
+{
+    return "tile";
+}
+
 bool Tile::operator==(const Tile &other_tile) const noexcept
 {
     return (this->getCoordinates() == other_tile.getCoordinates());

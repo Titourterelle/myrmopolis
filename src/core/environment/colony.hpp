@@ -14,8 +14,13 @@ class Colony
 {
     public:
         explicit Colony(const std::string name, Board &board, AnthillTile &initialAnthill, const int initial_number_of_ants);
+
+        std::string getName() const noexcept {return name;};
+        int getNumberOfAnts() const noexcept;
+        const std::vector<const Ant*> getAnts() const noexcept;
         const std::vector<AnthillTile*>& getAnthills() const noexcept;
         const Board& getBoard() const noexcept;
+
         void step() const noexcept;
 
     private:

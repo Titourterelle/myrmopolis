@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <unordered_map>
 #include <utility>
 #include <vector>
 
@@ -28,7 +29,7 @@ namespace myrmo {
             
             TileType type;
 
-            std::vector<std::pair<PheromoneType, int>> pheromones;
+            std::unordered_map<PheromoneType, int> pheromones;
 
         };
 
@@ -48,6 +49,7 @@ namespace myrmo {
 
         struct Snapshot
         {
+            int board_id;
             int step;
             int width;
             int height;

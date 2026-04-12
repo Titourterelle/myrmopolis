@@ -4,6 +4,7 @@
 #include "anthill_tile.hpp"
 #include "tile.hpp"
 #include "colony.hpp"
+#include "snapshot.hpp"
 
 #include <unordered_map>
 #include <utility>
@@ -16,7 +17,10 @@ class Board
 {
     public:
         explicit Board(const BoardSettings &settings);
+
+        snapshot::Snapshot createSnapshot() const noexcept;
         const std::vector<Tile*> getAdjacentTiles(const Tile &tile) const noexcept;
+
         void step() const noexcept;
 
     private:

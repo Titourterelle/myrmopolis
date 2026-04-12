@@ -95,6 +95,5 @@ void Simulation::Impl::initBoards() noexcept
 
 const snapshot::Snapshot Simulation::Impl::takeSnapshot() const noexcept
 {
-    // TODO : create the snapshot
-    return snapshot::Snapshot();
+    return current_board->createSnapshot();
 }

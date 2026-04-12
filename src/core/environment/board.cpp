@@ -1,6 +1,9 @@
 #include "board.hpp"
 #include "anthill_tile.hpp"
+#include "environment/colony.hpp"
+#include "environment/pheromones.hpp"
 #include "land_tile.hpp"
+#include "snapshot.hpp"
 
 #include <map>
 #include <memory>
@@ -20,6 +23,78 @@ Board::Board(const BoardSettings &settings) :
     checkSettings();
     createTiles();
     initColonies();
+}
+
+snapshot::Snapshot Board::createSnapshot() const noexcept
+{
+    snapshot::Snapshot snapshot;
+
+    snapshot.width = dimensions.first;
+    snapshot.height = dimensions.second;
+
+    snapshot.number_of_colonies = colonies.size();
+    snapshot.number_of_ants = 0;
+    for(const auto& colony : colonies)
+    {
+        snapshot.number_of_ants += colony->getNumberOfAnts();
+    }
+
+    for(const auto& column : tiles)
+    {
+        for(const auto& tile : column)
+        {
+            snapshot::Tile snapshot_tile;
+
+            const Tile::Coordinates coord = tile->getCoordinates();
+            snapshot_tile.x = coord.x;
+            snapshot_tile.y = coord.y;
+
+            const std::string tile_type = tile->getType();
+            if(tile_type == "anthill")
+            {
+                snapshot_tile.type = snapshot::TileType::Anthill;
+            }
+            else if(tile_type == "land")
+            {
+                snapshot_tile.type = snapshot::TileType::Land;
+            }
+            else
+            {
+                snapshot_tile.type = snapshot::TileType::Other;
+            }
+
+            const Pheromones pheromones = tile->getPheromones();
+            snapshot_tile.pheromones.insert({snapshot::PheromoneType::Home, pheromones.home});
+            snapshot_tile.pheromones.insert({snapshot::PheromoneType::Food, pheromones.food});
+            
+            snapshot.tiles.push_back(snapshot_tile);
+        }
+    }
+
+    for(const auto& colony : colonies)
+    {
+        snapshot::Colony snapshot_colony;
+        snapshot_colony.name = colony->getName();
+        
+        for(const auto& ant : colony->getAnts())
+        {
+            const Tile::Coordinates pos = ant->getPosition();
+
+            snapshot_colony.ants.push_back(snapshot::Ant{pos.x, pos.y});
+        }
+
+        for(const auto& anthill : colony->getAnthills())
+        {
+            const Tile::Coordinates coord = anthill->getCoordinates();
+
+            snapshot_colony.anthills_coords.push_back(std::make_pair(coord.x, coord.y));
+        }
+
+        snapshot.colonies.push_back(snapshot_colony);
+    }
+    
+    return snapshot;
+    
 }
 
 const std::vector<Tile*> Board::getAdjacentTiles(const Tile &tile) const noexcept
