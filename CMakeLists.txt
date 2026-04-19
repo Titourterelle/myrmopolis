@@ -32,7 +32,9 @@ FetchContent_Declare(SFML
     SYSTEM)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(${RENDER_NAME} src/apps/render/main.cpp)
+file(GLOB_RECURSE RENDER_SRC_FILES src/apps/render/*.cpp)
+
+add_executable(${RENDER_NAME} ${RENDER_SRC_FILES})
 target_compile_features(${RENDER_NAME} PRIVATE cxx_std_23)
 
 target_link_libraries(${RENDER_NAME} PRIVATE ${CORE_NAME})

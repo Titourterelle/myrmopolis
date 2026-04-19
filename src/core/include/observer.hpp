@@ -2,20 +2,19 @@
 
 #include "snapshot.hpp"
 
-#include <memory>
+#include <vector>
 
 namespace myrmo {
 
 class Observer {
     public:
-        explicit Observer();
-        virtual ~Observer();
+        explicit Observer() = default;
+        virtual ~Observer() = default;
 
-        virtual void observe(const snapshot::Snapshot snapshot) noexcept = 0;
-
-    private:
-        struct Impl;
-        std::unique_ptr<Impl> impl_;
+        virtual void observe(const snapshot::Snapshot &snapshot) = 0;
+        
+    protected:
+        std::vector<snapshot::Snapshot> snapshots;
 };
 
 }
