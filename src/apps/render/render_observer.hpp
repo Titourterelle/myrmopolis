@@ -26,7 +26,7 @@ class RenderObserver : public myrmo::Observer {
 
 
         const std::pair<unsigned int, unsigned int> dimensions{100, 100};
+        const unsigned int fps{30};
         const std::string save_dir{"./render_save"};
         const std::string frames_dir;
-        const std::string output_dir;
 };
