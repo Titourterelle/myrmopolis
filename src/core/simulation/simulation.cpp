@@ -24,7 +24,7 @@ struct Simulation::Impl {
     
     Board* current_board = nullptr;
     int current_round = 0;
-    const int max_round = 50;
+    const int max_round = 5;
     bool is_over = false;
     
     Impl(SimulationSettings sim_settings) : simulation_settings(sim_settings) {}

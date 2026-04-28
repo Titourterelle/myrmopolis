@@ -3,6 +3,8 @@
 #include "observer.hpp"
 #include "snapshot.hpp"
 
+#include "hex_grid.hpp"
+
 #include <utility>
 #include <string>
 
@@ -25,8 +27,10 @@ class RenderObserver : public myrmo::Observer {
         void clean() const noexcept;
 
 
-        const std::pair<unsigned int, unsigned int> dimensions{100, 100};
+        const std::pair<unsigned int, unsigned int> dimensions{1000, 1000};
         const unsigned int fps{30};
         const std::string save_dir{"./render_save"};
         const std::string frames_dir;
+
+        HexGrid hex_grid;
 };

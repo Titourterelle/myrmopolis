@@ -1,19 +1,21 @@
 #include "render_observer.hpp"
-
-#include <SFML/Graphics/Color.hpp>
+#include "hex_grid.hpp"
 
 #include <cstdlib>
 #include <format>
 #include <stdexcept>
 #include <string>
 
+#include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Image.hpp>
+#include <SFML/Graphics/RenderTexture.hpp>
+#include <SFML/Graphics/CircleShape.hpp>
 
 const std::string FRAMES_DIR = "/frames";
 
 // Public
 
-RenderObserver::RenderObserver() : frames_dir(save_dir + FRAMES_DIR) {
+RenderObserver::RenderObserver() : frames_dir(save_dir + FRAMES_DIR), hex_grid(HexGrid{10, 10, 50}) {
     if (std::system("ffmpeg -version > /dev/null 2>&1") != 0) {
         throw std::runtime_error("FFmpeg not found, please install it");
     }
@@ -49,8 +51,22 @@ void RenderObserver::renderFrames() const {
 }
 
 sf::Image RenderObserver::createFrame(const myrmo::snapshot::Snapshot &snapshot) const {
-    sf::Image img{{dimensions.first, dimensions.second}, sf::Color::Black};
-    return img;
+    sf::RenderTexture texture{{dimensions.first, dimensions.second}};
+
+    texture.clear(sf::Color::Black);
+
+    for (const auto& cell : hex_grid.getHexCells()) {
+        sf::CircleShape hexagon{50, 6};
+
+        hexagon.setPosition({cell.pixel_x, cell.pixel_y});
+        hexagon.setFillColor(sf::Color::White);
+        hexagon.setOutlineThickness(1);
+        hexagon.setOutlineColor(sf::Color::Black);
+
+        texture.draw(hexagon);
+    }
+    
+    return texture.getTexture().copyToImage();
 }
 
 std::string RenderObserver::framePath(size_t index) const noexcept {
