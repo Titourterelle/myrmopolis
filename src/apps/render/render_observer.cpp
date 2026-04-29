@@ -15,7 +15,7 @@ const std::string FRAMES_DIR = "/frames";
 
 // Public
 
-RenderObserver::RenderObserver() : frames_dir(save_dir + FRAMES_DIR), hex_grid(HexGrid{10, 10, 50}) {
+RenderObserver::RenderObserver() : frames_dir(save_dir + FRAMES_DIR) {
     if (std::system("ffmpeg -version > /dev/null 2>&1") != 0) {
         throw std::runtime_error("FFmpeg not found, please install it");
     }
@@ -25,9 +25,9 @@ void RenderObserver::observe(const myrmo::snapshot::Snapshot &snapshot) {
     snapshots.push_back(snapshot);
 }
 
-void RenderObserver::generateVideo() const {
+void RenderObserver::generateVideo(RenderQuality quality) {
     try {
-        renderFrames();
+        renderFrames(quality);
         encodeVideo();
     } catch (const std::exception& e) {
         clean();
@@ -38,11 +38,30 @@ void RenderObserver::generateVideo() const {
 
 // Private
 
-void RenderObserver::renderFrames() const {
+void RenderObserver::renderFrames(RenderQuality quality) {
     std::filesystem::create_directories(frames_dir);
 
+    float radius;
+    if (quality == RenderQuality::Low) {
+        radius = 20;
+    }
+    else if (quality == RenderQuality::Medium) {
+        radius = 50;
+    }
+    else if (quality == RenderQuality::High) {
+        radius = 100;
+    }
+    else {
+        radius = 50;
+    }
+    const HexGrid grid{snapshots[0].width, snapshots[0].height, radius};
+
+    auto makeEven = [](unsigned int v) { return v % 2 == 0 ? v : v + 1; };
+    resolution.first  = makeEven(grid.getWidth());
+    resolution.second = makeEven(grid.getHeight());
+
     for (size_t i = 0; i < snapshots.size(); ++i) {
-        sf::Image frame = createFrame(snapshots[i]);
+        sf::Image frame = createFrame(snapshots[i], grid);
         
         if (!frame.saveToFile(framePath(i))) {
             throw std::runtime_error("Can't save the frame");
@@ -50,19 +69,18 @@ void RenderObserver::renderFrames() const {
     }
 }
 
-sf::Image RenderObserver::createFrame(const myrmo::snapshot::Snapshot &snapshot) const {
-    sf::RenderTexture texture{{dimensions.first, dimensions.second}};
+sf::Image RenderObserver::createFrame(const myrmo::snapshot::Snapshot &snapshot, const HexGrid &grid) const {
+    sf::RenderTexture texture{{resolution.first, resolution.second}};
 
     texture.clear(sf::Color::Black);
+    
+    sf::CircleShape hexagon{grid.getCellsRadius(), 6};
+    hexagon.setFillColor(sf::Color::White);
+    hexagon.setOutlineThickness(2);
+    hexagon.setOutlineColor(sf::Color::Black);
 
-    for (const auto& cell : hex_grid.getHexCells()) {
-        sf::CircleShape hexagon{50, 6};
-
+    for (const auto& cell : grid.getHexCells()) {
         hexagon.setPosition({cell.pixel_x, cell.pixel_y});
-        hexagon.setFillColor(sf::Color::White);
-        hexagon.setOutlineThickness(1);
-        hexagon.setOutlineColor(sf::Color::Black);
-
         texture.draw(hexagon);
     }
     

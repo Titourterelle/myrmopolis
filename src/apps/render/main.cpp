@@ -12,7 +12,7 @@ int main() {
 
     sim.run();
 
-    observer.generateVideo();
+    observer.generateVideo(RenderQuality::Medium);
 
     return 0;
 }
