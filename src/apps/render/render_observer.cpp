@@ -10,6 +10,8 @@
 #include <SFML/Graphics/Image.hpp>
 #include <SFML/Graphics/RenderTexture.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
+#include <utility>
+#include <set>
 
 const std::string FRAMES_DIR = "/frames";
 
@@ -73,13 +75,25 @@ sf::Image RenderObserver::createFrame(const myrmo::snapshot::Snapshot &snapshot,
     sf::RenderTexture texture{{resolution.first, resolution.second}};
 
     texture.clear(sf::Color::Black);
+
+    std::set<std::pair<int, int>> anthills;
+    for (const auto &colony : snapshot.colonies) {
+        for (const auto &anthill : colony.anthills_coords) {
+            anthills.insert(anthill);
+        }
+    }
     
     sf::CircleShape hexagon{grid.getCellsRadius(), 6};
-    hexagon.setFillColor(sf::Color::White);
     hexagon.setOutlineThickness(2);
     hexagon.setOutlineColor(sf::Color::Black);
 
     for (const auto& cell : grid.getHexCells()) {
+        if (anthills.contains({cell.coord_x, cell.coord_y})) {
+            hexagon.setFillColor(sf::Color::Red);
+        }
+        else {
+            hexagon.setFillColor(sf::Color::White);
+        }
         hexagon.setPosition({cell.pixel_x, cell.pixel_y});
         texture.draw(hexagon);
     }
