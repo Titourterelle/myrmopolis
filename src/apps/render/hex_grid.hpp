@@ -1,5 +1,7 @@
 #pragma once
 
+#include <map>
+#include <utility>
 #include <vector>
 
 struct HexCell {
@@ -15,6 +17,7 @@ class HexGrid {
         int getWidth() const noexcept;
         float getCellsRadius() const noexcept;
         const std::vector<HexCell> getHexCells() const noexcept;
+        const std::pair<float, float> getCellCenter(const std::pair<int, int> &coords) const;
 
     private:
         void computeCells() noexcept;
@@ -26,4 +29,5 @@ class HexGrid {
         const unsigned int rows;
         const float radius;
         std::vector<HexCell> cells;
+        std::map<std::pair<int, int>, std::pair<float, float>> cells_center;
 };

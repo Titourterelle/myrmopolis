@@ -12,6 +12,7 @@
 #include <SFML/Graphics/CircleShape.hpp>
 #include <utility>
 #include <set>
+#include <vector>
 
 const std::string FRAMES_DIR = "/frames";
 
@@ -75,17 +76,12 @@ sf::Image RenderObserver::createFrame(const myrmo::snapshot::Snapshot &snapshot,
     sf::RenderTexture texture{{resolution.first, resolution.second}};
 
     texture.clear(sf::Color::Black);
-
-    std::set<std::pair<int, int>> anthills;
-    for (const auto &colony : snapshot.colonies) {
-        for (const auto &anthill : colony.anthills_coords) {
-            anthills.insert(anthill);
-        }
-    }
     
     sf::CircleShape hexagon{grid.getCellsRadius(), 6};
     hexagon.setOutlineThickness(2);
     hexagon.setOutlineColor(sf::Color::Black);
+
+    std::set<std::pair<int, int>> anthills = getAnthillsCoord(snapshot);
 
     for (const auto& cell : grid.getHexCells()) {
         if (anthills.contains({cell.coord_x, cell.coord_y})) {
@@ -97,8 +93,48 @@ sf::Image RenderObserver::createFrame(const myrmo::snapshot::Snapshot &snapshot,
         hexagon.setPosition({cell.pixel_x, cell.pixel_y});
         texture.draw(hexagon);
     }
-    
+
+
+    const float ant_radius = grid.getCellsRadius()/10;
+    sf::CircleShape circle{ant_radius};
+    circle.setOrigin({ant_radius, ant_radius});
+    circle.setFillColor(sf::Color::Blue);
+
+    std::set<std::pair<int, int>> ants = getAntsCoord(snapshot);
+
+    for (const auto &ant : ants) {
+        std::pair<float, float> center = grid.getCellCenter(ant);
+
+        circle.setPosition({center.first, center.second});
+
+        texture.draw(circle);
+    }
+
     return texture.getTexture().copyToImage();
+}
+
+std::set<std::pair<int, int>> RenderObserver::getAnthillsCoord(const myrmo::snapshot::Snapshot &snapshot) const noexcept {
+    std::set<std::pair<int, int>> anthills;
+    
+    for (const auto &colony : snapshot.colonies) {
+        for (const auto &anthill : colony.anthills_coords) {
+            anthills.insert(anthill);
+        }
+    }
+
+    return anthills;
+}
+
+std::set<std::pair<int, int>> RenderObserver::getAntsCoord(const myrmo::snapshot::Snapshot &snapshot) const noexcept {
+    std::set<std::pair<int, int>> ants;
+    
+    for (const auto &colony : snapshot.colonies) {
+        for (const auto &ant : colony.ants) {
+            ants.insert({ant.x, ant.y});
+        }
+    }
+
+    return ants;
 }
 
 std::string RenderObserver::framePath(size_t index) const noexcept {
