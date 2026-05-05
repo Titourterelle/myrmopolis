@@ -44,6 +44,12 @@ Simulation::~Simulation() = default;
 
 
 void Simulation::run() {
+    const snapshot::Snapshot first_snapshot = impl_->takeSnapshot();
+
+    for (auto observer : impl_->observers) {
+        observer->observe(first_snapshot);
+    }
+
     while (!impl_->is_over) {
         impl_->step();
 
@@ -65,6 +71,9 @@ void Simulation::Impl::step() noexcept
 {
     static int index_board = 0;
     
+    current_board->step();
+    ++current_round;
+
     if (current_round >= max_round) {
         if (current_board != boards.back().get()) {
             current_board = boards.at(++index_board).get();
@@ -74,9 +83,6 @@ void Simulation::Impl::step() noexcept
             is_over = true;
         }
     }
-
-    current_board->step();
-    ++current_round;
 }
 
 const snapshot::Snapshot Simulation::Impl::takeSnapshot() const noexcept {
