@@ -1,6 +1,7 @@
 #pragma once
 
 #include "tile.hpp"
+#include "snapshot.hpp"
 
 namespace myrmo {
 
@@ -9,8 +10,7 @@ class AnthillTile : public Tile {
         explicit AnthillTile(const int x, const int y) noexcept;
 
         void interact(Ant &ant) noexcept override;
-        
-        std::string getType() const noexcept override { return "anthill"; };
+        snapshot::Tile takeTileSnapshot() const noexcept override;
         
     private:
         int food_reserve{0};

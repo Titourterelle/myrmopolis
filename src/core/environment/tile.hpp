@@ -1,6 +1,7 @@
 #pragma once
 
 #include "pheromones.hpp"
+#include "snapshot.hpp"
 
 #include "string"
 
@@ -25,8 +26,9 @@ class Tile {
         virtual ~Tile() = default;
 
         virtual void interact(Ant &ant) noexcept = 0;
+        virtual snapshot::Tile takeTileSnapshot() const noexcept;
         
-        virtual std::string getType() const noexcept = 0;
+        virtual std::string getType() const noexcept;
         const Coordinates& getCoordinates() const noexcept;
         const Pheromones& getPheromones() const noexcept;
 

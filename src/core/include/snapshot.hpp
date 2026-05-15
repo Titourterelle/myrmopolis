@@ -27,7 +27,6 @@ namespace myrmo {
             TileType type;
 
             std::unordered_map<PheromoneType, int> pheromones;
-
         };
 
         struct Ant {

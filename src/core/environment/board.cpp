@@ -1,7 +1,6 @@
 #include "board.hpp"
 #include "anthill_tile.hpp"
-#include "environment/colony.hpp"
-#include "environment/pheromones.hpp"
+#include "colony.hpp"
 #include "land_tile.hpp"
 #include "snapshot.hpp"
 
@@ -47,28 +46,7 @@ snapshot::Snapshot Board::createSnapshot() const noexcept {
 
     for (const auto& column : tiles) {
         for (const auto& tile : column) {
-            snapshot::Tile snapshot_tile;
-
-            const Tile::Coordinates coord = tile->getCoordinates();
-            snapshot_tile.x = coord.x;
-            snapshot_tile.y = coord.y;
-
-            const std::string tile_type = tile->getType();
-            if (tile_type == "anthill") {
-                snapshot_tile.type = snapshot::TileType::Anthill;
-            }
-            else if (tile_type == "land") {
-                snapshot_tile.type = snapshot::TileType::Land;
-            }
-            else {
-                snapshot_tile.type = snapshot::TileType::Other;
-            }
-
-            const Pheromones pheromones = tile->getPheromones();
-            snapshot_tile.pheromones.insert({snapshot::PheromoneType::Home, pheromones.home});
-            snapshot_tile.pheromones.insert({snapshot::PheromoneType::Food, pheromones.food});
-            
-            snapshot.tiles.push_back(snapshot_tile);
+            snapshot.tiles.push_back(tile->takeTileSnapshot());
         }
     }
 

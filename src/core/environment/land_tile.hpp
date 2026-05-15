@@ -2,6 +2,7 @@
 
 #include "tile.hpp"
 #include "pheromones.hpp"
+#include "snapshot.hpp"
 
 namespace myrmo {
 
@@ -10,9 +11,9 @@ class LandTile : public Tile {
         explicit LandTile(const int x, const int y) noexcept;
 
         void interact(Ant &ant) noexcept override;
+        snapshot::Tile takeTileSnapshot() const noexcept override;
+
         void addPheromones(const PheromoneType &type) noexcept;
-        
-        std::string getType() const noexcept override {return "land";};
         
     private:
         void addFood(const unsigned int quantity = 1) noexcept;

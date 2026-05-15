@@ -1,4 +1,5 @@
 #include "land_tile.hpp"
+#include "snapshot.hpp"
 #include "tile.hpp"
 #include "ant.hpp"
 #include "pheromones.hpp"
@@ -21,6 +22,14 @@ void LandTile::interact(Ant &ant) noexcept {
             removeFood();
         }
     }
+}
+
+snapshot::Tile LandTile::takeTileSnapshot() const noexcept {
+    snapshot::Tile snapshot_tile = Tile::takeTileSnapshot();
+
+    snapshot_tile.type = snapshot::TileType::Land;
+
+    return snapshot_tile;
 }
 
 void LandTile::addPheromones(const PheromoneType &type) noexcept {

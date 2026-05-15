@@ -1,5 +1,6 @@
 #include "anthill_tile.hpp"
 #include "ant.hpp"
+#include "snapshot.hpp"
 
 using namespace myrmo;
 
@@ -12,4 +13,12 @@ void AnthillTile::interact(Ant &ant) noexcept {
         ant.dropFood();
         ++food_reserve;
     }
+}
+
+snapshot::Tile AnthillTile::takeTileSnapshot() const noexcept {
+    snapshot::Tile snapshot_tile = Tile::takeTileSnapshot();
+
+    snapshot_tile.type = snapshot::TileType::Anthill;
+
+    return snapshot_tile;
 }
