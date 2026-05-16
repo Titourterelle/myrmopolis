@@ -19,6 +19,7 @@ snapshot::Tile AnthillTile::takeTileSnapshot() const noexcept {
     snapshot::Tile snapshot_tile = Tile::takeTileSnapshot();
 
     snapshot_tile.type = snapshot::TileType::Anthill;
+    snapshot_tile.food = std::nullopt;
 
     return snapshot_tile;
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "optional"
 #include <string>
 #include <unordered_map>
 #include <utility>
@@ -27,6 +28,8 @@ namespace myrmo {
             TileType type;
 
             std::unordered_map<PheromoneType, int> pheromones;
+
+            std::optional<int> food;
         };
 
         struct Ant {

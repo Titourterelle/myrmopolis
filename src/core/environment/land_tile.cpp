@@ -28,6 +28,7 @@ snapshot::Tile LandTile::takeTileSnapshot() const noexcept {
     snapshot::Tile snapshot_tile = Tile::takeTileSnapshot();
 
     snapshot_tile.type = snapshot::TileType::Land;
+    snapshot_tile.food = food;
 
     return snapshot_tile;
 }
