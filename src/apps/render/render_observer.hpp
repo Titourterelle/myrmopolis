@@ -5,6 +5,7 @@
 
 #include "hex_grid.hpp"
     
+#include <map>
 #include <set>
 #include <utility>
 #include <string>
@@ -25,12 +26,16 @@ class RenderObserver : public myrmo::Observer {
         void generateVideo(RenderQuality quality);
 
     private:
+        enum class FoodIntesity;
+        
+
         void renderFrames(RenderQuality quality);
         std::string framePath(size_t index) const noexcept;
 
         sf::Image createFrame(const myrmo::snapshot::Snapshot &snapshot, const HexGrid &grid) const;
         std::set<std::pair<int, int>> getAnthillsCoord(const myrmo::snapshot::Snapshot &snapshot) const noexcept;
         std::set<std::pair<int, int>> getAntsCoord(const myrmo::snapshot::Snapshot &snapshot) const noexcept;
+        std::map<std::pair<int, int>, FoodIntesity> getTileFoodIntensity(const myrmo::snapshot::Snapshot &snapshot) const noexcept;
 
         void encodeVideo() const;
 
@@ -39,7 +44,7 @@ class RenderObserver : public myrmo::Observer {
 
         std::pair<unsigned int, unsigned int> resolution;
         
-        const unsigned int fps{1};
+        const unsigned int fps{10};
         const std::string save_dir{"./render_save"};
         const std::string frames_dir;
 };

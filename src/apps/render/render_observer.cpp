@@ -41,6 +41,14 @@ void RenderObserver::generateVideo(RenderQuality quality) {
 
 // Private
 
+enum class RenderObserver::FoodIntesity {
+    None,
+    Low,
+    Medium,
+    High,
+    Ultra
+};
+
 void RenderObserver::renderFrames(RenderQuality quality) {
     std::filesystem::create_directories(frames_dir);
 
@@ -82,14 +90,37 @@ sf::Image RenderObserver::createFrame(const myrmo::snapshot::Snapshot &snapshot,
     hexagon.setOutlineColor(sf::Color::Black);
 
     std::set<std::pair<int, int>> anthills = getAnthillsCoord(snapshot);
+    std::map<std::pair<int, int>, RenderObserver::FoodIntesity> tile_food = getTileFoodIntensity(snapshot);
 
     for (const auto& cell : grid.getHexCells()) {
-        if (anthills.contains({cell.coord_x, cell.coord_y})) {
+        std::pair<int, int> cell_coords{cell.coord_x, cell.coord_y};
+        if (anthills.contains(cell_coords)) {
             hexagon.setFillColor(sf::Color::Red);
         }
         else {
-            hexagon.setFillColor(sf::Color::White);
+            switch (tile_food.at(cell_coords)) {
+                case RenderObserver::FoodIntesity::None :
+                    hexagon.setFillColor(sf::Color::White);
+                    break;
+
+                    case RenderObserver::FoodIntesity::Low :
+                    hexagon.setFillColor(sf::Color{0, 250, 125});
+                    break;
+                    
+                    case RenderObserver::FoodIntesity::Medium :
+                    hexagon.setFillColor(sf::Color{0, 200, 100});
+                    break;
+                    
+                    case RenderObserver::FoodIntesity::High :
+                    hexagon.setFillColor(sf::Color{0, 150, 75});
+                    break;
+                    
+                    case RenderObserver::FoodIntesity::Ultra :
+                    hexagon.setFillColor(sf::Color{0, 100, 50});
+                    break;
+            }
         }
+        
         hexagon.setPosition({cell.pixel_x, cell.pixel_y});
         texture.draw(hexagon);
     }
@@ -136,6 +167,33 @@ std::set<std::pair<int, int>> RenderObserver::getAntsCoord(const myrmo::snapshot
 
     return ants;
 }
+
+std::map<std::pair<int, int>, RenderObserver::FoodIntesity> RenderObserver::getTileFoodIntensity(const myrmo::snapshot::Snapshot &snapshot) const noexcept {
+    std::map<std::pair<int, int>, FoodIntesity> food_per_tile;
+    
+    for (const auto& tile : snapshot.tiles) {
+        std::pair<int, int> coords{tile.x, tile.y};
+        
+        if (!tile.food.has_value() || tile.food <= 0) {
+            food_per_tile.insert({coords, FoodIntesity::None});
+        }
+        else if (tile.food < 5) {
+            food_per_tile.insert({coords, FoodIntesity::Low});
+        }
+        else if (tile.food < 10) {
+            food_per_tile.insert({coords, FoodIntesity::Medium});
+        }
+        else if (tile.food < 15) {
+            food_per_tile.insert({coords, FoodIntesity::High});
+        }
+        else {
+            food_per_tile.insert({coords, FoodIntesity::Ultra});
+        }
+    }
+
+    return food_per_tile;
+}
+
 
 std::string RenderObserver::framePath(size_t index) const noexcept {
     return std::format("{}/frame_{:06d}.png", frames_dir, index);
