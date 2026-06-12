@@ -79,12 +79,16 @@ void RenderObserver::renderFrames(RenderQuality quality) {
     resolution.first  = makeEven(grid.getWidth());
     resolution.second = makeEven(grid.getHeight());
 
+    current_snapshot = snapshots[0];
+
     for (size_t i = 0; i < snapshots.size(); ++i) {
-        createStepFrames(snapshots[i], grid);
+        previous_snapshot = current_snapshot;
+        current_snapshot = snapshots[i];
+        createStepFrames(grid);
     }
 }
 
-void RenderObserver::createStepFrames(const myrmo::snapshot::Snapshot &snapshot, const HexGrid &grid) const {
+void RenderObserver::createStepFrames(const HexGrid &grid) const {
     sf::RenderTexture base{{resolution.first, resolution.second}};
 
     base.clear(sf::Color::Black);
@@ -95,8 +99,8 @@ void RenderObserver::createStepFrames(const myrmo::snapshot::Snapshot &snapshot,
     hexagon.setOutlineThickness(2);
     hexagon.setOutlineColor(sf::Color::Black);
 
-    std::set<sf::Vector2i, Vector2iCompare> anthills = getAnthillsCoord(snapshot);
-    std::map<sf::Vector2i, RenderObserver::FoodIntesity, Vector2iCompare> tile_food = getTileFoodIntensity(snapshot);
+    std::set<sf::Vector2i, Vector2iCompare> anthills = getAnthillsCoord(previous_snapshot);
+    std::map<sf::Vector2i, RenderObserver::FoodIntesity, Vector2iCompare> tile_food = getTileFoodIntensity(previous_snapshot);
 
     for (const auto& cell : grid.getHexCells()) {
         const sf::Vector2i cell_coords{cell.coords.x, cell.coords.y};
@@ -133,7 +137,7 @@ void RenderObserver::createStepFrames(const myrmo::snapshot::Snapshot &snapshot,
     base.display();
 
     // Ants
-    std::vector<std::pair<sf::Vector2i, sf::Vector2i>> ants = getAntsCoord(snapshot);
+    std::vector<std::pair<sf::Vector2i, sf::Vector2i>> ants = getAntsCoord(current_snapshot);
     std::vector<std::pair<sf::Vector2f, sf::Vector2f>> ants_deplacements;
     for (const auto& ant : ants) {
         const sf::Vector2f start = grid.getCellCenter(ant.first);
@@ -158,7 +162,7 @@ void RenderObserver::createStepFrames(const myrmo::snapshot::Snapshot &snapshot,
 
         const sf::Image frame = frame_texture.getTexture().copyToImage();
 
-        if (!frame.saveToFile(framePath(i + snapshot.step*frame_per_step))) {
+        if (!frame.saveToFile(framePath(i + current_snapshot.step*frame_per_step))) {
             throw std::runtime_error("Can't save the frame");
         }
     }

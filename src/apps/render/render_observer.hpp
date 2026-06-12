@@ -33,7 +33,7 @@ class RenderObserver : public myrmo::Observer {
         enum class FoodIntesity;
 
         void renderFrames(RenderQuality quality);
-        void createStepFrames(const myrmo::snapshot::Snapshot &snapshot, const HexGrid &grid) const;
+        void createStepFrames(const HexGrid &grid) const;
         void drawAnts(sf::RenderTexture &frame_texture, sf::Sprite &ant_sprite, const std::vector<std::pair<sf::Vector2f, sf::Vector2f>> &ants_deplacements, float t) const;
         
         std::set<sf::Vector2i, Vector2iCompare> getAnthillsCoord(const myrmo::snapshot::Snapshot &snapshot) const noexcept;
@@ -46,11 +46,13 @@ class RenderObserver : public myrmo::Observer {
 
 
         std::pair<unsigned int, unsigned int> resolution;
-        
         const unsigned int fps{30};
         const unsigned int frame_per_step{15};
         const std::string save_dir{"./render_save"};
         const std::string frames_dir;
 
+        
         sf::Texture ant_image;
+        myrmo::snapshot::Snapshot previous_snapshot;
+        myrmo::snapshot::Snapshot current_snapshot;
 };
