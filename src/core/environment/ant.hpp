@@ -21,6 +21,7 @@ class Ant {
         
         bool isTransportingFood() const noexcept;
         const Tile::Coordinates getPosition() const noexcept;
+        const Tile::Coordinates getPreviousPosition() const noexcept;
 
     private:
         void move(Tile &next_tile) noexcept;

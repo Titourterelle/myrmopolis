@@ -23,8 +23,9 @@ struct Simulation::Impl {
     std::vector<Observer*> observers;
     
     Board* current_board = nullptr;
+    int index_board = 0;
     int current_round = 0;
-    const int max_round = 5;
+    const int max_round = 10;
     bool is_over = false;
     
     Impl(SimulationSettings sim_settings) : simulation_settings(sim_settings) {}
@@ -69,8 +70,6 @@ void Simulation::addObserver(Observer &observer) noexcept {
 
 void Simulation::Impl::step() noexcept
 {
-    static int index_board = 0;
-    
     current_board->step();
     ++current_round;
 
@@ -86,7 +85,12 @@ void Simulation::Impl::step() noexcept
 }
 
 const snapshot::Snapshot Simulation::Impl::takeSnapshot() const noexcept {
-    return current_board->createSnapshot();
+    snapshot::Snapshot snapshot = current_board->createSnapshot();
+
+    snapshot.board_id = index_board;
+    snapshot.step = current_round;
+
+    return snapshot;
 }
 
 void Simulation::Impl::initBoards() noexcept {

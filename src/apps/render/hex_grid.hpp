@@ -1,12 +1,15 @@
 #pragma once
 
+#include "render_utils.hpp"
+
 #include <map>
-#include <utility>
 #include <vector>
 
+#include <SFML/System/Vector2.hpp>
+
 struct HexCell {
-    float pixel_x, pixel_y;
-    int coord_x, coord_y;
+    sf::Vector2f px;
+    sf::Vector2i coords;
 };
 
 class HexGrid {
@@ -17,7 +20,7 @@ class HexGrid {
         int getWidth() const noexcept;
         float getCellsRadius() const noexcept;
         const std::vector<HexCell> getHexCells() const noexcept;
-        const std::pair<float, float> getCellCenter(const std::pair<int, int> &coords) const;
+        const sf::Vector2f getCellCenter(const sf::Vector2i &coords) const;
 
     private:
         void computeCells() noexcept;
@@ -29,5 +32,5 @@ class HexGrid {
         const unsigned int rows;
         const float radius;
         std::vector<HexCell> cells;
-        std::map<std::pair<int, int>, std::pair<float, float>> cells_center;
+        std::map<sf::Vector2i, sf::Vector2f, Vector2iCompare> cells_center;
 };

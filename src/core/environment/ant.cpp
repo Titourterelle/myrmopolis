@@ -83,6 +83,10 @@ const Tile::Coordinates Ant::getPosition() const noexcept {
     return actual_tile->getCoordinates();
 }
 
+const Tile::Coordinates Ant::getPreviousPosition() const noexcept {
+    return previous_tile->getCoordinates();
+}
+
 // Private
 
 void Ant::move(Tile &next_tile) noexcept {

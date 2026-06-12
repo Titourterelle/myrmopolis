@@ -35,6 +35,9 @@ namespace myrmo {
         struct Ant {
             int x;
             int y;
+
+            int previous_x;
+            int previous_y;
         };
 
         struct Colony {

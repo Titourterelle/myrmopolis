@@ -1,18 +1,23 @@
 #include "render_observer.hpp"
 #include "hex_grid.hpp"
+#include "render_utils.hpp"
 
+#include <cstddef>
 #include <cstdlib>
 #include <format>
 #include <stdexcept>
 #include <string>
+#include <set>
+#include <map>
+#include <utility>
+#include <vector>
 
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Image.hpp>
 #include <SFML/Graphics/RenderTexture.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
-#include <utility>
-#include <set>
-#include <vector>
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/System/Vector2.hpp>
 
 const std::string FRAMES_DIR = "/frames";
 
@@ -21,6 +26,9 @@ const std::string FRAMES_DIR = "/frames";
 RenderObserver::RenderObserver() : frames_dir(save_dir + FRAMES_DIR) {
     if (std::system("ffmpeg -version > /dev/null 2>&1") != 0) {
         throw std::runtime_error("FFmpeg not found, please install it");
+    }
+    if(!ant_image.loadFromFile("../../assets/img/ant_64x64.png")) {
+        throw std::runtime_error("Can't load the ant image");
     }
 }
 
@@ -72,28 +80,26 @@ void RenderObserver::renderFrames(RenderQuality quality) {
     resolution.second = makeEven(grid.getHeight());
 
     for (size_t i = 0; i < snapshots.size(); ++i) {
-        sf::Image frame = createFrame(snapshots[i], grid);
-        
-        if (!frame.saveToFile(framePath(i))) {
-            throw std::runtime_error("Can't save the frame");
-        }
+        createStepFrames(snapshots[i], grid);
     }
 }
 
-sf::Image RenderObserver::createFrame(const myrmo::snapshot::Snapshot &snapshot, const HexGrid &grid) const {
-    sf::RenderTexture texture{{resolution.first, resolution.second}};
+void RenderObserver::createStepFrames(const myrmo::snapshot::Snapshot &snapshot, const HexGrid &grid) const {
+    sf::RenderTexture base{{resolution.first, resolution.second}};
 
-    texture.clear(sf::Color::Black);
+    base.clear(sf::Color::Black);
     
+
+    // Grid
     sf::CircleShape hexagon{grid.getCellsRadius(), 6};
     hexagon.setOutlineThickness(2);
     hexagon.setOutlineColor(sf::Color::Black);
 
-    std::set<std::pair<int, int>> anthills = getAnthillsCoord(snapshot);
-    std::map<std::pair<int, int>, RenderObserver::FoodIntesity> tile_food = getTileFoodIntensity(snapshot);
+    std::set<sf::Vector2i, Vector2iCompare> anthills = getAnthillsCoord(snapshot);
+    std::map<sf::Vector2i, RenderObserver::FoodIntesity, Vector2iCompare> tile_food = getTileFoodIntensity(snapshot);
 
     for (const auto& cell : grid.getHexCells()) {
-        std::pair<int, int> cell_coords{cell.coord_x, cell.coord_y};
+        const sf::Vector2i cell_coords{cell.coords.x, cell.coords.y};
         if (anthills.contains(cell_coords)) {
             hexagon.setFillColor(sf::Color::Red);
         }
@@ -121,58 +127,71 @@ sf::Image RenderObserver::createFrame(const myrmo::snapshot::Snapshot &snapshot,
             }
         }
         
-        hexagon.setPosition({cell.pixel_x, cell.pixel_y});
-        texture.draw(hexagon);
+        hexagon.setPosition({cell.px.x, cell.px.y});
+        base.draw(hexagon);
     }
+    base.display();
 
+    // Ants
+    std::vector<std::pair<sf::Vector2i, sf::Vector2i>> ants = getAntsCoord(snapshot);
+    std::vector<std::pair<sf::Vector2f, sf::Vector2f>> ants_deplacements;
+    for (const auto& ant : ants) {
+        const sf::Vector2f start = grid.getCellCenter(ant.first);
+        const sf::Vector2f end = grid.getCellCenter(ant.second);
 
-    const float ant_radius = grid.getCellsRadius()/10;
-    sf::CircleShape circle{ant_radius};
-    circle.setOrigin({ant_radius, ant_radius});
-    circle.setFillColor(sf::Color::Blue);
-
-    std::set<std::pair<int, int>> ants = getAntsCoord(snapshot);
-
-    for (const auto &ant : ants) {
-        std::pair<float, float> center = grid.getCellCenter(ant);
-
-        circle.setPosition({center.first, center.second});
-
-        texture.draw(circle);
+        ants_deplacements.push_back({start, end});
     }
+    
+    sf::RenderTexture frame_texture{{resolution.first, resolution.second}};
 
-    return texture.getTexture().copyToImage();
+    const sf::Vector2f ant_size = {grid.getCellsRadius()/ant_image.getSize().x, grid.getCellsRadius()/ant_image.getSize().y};
+    
+    sf::Sprite ant_sprite{ant_image};
+    ant_sprite.setOrigin(sf::Vector2f(ant_image.getSize()) / 2.f);
+    ant_sprite.setScale(ant_size);
+
+    for (int i = 0; i < frame_per_step; ++i) {
+        frame_texture.clear();
+        frame_texture.draw(sf::Sprite(base.getTexture()));
+        drawAnts(frame_texture, ant_sprite, ants_deplacements, (float)i/frame_per_step);
+        frame_texture.display();
+
+        const sf::Image frame = frame_texture.getTexture().copyToImage();
+
+        if (!frame.saveToFile(framePath(i + snapshot.step*frame_per_step))) {
+            throw std::runtime_error("Can't save the frame");
+        }
+    }
 }
 
-std::set<std::pair<int, int>> RenderObserver::getAnthillsCoord(const myrmo::snapshot::Snapshot &snapshot) const noexcept {
-    std::set<std::pair<int, int>> anthills;
+void RenderObserver::drawAnts(sf::RenderTexture &frame_texture, sf::Sprite &ant_sprite, const std::vector<std::pair<sf::Vector2f, sf::Vector2f>> &ants_deplacements, float t) const {
+    const float ease = easeInOut(t);
+
+    for (const auto& ant_vector : ants_deplacements) {
+        const sf::Vector2f pos = ant_vector.first + (ant_vector.second - ant_vector.first)*ease;
+        ant_sprite.setPosition(pos);
+        
+        frame_texture.draw(ant_sprite);
+    }
+}
+
+std::set<sf::Vector2i, Vector2iCompare> RenderObserver::getAnthillsCoord(const myrmo::snapshot::Snapshot &snapshot) const noexcept {
+    std::set<sf::Vector2i, Vector2iCompare> anthills;
     
-    for (const auto &colony : snapshot.colonies) {
-        for (const auto &anthill : colony.anthills_coords) {
-            anthills.insert(anthill);
+    for (const auto& colony : snapshot.colonies) {
+        for (const auto& anthill : colony.anthills_coords) {
+            anthills.insert({anthill.first, anthill.second});
         }
     }
 
     return anthills;
 }
 
-std::set<std::pair<int, int>> RenderObserver::getAntsCoord(const myrmo::snapshot::Snapshot &snapshot) const noexcept {
-    std::set<std::pair<int, int>> ants;
-    
-    for (const auto &colony : snapshot.colonies) {
-        for (const auto &ant : colony.ants) {
-            ants.insert({ant.x, ant.y});
-        }
-    }
-
-    return ants;
-}
-
-std::map<std::pair<int, int>, RenderObserver::FoodIntesity> RenderObserver::getTileFoodIntensity(const myrmo::snapshot::Snapshot &snapshot) const noexcept {
-    std::map<std::pair<int, int>, FoodIntesity> food_per_tile;
+std::map<sf::Vector2i, RenderObserver::FoodIntesity, Vector2iCompare> RenderObserver::getTileFoodIntensity(const myrmo::snapshot::Snapshot &snapshot) const noexcept {
+    std::map<sf::Vector2i, FoodIntesity, Vector2iCompare> food_per_tile;
     
     for (const auto& tile : snapshot.tiles) {
-        std::pair<int, int> coords{tile.x, tile.y};
+        sf::Vector2i coords{tile.x, tile.y};
         
         if (!tile.food.has_value() || tile.food <= 0) {
             food_per_tile.insert({coords, FoodIntesity::None});
@@ -194,6 +213,18 @@ std::map<std::pair<int, int>, RenderObserver::FoodIntesity> RenderObserver::getT
     return food_per_tile;
 }
 
+std::vector<std::pair<sf::Vector2i, sf::Vector2i>> RenderObserver::getAntsCoord(const myrmo::snapshot::Snapshot &snapshot) const noexcept {
+    std::vector<std::pair<sf::Vector2i, sf::Vector2i>> ants;
+    
+    for (const auto& colony : snapshot.colonies) {
+        for (const auto& ant : colony.ants) {
+            std::pair<sf::Vector2i, sf::Vector2i> ant_deplacement = {{ant.previous_x, ant.previous_y}, {ant.x, ant.y}};
+            ants.push_back(ant_deplacement);
+        }
+    }
+
+    return ants;
+}
 
 std::string RenderObserver::framePath(size_t index) const noexcept {
     return std::format("{}/frame_{:06d}.png", frames_dir, index);

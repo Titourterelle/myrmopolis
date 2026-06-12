@@ -2,7 +2,6 @@
 
 #include <cmath>
 #include <stdexcept>
-#include <utility>
 
 // Public
 
@@ -36,7 +35,7 @@ const std::vector<HexCell> HexGrid::getHexCells() const noexcept {
     return cells;
 }
 
-const std::pair<float, float> HexGrid::getCellCenter(const std::pair<int, int> &coords) const {
+const sf::Vector2f HexGrid::getCellCenter(const sf::Vector2i &coords) const {
     return cells_center.at(coords);
 }
 
@@ -50,7 +49,7 @@ void HexGrid::computeCells() noexcept {
             const float x = col*radius*std::sqrt(3) + (row % 2 == 0 ? 0 : radius*sqrt(3)/2) - radius*(1-std::sqrt(3)/2);
             const float y = row*radius*1.5f;
 
-            HexCell cell{x, y, col, row};
+            HexCell cell{{x, y}, {col, row}};
             cells.push_back(cell);
 
             const float center_x = x + radius;

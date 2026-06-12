@@ -9,8 +9,8 @@
     "colonies":[
         {
             "name":"Galactic Empire",
-            "anthill":[0, 0],
-            "initial_ants": 1
+            "anthill":[2, 2],
+            "initial_ants": 10
         }
     ]
 }

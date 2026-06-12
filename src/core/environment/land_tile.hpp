@@ -19,7 +19,7 @@ class LandTile : public Tile {
         void addFood(const unsigned int quantity = 1) noexcept;
         void removeFood(const unsigned int quantity = 1) noexcept;
 
-        int food{3};
+        int food{10};
 };
 
 }
