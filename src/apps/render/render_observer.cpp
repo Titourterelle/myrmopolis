@@ -2,6 +2,8 @@
 #include "hex_grid.hpp"
 #include "render_utils.hpp"
 
+#include <cmath>
+#include <numbers>
 #include <cstddef>
 #include <cstdlib>
 #include <format>
@@ -18,6 +20,7 @@
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/System/Vector2.hpp>
+#include <SFML/System/Angle.hpp>
 
 const std::string FRAMES_DIR = "/frames";
 
@@ -92,7 +95,6 @@ void RenderObserver::createStepFrames(const HexGrid &grid) const {
     sf::RenderTexture base{{resolution.first, resolution.second}};
 
     base.clear(sf::Color::Black);
-    
 
     // Grid
     sf::CircleShape hexagon{grid.getCellsRadius(), 6};
@@ -172,8 +174,12 @@ void RenderObserver::drawAnts(sf::RenderTexture &frame_texture, sf::Sprite &ant_
     const float ease = easeInOut(t);
 
     for (const auto& ant_vector : ants_deplacements) {
-        const sf::Vector2f pos = ant_vector.first + (ant_vector.second - ant_vector.first)*ease;
+        const sf::Vector2f delta = ant_vector.second - ant_vector.first;
+        const sf::Vector2f pos = ant_vector.first + (delta)*ease;
+        const sf::Angle direction = sf::radians(std::atan2(delta.y, delta.x) + std::numbers::pi/2);
+
         ant_sprite.setPosition(pos);
+        ant_sprite.setRotation(direction);
         
         frame_texture.draw(ant_sprite);
     }
