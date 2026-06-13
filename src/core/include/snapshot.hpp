@@ -33,11 +33,10 @@ namespace myrmo {
         };
 
         struct Ant {
+            unsigned int id;
+
             int x;
             int y;
-
-            int previous_x;
-            int previous_y;
         };
 
         struct Colony {

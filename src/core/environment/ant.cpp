@@ -17,6 +17,7 @@ using namespace myrmo;
 // Public
 
 Ant::Ant(Colony &colony, Tile &spawn_tile) noexcept :
+    id(++id_count),
     colony(&colony),
     board(&colony.getBoard()),
     actual_tile(&spawn_tile),
@@ -75,6 +76,10 @@ void Ant::dropFood() noexcept {
     is_transporting_food = false;
 }
 
+unsigned int Ant::getId() const noexcept {
+    return id;
+}
+
 bool Ant::isTransportingFood() const noexcept {
     return is_transporting_food;
 }
@@ -83,11 +88,9 @@ const Tile::Coordinates Ant::getPosition() const noexcept {
     return actual_tile->getCoordinates();
 }
 
-const Tile::Coordinates Ant::getPreviousPosition() const noexcept {
-    return previous_tile->getCoordinates();
-}
-
 // Private
+
+unsigned int Ant::id_count = 0;
 
 void Ant::move(Tile &next_tile) noexcept {
     previous_tile = actual_tile;

@@ -13,6 +13,7 @@
 #include <map>
 #include <utility>
 #include <vector>
+#include <random>
 
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Image.hpp>
@@ -91,7 +92,7 @@ void RenderObserver::renderFrames(RenderQuality quality) {
     }
 }
 
-void RenderObserver::createStepFrames(const HexGrid &grid) const {
+void RenderObserver::createStepFrames(const HexGrid &grid) {
     sf::RenderTexture base{{resolution.first, resolution.second}};
 
     base.clear(sf::Color::Black);
@@ -139,14 +140,8 @@ void RenderObserver::createStepFrames(const HexGrid &grid) const {
     base.display();
 
     // Ants
-    std::vector<std::pair<sf::Vector2i, sf::Vector2i>> ants = getAntsCoord(current_snapshot);
-    std::vector<std::pair<sf::Vector2f, sf::Vector2f>> ants_deplacements;
-    for (const auto& ant : ants) {
-        const sf::Vector2f start = grid.getCellCenter(ant.first);
-        const sf::Vector2f end = grid.getCellCenter(ant.second);
-
-        ants_deplacements.push_back({start, end});
-    }
+    std::set<unsigned int> new_ants = updateAntsCoords(current_snapshot);
+    updateAntsOffsets(new_ants, grid);
     
     sf::RenderTexture frame_texture{{resolution.first, resolution.second}};
 
@@ -159,7 +154,7 @@ void RenderObserver::createStepFrames(const HexGrid &grid) const {
     for (int i = 0; i < frame_per_step; ++i) {
         frame_texture.clear();
         frame_texture.draw(sf::Sprite(base.getTexture()));
-        drawAnts(frame_texture, ant_sprite, ants_deplacements, (float)i/frame_per_step);
+        drawAnts(frame_texture, ant_sprite, (float)i/frame_per_step);
         frame_texture.display();
 
         const sf::Image frame = frame_texture.getTexture().copyToImage();
@@ -170,12 +165,12 @@ void RenderObserver::createStepFrames(const HexGrid &grid) const {
     }
 }
 
-void RenderObserver::drawAnts(sf::RenderTexture &frame_texture, sf::Sprite &ant_sprite, const std::vector<std::pair<sf::Vector2f, sf::Vector2f>> &ants_deplacements, float t) const {
+void RenderObserver::drawAnts(sf::RenderTexture &frame_texture, sf::Sprite &ant_sprite, float t) const {
     const float ease = easeInOut(t);
 
-    for (const auto& ant_vector : ants_deplacements) {
-        const sf::Vector2f delta = ant_vector.second - ant_vector.first;
-        const sf::Vector2f pos = ant_vector.first + (delta)*ease;
+    for (const auto& [id, ant] : ants_by_id) {
+        const sf::Vector2f delta = ant.current_offset - ant.previous_offset;
+        const sf::Vector2f pos = ant.previous_offset + (delta)*ease;
         const sf::Angle direction = sf::radians(std::atan2(delta.y, delta.x) + std::numbers::pi/2);
 
         ant_sprite.setPosition(pos);
@@ -223,17 +218,57 @@ std::map<sf::Vector2i, RenderObserver::FoodIntesity, Vector2iCompare> RenderObse
     return food_per_tile;
 }
 
-std::vector<std::pair<sf::Vector2i, sf::Vector2i>> RenderObserver::getAntsCoord(const myrmo::snapshot::Snapshot &snapshot) const noexcept {
-    std::vector<std::pair<sf::Vector2i, sf::Vector2i>> ants;
-    
+std::set<unsigned int> RenderObserver::updateAntsCoords(const myrmo::snapshot::Snapshot &snapshot) noexcept {
+    std::set<unsigned int> new_ids;
+
     for (const auto& colony : snapshot.colonies) {
         for (const auto& ant : colony.ants) {
-            std::pair<sf::Vector2i, sf::Vector2i> ant_deplacement = {{ant.previous_x, ant.previous_y}, {ant.x, ant.y}};
-            ants.push_back(ant_deplacement);
+
+            if (ants_by_id.contains(ant.id)) {
+                AntVisual *ant_visual = &ants_by_id.at(ant.id);
+
+                ant_visual->previous_tile = ant_visual->current_tile;
+                ant_visual->current_tile = sf::Vector2i{ant.x, ant.y};
+            }
+            else {
+                AntVisual *ant_visual = &ants_by_id[ant.id];
+                ant_visual->current_tile = sf::Vector2i{ant.x, ant.y};
+                ant_visual->previous_tile = ant_visual->current_tile;
+
+                new_ids.insert(ant.id);
+            }
         }
     }
 
-    return ants;
+    return new_ids;
+}
+
+void RenderObserver::updateAntsOffsets(std::set<unsigned int> new_ants, const HexGrid &grid) noexcept {
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+
+    static std::uniform_real_distribution<> rho_dis(0, 1);
+    static std::uniform_real_distribution<> theta_dis(0, 2*std::numbers::pi);
+
+    const float radius = grid.getCellsRadius()*std::sqrt(3)/2;
+
+    for (auto& [id, ant] : ants_by_id) {
+        const sf::Vector2f current_pos = grid.getCellCenter(ant.current_tile);
+
+        if (new_ants.contains(id)) {
+            ant.current_offset = current_pos;
+            ant.previous_offset = ant.current_offset;
+            continue;
+        }
+
+        const float rho = radius*std::sqrt(rho_dis(gen));
+        const float theta = theta_dis(gen);
+
+        sf::Vector2f random_delta{rho*std::cos(theta), rho*std::sin(theta)};
+
+        ant.previous_offset = ant.current_offset;
+        ant.current_offset = current_pos + random_delta;
+    }
 }
 
 std::string RenderObserver::framePath(size_t index) const noexcept {

@@ -19,16 +19,19 @@ class Ant {
         void pickFood();
         void dropFood() noexcept;
         
+        unsigned int getId() const noexcept;
         bool isTransportingFood() const noexcept;
         const Tile::Coordinates getPosition() const noexcept;
-        const Tile::Coordinates getPreviousPosition() const noexcept;
 
     private:
         void move(Tile &next_tile) noexcept;
         const std::vector<AnthillTile*> searchAnthills(const std::vector<Tile*> &tiles_list) const noexcept;
         void sortTilesByPheromones(std::vector<Tile*> &tiles_list, const PheromoneType pheromone) const noexcept;
         void removeTile(std::vector<Tile*> &tiles_list, const Tile &tile_to_remove) const noexcept;
-        
+
+        static unsigned int id_count;
+
+        const unsigned int id;
         Tile *actual_tile = nullptr;
         Tile *previous_tile = nullptr;
         const Colony *colony;

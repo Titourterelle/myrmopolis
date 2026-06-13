@@ -56,9 +56,9 @@ snapshot::Snapshot Board::createSnapshot() const noexcept {
         
         for (const auto& ant : colony->getAnts()) {
             const Tile::Coordinates pos = ant->getPosition();
-            const Tile::Coordinates pre_pos = ant->getPreviousPosition();
+            const unsigned int id = ant->getId();
 
-            snapshot_colony.ants.push_back(snapshot::Ant{pos.x, pos.y, pre_pos.x, pre_pos.y});
+            snapshot_colony.ants.push_back(snapshot::Ant{id, pos.x, pos.y});
         }
 
         for (const auto& anthill : colony->getAnthills()) {
