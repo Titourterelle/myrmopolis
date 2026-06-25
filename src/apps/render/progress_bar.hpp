@@ -1,0 +1,12 @@
+#pragma once
+
+class ProgressBar {
+    public:
+        explicit ProgressBar(unsigned int total, unsigned int bar_width = 20);
+        
+        void update(unsigned int current);
+
+    private:
+        unsigned int total;
+        unsigned int bar_width;
+};

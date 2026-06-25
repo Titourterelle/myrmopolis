@@ -1,6 +1,7 @@
 #include "render_observer.hpp"
 #include "hex_grid.hpp"
 #include "render_utils.hpp"
+#include "progress_bar.hpp"
 
 #include <cmath>
 #include <numbers>
@@ -85,10 +86,14 @@ void RenderObserver::renderFrames(RenderQuality quality) {
 
     current_snapshot = snapshots[0];
 
+    ProgressBar progress_bar{static_cast<unsigned int>(snapshots.size())};
+
     for (size_t i = 0; i < snapshots.size(); ++i) {
         previous_snapshot = current_snapshot;
         current_snapshot = snapshots[i];
         createStepFrames(grid);
+        
+        progress_bar.update(i+1);
     }
 }
 
