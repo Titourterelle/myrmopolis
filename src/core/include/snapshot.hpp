@@ -22,38 +22,38 @@ namespace myrmo {
         };
 
         struct Tile {
-            int x;
-            int y;
+            unsigned int x;
+            unsigned int y;
             
             TileType type;
 
-            std::unordered_map<PheromoneType, int> pheromones;
+            std::unordered_map<PheromoneType, unsigned int> pheromones;
 
-            std::optional<int> food;
+            std::optional<unsigned int> food;
         };
 
         struct Ant {
             unsigned int id;
 
-            int x;
-            int y;
+            unsigned int x;
+            unsigned int y;
         };
 
         struct Colony {
             std::string name;
 
             std::vector<Ant> ants;
-            std::vector<std::pair<int, int>> anthills_coords;
+            std::vector<std::pair<unsigned int, unsigned int>> anthills_coords;
         };
 
         struct Snapshot {
-            int board_id;
-            int step;
-            int width;
-            int height;
+            unsigned int board_id;
+            unsigned int step;
+            unsigned int width;
+            unsigned int height;
                 
-            int number_of_colonies;
-            int number_of_ants;
+            unsigned int number_of_colonies;
+            unsigned int number_of_ants;
                 
             std::vector<Tile> tiles;
             std::vector<Colony> colonies;

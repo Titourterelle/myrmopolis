@@ -7,7 +7,7 @@ namespace myrmo {
 
 class AnthillTile : public Tile {
     public:
-        explicit AnthillTile(const int x, const int y) noexcept;
+        explicit AnthillTile(const unsigned int x, const unsigned int y) noexcept;
 
         void interact(Ant &ant) noexcept override;
         snapshot::Tile takeTileSnapshot() const noexcept override;

@@ -63,19 +63,20 @@ void ConfigManager::Impl::importSettings() {
 }
 
 void ConfigManager::Impl::importSimulationSettings(const nlohmann::json &config_json) {
-    settings.number_of_boards = config_json.at("simulation").at("number_of_boards").get<int>();
+    settings.number_of_boards = config_json.at("simulation").at("number_of_boards").get<unsigned int>();
 }
 
 
 void ConfigManager::Impl::importBoardsSettings(const nlohmann::json &config_json) {
-    settings.board.row = config_json.at("board").at("row").get<int>();
-    settings.board.column = config_json.at("board").at("column").get<int>();
+    settings.board.row = config_json.at("board").at("row").get<unsigned int>();
+    settings.board.column = config_json.at("board").at("column").get<unsigned int>();
 }
 
 
 void ConfigManager::Impl::importColoniesSettings(const nlohmann::json &config_json) {
     for (const auto& colony : config_json.at("colonies")) {
         ColonySettings colony_settings;
+        
         colony_settings.name = colony.at("name").get<std::string>();
         colony_settings.x_anthill = colony.at("anthill").at(0);
         colony_settings.y_anthill = colony.at("anthill").at(1);

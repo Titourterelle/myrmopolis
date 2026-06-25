@@ -8,7 +8,7 @@ using namespace myrmo;
 
 // Public
 
-LandTile::LandTile(const int x, const int y) noexcept : Tile(x, y) {}
+LandTile::LandTile(const unsigned int x, const unsigned int y) noexcept : Tile(x, y) {}
 
 void LandTile::interact(Ant &ant) noexcept {
     if (ant.isTransportingFood()) {

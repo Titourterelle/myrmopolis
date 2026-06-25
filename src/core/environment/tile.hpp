@@ -12,8 +12,8 @@ class Ant;
 class Tile {
     public:
         struct Coordinates {
-            int x;
-            int y;
+            unsigned int x;
+            unsigned int y;
             bool operator==(const Coordinates &other) const noexcept {
                 return (x == other.x && y == other.y);
             }
@@ -22,7 +22,7 @@ class Tile {
             }
         };
         
-        explicit Tile(const int x, const int y) noexcept;
+        explicit Tile(const unsigned int x, const unsigned int y) noexcept;
         virtual ~Tile() = default;
 
         virtual void interact(Ant &ant) noexcept = 0;

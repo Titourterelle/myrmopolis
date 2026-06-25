@@ -122,17 +122,17 @@ const std::vector<Tile*> Board::getAdjacentTiles(const Tile &tile) const noexcep
 // Private
 
 void Board::checkSettings() const {
-    if (board_settings.row <= 0 || board_settings.column <= 0) {
+    if (board_settings.row == 0 || board_settings.column == 0) {
         throw std::runtime_error("The dimensions are invalid");
     }
 
     std::unordered_set<std::string> colonies_names;
-    std::set<std::pair<int, int>> anthills_coordinates;
+    std::set<std::pair<unsigned int, unsigned int>> anthills_coordinates;
     for (const auto& colony : board_settings.colonies) {
         if (colony.x_anthill < 0 || colony.x_anthill >= dimensions.second || colony.y_anthill < 0 || colony.y_anthill >= dimensions.first) {
             throw std::runtime_error("An anthill cannot be set in the board");
         }
-        if (colony.initial_number_of_ants <= 0) {
+        if (colony.initial_number_of_ants == 0) {
             throw std::runtime_error("The initial number of ants is invalid");
         }
         if (!colonies_names.insert(colony.name).second) {
@@ -150,9 +150,9 @@ void Board::createTiles() noexcept {
         anthill_owner.insert(std::make_pair(Tile::Coordinates(colony.x_anthill, colony.y_anthill), colony.name));
     }
 
-    for (auto c = 0; c < dimensions.first; ++c) {
+    for (unsigned int c = 0; c < dimensions.first; ++c) {
         tiles.push_back({});
-        for (auto r = 0; r < dimensions.second; ++r) {
+        for (unsigned int r = 0; r < dimensions.second; ++r) {
             const Tile::Coordinates targetCoord{c, r};
             
             if (anthill_owner.contains(targetCoord)) {
