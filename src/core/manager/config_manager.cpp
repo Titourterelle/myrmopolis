@@ -31,8 +31,14 @@ ConfigManager::ConfigManager(const std::string filename) : impl_(std::make_uniqu
 
 ConfigManager::~ConfigManager() = default;
 
-const SimulationSettings& ConfigManager::getSettings() const noexcept {
+const SimulationSettings& ConfigManager::getSimulationSettings() const noexcept {
     return impl_->settings;
+}
+
+// Protected
+
+std::ifstream& ConfigManager::getConfigFileStream() const noexcept {
+    return impl_->config_stream;
 }
 
 // Private

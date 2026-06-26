@@ -3,7 +3,7 @@
 
 int main() {
     myrmo::ConfigManager cm{"../../config.json"};
-    myrmo::Simulation sim{cm.getSettings()};
+    myrmo::Simulation sim{cm.getSimulationSettings()};
 
     sim.run();
 

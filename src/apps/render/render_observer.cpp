@@ -27,7 +27,7 @@ const std::string FRAMES_DIR = "/frames";
 
 // Public
 
-RenderObserver::RenderObserver() : frames_dir(save_dir + FRAMES_DIR) {
+RenderObserver::RenderObserver() {
     if (std::system("ffmpeg -version > /dev/null 2>&1") != 0) {
         throw std::runtime_error("FFmpeg not found, please install it");
     }
@@ -40,9 +40,10 @@ void RenderObserver::observe(const myrmo::snapshot::Snapshot &snapshot) {
     snapshots.push_back(snapshot);
 }
 
-void RenderObserver::generateVideo(RenderQuality quality) {
+void RenderObserver::generateVideo(const RenderSettings &render_settings) {
+    settings = render_settings;
     try {
-        renderFrames(quality);
+        renderFrames();
         encodeVideo();
     } catch (const std::exception& e) {
         clean();
@@ -61,17 +62,17 @@ enum class RenderObserver::FoodIntesity {
     Ultra
 };
 
-void RenderObserver::renderFrames(RenderQuality quality) {
-    std::filesystem::create_directories(frames_dir);
+void RenderObserver::renderFrames() {
+    std::filesystem::create_directories(settings.frames_dir);
 
     float radius;
-    if (quality == RenderQuality::Low) {
+    if (settings.quality == RenderQuality::Low) {
         radius = 20;
     }
-    else if (quality == RenderQuality::Medium) {
+    else if (settings.quality == RenderQuality::Medium) {
         radius = 50;
     }
-    else if (quality == RenderQuality::High) {
+    else if (settings.quality == RenderQuality::High) {
         radius = 100;
     }
     else {
@@ -151,15 +152,15 @@ void RenderObserver::createStepFrames(const HexGrid &grid) {
     ant_sprite.setOrigin(sf::Vector2f(ant_image.getSize()) / 2.f);
     ant_sprite.setScale(ant_size);
 
-    for (int i = 0; i < frame_per_step; ++i) {
+    for (int i = 0; i < settings.frame_per_step; ++i) {
         frame_texture.clear();
         frame_texture.draw(sf::Sprite(base.getTexture()));
-        drawAnts(frame_texture, ant_sprite, (float)i/frame_per_step);
+        drawAnts(frame_texture, ant_sprite, (float)i/settings.frame_per_step);
         frame_texture.display();
 
         const sf::Image frame = frame_texture.getTexture().copyToImage();
 
-        if (!frame.saveToFile(framePath(i + current_snapshot.step*frame_per_step))) {
+        if (!frame.saveToFile(framePath(i + current_snapshot.step*settings.frame_per_step))) {
             throw std::runtime_error("Can't save the frame");
         }
     }
@@ -272,15 +273,15 @@ void RenderObserver::updateAntsOffsets(std::set<unsigned int> new_ants, const He
 }
 
 std::string RenderObserver::framePath(size_t index) const noexcept {
-    return std::format("{}/frame_{:06d}.png", frames_dir, index);
+    return std::format("{}/frame_{:06d}.png", settings.frames_dir, index);
 }
 
 void RenderObserver::encodeVideo() const {
     const std::string command = std::format(
         "ffmpeg -r {} -i {}/frame_%06d.png -c:v libx264 -pix_fmt yuv420p {}/output.mp4 -loglevel error",
-        fps,
-        frames_dir,
-        save_dir
+        settings.fps,
+        settings.frames_dir,
+        settings.output_dir
     );
 
     const int result = std::system(command.c_str());
@@ -290,7 +291,7 @@ void RenderObserver::encodeVideo() const {
 }
 
 void RenderObserver::clean() const noexcept {
-    if (std::filesystem::exists(frames_dir)) {
-        std::filesystem::remove_all(frames_dir);
+    if (std::filesystem::exists(settings.frames_dir)) {
+        std::filesystem::remove_all(settings.frames_dir);
     }
 }

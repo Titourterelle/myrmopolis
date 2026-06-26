@@ -16,18 +16,12 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/System/Vector2.hpp>
 
-enum class RenderQuality {
-    Low,
-    Medium,
-    High
-};
-
 class RenderObserver : public myrmo::Observer {
     public:
         explicit RenderObserver();
 
         void observe(const myrmo::snapshot::Snapshot &snapshot) override;
-        void generateVideo(RenderQuality quality);
+        void generateVideo(const RenderSettings &render_settings);
 
     private:
         enum class FoodIntesity;
@@ -39,7 +33,7 @@ class RenderObserver : public myrmo::Observer {
             sf::Vector2f current_offset;
         };
 
-        void renderFrames(RenderQuality quality);
+        void renderFrames();
         void createStepFrames(const HexGrid &grid);
         void drawAnts(sf::RenderTexture &frame_texture, sf::Sprite &ant_sprite, float t) const;
         
@@ -53,11 +47,9 @@ class RenderObserver : public myrmo::Observer {
         void clean() const noexcept;
 
 
+        RenderSettings settings;
+
         std::pair<unsigned int, unsigned int> resolution;
-        const unsigned int fps{30};
-        const unsigned int frame_per_step{15};
-        const std::string save_dir{"./render_save"};
-        const std::string frames_dir;
 
         sf::Texture ant_image;
         myrmo::snapshot::Snapshot previous_snapshot;
