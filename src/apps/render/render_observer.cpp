@@ -31,7 +31,7 @@ RenderObserver::RenderObserver() {
     if (std::system("ffmpeg -version > /dev/null 2>&1") != 0) {
         throw std::runtime_error("FFmpeg not found, please install it");
     }
-    if(!ant_image.loadFromFile("../../assets/img/ant_64x64.png")) {
+    if(!ant_image.loadFromFile("../assets/img/ant_64x64.png")) {
         throw std::runtime_error("Can't load the ant image");
     }
 }

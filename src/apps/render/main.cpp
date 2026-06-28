@@ -3,7 +3,7 @@
 #include "render_observer.hpp"
 
 int main() {
-    RenderConfigManager cm{"../../config.json"};
+    RenderConfigManager cm{"../config.json"};
     myrmo::Simulation sim{cm.getSimulationSettings()};
 
     RenderObserver observer{};

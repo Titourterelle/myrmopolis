@@ -44,10 +44,13 @@
 .cache
 
 # Build
-/build
+/cmake-build*
 
 # Clangd
 compile_commands.json
 
 # VS Code
-*.code-workspace
+.vscode
+
+# JetBrains
+.idea
