@@ -36,7 +36,7 @@ void RenderConfigManager::importRenderSettings() {
         const nlohmann::json &rendering_config = config_json.at("rendering");
     
         render_settings.fps = rendering_config.at("fps").get<unsigned int>();
-        render_settings.frame_per_step = rendering_config.at("frame_per_step").get<unsigned int>();
+        render_settings.frames_per_step = rendering_config.at("frames_per_step").get<unsigned int>();
         render_settings.output_dir = rendering_config.at("output_directory").get<std::string>();
 
         render_settings.quality = convertStrToQuality(rendering_config.at("quality").get<std::string>());

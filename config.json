@@ -16,7 +16,7 @@
 
     "rendering": {
         "fps": 30,
-        "frame_per_step": 15,
+        "frames_per_step": 15,
         "quality": "medium",
         "output_directory": "./render_save"
     }

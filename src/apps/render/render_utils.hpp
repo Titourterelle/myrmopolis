@@ -26,7 +26,7 @@ enum class RenderQuality {
 
 struct RenderSettings {
     unsigned int fps;
-    unsigned int frame_per_step;
+    unsigned int frames_per_step;
 
     RenderQuality quality;
 

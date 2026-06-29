@@ -152,15 +152,15 @@ void RenderObserver::createStepFrames(const HexGrid &grid) {
     ant_sprite.setOrigin(sf::Vector2f(ant_image.getSize()) / 2.f);
     ant_sprite.setScale(ant_size);
 
-    for (int i = 0; i < settings.frame_per_step; ++i) {
+    for (int i = 0; i < settings.frames_per_step; ++i) {
         frame_texture.clear();
         frame_texture.draw(sf::Sprite(base.getTexture()));
-        drawAnts(frame_texture, ant_sprite, (float)i/settings.frame_per_step);
+        drawAnts(frame_texture, ant_sprite, (float)i/settings.frames_per_step);
         frame_texture.display();
 
         const sf::Image frame = frame_texture.getTexture().copyToImage();
 
-        if (!frame.saveToFile(framePath(i + current_snapshot.step*settings.frame_per_step))) {
+        if (!frame.saveToFile(framePath(i + current_snapshot.step*settings.frames_per_step))) {
             throw std::runtime_error("Can't save the frame");
         }
     }
