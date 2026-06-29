@@ -1,6 +1,7 @@
 #include "include/config_manager.hpp"
 
 #include <memory>
+#include <nlohmann/json_fwd.hpp>
 #include <stdexcept>
 #include <string>
 #include <fstream>
@@ -21,7 +22,7 @@ struct ConfigManager::Impl {
 
 // Public
 
-ConfigManager::ConfigManager(const std::string filename) : impl_(std::make_unique<Impl>(filename)) {
+ConfigManager::ConfigManager(const std::string& filename) : impl_(std::make_unique<Impl>(filename)) {
     impl_->config_stream.open(impl_->config_filename);
     if (!impl_->config_stream) {
         throw std::runtime_error("Cannot open the config file");
@@ -49,12 +50,14 @@ void ConfigManager::Impl::importSettings() {
     try {
         config_stream >> config_json;
 
-        settings.number_of_boards = config_json.at("simulation").at("number_of_boards").get<int>();
+        const nlohmann::json &simulation_config = config_json.at("simulation");
 
-        settings.board.row = config_json.at("board").at("row").get<int>();
-        settings.board.column = config_json.at("board").at("column").get<int>();
+        settings.number_of_boards = simulation_config.at("number_of_boards").get<int>();
 
-        for (const auto& colony : config_json.at("colonies")) {
+        settings.board.row = simulation_config.at("board").at("row").get<int>();
+        settings.board.column = simulation_config.at("board").at("column").get<int>();
+
+        for (const auto& colony : simulation_config.at("colonies")) {
             ColonySettings colony_settings;
             colony_settings.name = colony.at("name").get<std::string>();
             colony_settings.x_anthill = colony.at("anthill").at(0);

@@ -31,5 +31,4 @@ struct RenderSettings {
     RenderQuality quality;
 
     std::string output_dir;
-    std::string frames_dir;
 };

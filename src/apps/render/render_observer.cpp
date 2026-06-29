@@ -63,7 +63,7 @@ enum class RenderObserver::FoodIntesity {
 };
 
 void RenderObserver::renderFrames() {
-    std::filesystem::create_directories(settings.frames_dir);
+    std::filesystem::create_directories(settings.output_dir + FRAMES_DIR);
 
     float radius;
     if (settings.quality == RenderQuality::Low) {
@@ -273,14 +273,14 @@ void RenderObserver::updateAntsOffsets(std::set<unsigned int> new_ants, const He
 }
 
 std::string RenderObserver::framePath(size_t index) const noexcept {
-    return std::format("{}/frame_{:06d}.png", settings.frames_dir, index);
+    return std::format("{}/frame_{:06d}.png", settings.output_dir + FRAMES_DIR, index);
 }
 
 void RenderObserver::encodeVideo() const {
     const std::string command = std::format(
         "ffmpeg -r {} -i {}/frame_%06d.png -c:v libx264 -pix_fmt yuv420p {}/output.mp4 -loglevel error",
         settings.fps,
-        settings.frames_dir,
+        settings.output_dir + FRAMES_DIR,
         settings.output_dir
     );
 
@@ -291,7 +291,7 @@ void RenderObserver::encodeVideo() const {
 }
 
 void RenderObserver::clean() const noexcept {
-    if (std::filesystem::exists(settings.frames_dir)) {
-        std::filesystem::remove_all(settings.frames_dir);
+    if (std::filesystem::exists(settings.output_dir + FRAMES_DIR)) {
+        std::filesystem::remove_all(settings.output_dir + FRAMES_DIR);
     }
 }

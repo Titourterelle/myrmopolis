@@ -1,16 +1,23 @@
 {
-    "simulation":{
-        "number_of_boards": 1
+    "simulation": {
+        "number_of_boards": 1,
+        "board": {
+            "row": 5,
+            "column": 5
+        },
+        "colonies": [
+            {
+                "name":"Galactic Empire",
+                "anthill":[2, 2],
+                "initial_ants": 10
+            }
+        ]
     },
-    "board":{
-        "row": 5,
-        "column": 5
-    },
-    "colonies":[
-        {
-            "name":"Galactic Empire",
-            "anthill":[2, 2],
-            "initial_ants": 10
-        }
-    ]
+
+    "rendering": {
+        "fps": 30,
+        "frame_per_step": 15,
+        "quality": "medium",
+        "output_directory": "./render_save"
+    }
 }
