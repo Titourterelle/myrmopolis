@@ -51,3 +51,6 @@ compile_commands.json
 
 # VS Code
 *.code-workspace
+
+# CLion
+/.idea
