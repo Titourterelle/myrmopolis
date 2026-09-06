@@ -24,7 +24,7 @@ class RenderObserver : public myrmo::Observer {
         void generateVideo(const RenderSettings &render_settings);
 
     private:
-        enum class FoodIntesity;
+        enum class FoodIntensity;
         struct AntVisual {
             sf::Vector2i previous_tile;
             sf::Vector2i current_tile;
@@ -36,11 +36,11 @@ class RenderObserver : public myrmo::Observer {
         void renderFrames();
         void createStepFrames(const HexGrid &grid);
         void drawAnts(sf::RenderTexture &frame_texture, sf::Sprite &ant_sprite, float t) const;
-        
-        std::set<sf::Vector2i, Vector2iCompare> getAnthillsCoord(const myrmo::snapshot::Snapshot &snapshot) const noexcept;
-        std::map<sf::Vector2i, FoodIntesity, Vector2iCompare> getTileFoodIntensity(const myrmo::snapshot::Snapshot &snapshot) const noexcept;
+
+        static std::set<sf::Vector2i, Vector2iCompare> getAnthillsCoord(const myrmo::snapshot::Snapshot &snapshot) noexcept;
+        static std::map<sf::Vector2i, FoodIntensity, Vector2iCompare> getTileFoodIntensity(const myrmo::snapshot::Snapshot &snapshot) noexcept;
         std::set<unsigned int> updateAntsCoords(const myrmo::snapshot::Snapshot &snapshot) noexcept;
-        void updateAntsOffsets(std::set<unsigned int> new_ants, const HexGrid &grid) noexcept;
+        void updateAntsOffsets(const std::set<unsigned int>& new_ants, const HexGrid &grid) noexcept;
 
         std::string framePath(size_t index) const noexcept;
         void encodeVideo() const;

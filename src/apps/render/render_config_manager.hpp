@@ -15,9 +15,9 @@ class RenderConfigManager : public myrmo::ConfigManager {
     private:
         static const std::unordered_map<std::string, RenderQuality> str_to_quality;
 
-        void importRenderSettings();
-
         static RenderQuality convertStrToQuality(const std::string& input);
+
+        void importRenderSettings();
 
         RenderSettings render_settings;
 };
