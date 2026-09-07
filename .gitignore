@@ -45,6 +45,7 @@
 
 # Build
 /cmake-build*
+/build
 
 # Clangd
 compile_commands.json
