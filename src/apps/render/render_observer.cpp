@@ -28,11 +28,11 @@ const std::string FRAMES_DIR = "/frames";
 
 // Public
 
-RenderObserver::RenderObserver() : frames_dir(save_dir + FRAMES_DIR) {
+RenderObserver::RenderObserver() {
     if (std::system("ffmpeg -version > /dev/null 2>&1") != 0) {
         throw std::runtime_error("FFmpeg not found, please install it");
     }
-    if(!ant_image.loadFromFile("../../assets/img/ant_64x64.png")) {
+    if(!ant_image.loadFromFile("../assets/img/ant_64x64.png")) {
         throw std::runtime_error("Can't load the ant image");
     }
 }
@@ -41,10 +41,11 @@ void RenderObserver::observe(const myrmo::snapshot::Snapshot &snapshot) {
     snapshots.push_back(snapshot);
 }
 
-void RenderObserver::generateVideo(RenderQuality quality) {
+void RenderObserver::generateVideo(const RenderSettings &render_settings, std::string name = "output") {
+    settings = render_settings;
     try {
-        renderFrames(quality);
-        encodeVideo();
+        renderFrames();
+        encodeVideo(name);
     } catch (const std::exception& e) {
         clean();
         throw;
@@ -52,9 +53,17 @@ void RenderObserver::generateVideo(RenderQuality quality) {
     clean();
 }
 
+void RenderObserver::generateVideo(const std::vector<RenderSettings> &render_settings) {
+    int i = 1;
+    for (const auto &setting : render_settings){
+        const std::string name = std::format("output{}", i++);
+        generateVideo(setting, name);
+    }
+}
+
 // Private
 
-enum class RenderObserver::FoodIntesity {
+enum class RenderObserver::FoodIntensity {
     None,
     Low,
     Medium,
@@ -62,25 +71,28 @@ enum class RenderObserver::FoodIntesity {
     Ultra
 };
 
-void RenderObserver::renderFrames(RenderQuality quality) {
-    std::filesystem::create_directories(frames_dir);
+void RenderObserver::renderFrames() {
+    std::filesystem::create_directories(settings.output_dir + FRAMES_DIR);
 
     float radius;
-    if (quality == RenderQuality::Low) {
-        radius = 20;
+    switch (settings.quality)
+    {
+        case RenderQuality::Low :
+            radius = 20;
+            break;
+        case RenderQuality::Medium :
+            radius = 50;
+            break;
+        case RenderQuality::High :
+            radius = 100;
+            break;
+        default :
+            radius = 50;
     }
-    else if (quality == RenderQuality::Medium) {
-        radius = 50;
-    }
-    else if (quality == RenderQuality::High) {
-        radius = 100;
-    }
-    else {
-        radius = 50;
-    }
+
     const HexGrid grid{snapshots[0].width, snapshots[0].height, radius};
 
-    auto makeEven = [](unsigned int v) { return v % 2 == 0 ? v : v + 1; };
+    auto makeEven = [](const unsigned int v) { return v % 2 == 0 ? v : v + 1; };
     resolution.first  = makeEven(grid.getWidth());
     resolution.second = makeEven(grid.getHeight());
 
@@ -107,8 +119,8 @@ void RenderObserver::createStepFrames(const HexGrid &grid) {
     hexagon.setOutlineThickness(2);
     hexagon.setOutlineColor(sf::Color::Black);
 
-    std::set<sf::Vector2i, Vector2iCompare> anthills = getAnthillsCoord(previous_snapshot);
-    std::map<sf::Vector2i, RenderObserver::FoodIntesity, Vector2iCompare> tile_food = getTileFoodIntensity(previous_snapshot);
+    const std::set<sf::Vector2i, Vector2iCompare> anthills = getAnthillsCoord(previous_snapshot);
+    const std::map<sf::Vector2i, RenderObserver::FoodIntensity, Vector2iCompare> tile_food = getTileFoodIntensity(previous_snapshot);
 
     for (const auto& cell : grid.getHexCells()) {
         const sf::Vector2i cell_coords{cell.coords.x, cell.coords.y};
@@ -117,23 +129,23 @@ void RenderObserver::createStepFrames(const HexGrid &grid) {
         }
         else {
             switch (tile_food.at(cell_coords)) {
-                case RenderObserver::FoodIntesity::None :
+                case RenderObserver::FoodIntensity::None :
                     hexagon.setFillColor(sf::Color::White);
                     break;
 
-                    case RenderObserver::FoodIntesity::Low :
+                case RenderObserver::FoodIntensity::Low :
                     hexagon.setFillColor(sf::Color{0, 250, 125});
                     break;
                     
-                    case RenderObserver::FoodIntesity::Medium :
+                case RenderObserver::FoodIntensity::Medium :
                     hexagon.setFillColor(sf::Color{0, 200, 100});
                     break;
                     
-                    case RenderObserver::FoodIntesity::High :
+                case RenderObserver::FoodIntensity::High :
                     hexagon.setFillColor(sf::Color{0, 150, 75});
                     break;
                     
-                    case RenderObserver::FoodIntesity::Ultra :
+                case RenderObserver::FoodIntensity::Ultra :
                     hexagon.setFillColor(sf::Color{0, 100, 50});
                     break;
             }
@@ -156,15 +168,15 @@ void RenderObserver::createStepFrames(const HexGrid &grid) {
     ant_sprite.setOrigin(sf::Vector2f(ant_image.getSize()) / 2.f);
     ant_sprite.setScale(ant_size);
 
-    for (int i = 0; i < frame_per_step; ++i) {
+    for (int i = 0; i < settings.frames_per_step; ++i) {
         frame_texture.clear();
         frame_texture.draw(sf::Sprite(base.getTexture()));
-        drawAnts(frame_texture, ant_sprite, (float)i/frame_per_step);
+        drawAnts(frame_texture, ant_sprite, (float)i/settings.frames_per_step);
         frame_texture.display();
 
         const sf::Image frame = frame_texture.getTexture().copyToImage();
 
-        if (!frame.saveToFile(framePath(i + current_snapshot.step*frame_per_step))) {
+        if (!frame.saveToFile(framePath(i + current_snapshot.step*settings.frames_per_step))) {
             throw std::runtime_error("Can't save the frame");
         }
     }
@@ -185,7 +197,7 @@ void RenderObserver::drawAnts(sf::RenderTexture &frame_texture, sf::Sprite &ant_
     }
 }
 
-std::set<sf::Vector2i, Vector2iCompare> RenderObserver::getAnthillsCoord(const myrmo::snapshot::Snapshot &snapshot) const noexcept {
+std::set<sf::Vector2i, Vector2iCompare> RenderObserver::getAnthillsCoord(const myrmo::snapshot::Snapshot &snapshot) noexcept {
     std::set<sf::Vector2i, Vector2iCompare> anthills;
     
     for (const auto& colony : snapshot.colonies) {
@@ -197,26 +209,26 @@ std::set<sf::Vector2i, Vector2iCompare> RenderObserver::getAnthillsCoord(const m
     return anthills;
 }
 
-std::map<sf::Vector2i, RenderObserver::FoodIntesity, Vector2iCompare> RenderObserver::getTileFoodIntensity(const myrmo::snapshot::Snapshot &snapshot) const noexcept {
-    std::map<sf::Vector2i, FoodIntesity, Vector2iCompare> food_per_tile;
+std::map<sf::Vector2i, RenderObserver::FoodIntensity, Vector2iCompare> RenderObserver::getTileFoodIntensity(const myrmo::snapshot::Snapshot &snapshot) noexcept {
+    std::map<sf::Vector2i, FoodIntensity, Vector2iCompare> food_per_tile;
     
     for (const auto& tile : snapshot.tiles) {
         sf::Vector2i coords{tile.x, tile.y};
         
         if (!tile.food.has_value() || tile.food <= 0) {
-            food_per_tile.insert({coords, FoodIntesity::None});
+            food_per_tile.insert({coords, FoodIntensity::None});
         }
         else if (tile.food < 5) {
-            food_per_tile.insert({coords, FoodIntesity::Low});
+            food_per_tile.insert({coords, FoodIntensity::Low});
         }
         else if (tile.food < 10) {
-            food_per_tile.insert({coords, FoodIntesity::Medium});
+            food_per_tile.insert({coords, FoodIntensity::Medium});
         }
         else if (tile.food < 15) {
-            food_per_tile.insert({coords, FoodIntesity::High});
+            food_per_tile.insert({coords, FoodIntensity::High});
         }
         else {
-            food_per_tile.insert({coords, FoodIntesity::Ultra});
+            food_per_tile.insert({coords, FoodIntensity::Ultra});
         }
     }
 
@@ -248,7 +260,7 @@ std::set<unsigned int> RenderObserver::updateAntsCoords(const myrmo::snapshot::S
     return new_ids;
 }
 
-void RenderObserver::updateAntsOffsets(std::set<unsigned int> new_ants, const HexGrid &grid) noexcept {
+void RenderObserver::updateAntsOffsets(const std::set<unsigned int> &new_ants, const HexGrid &grid) noexcept {
     static std::random_device rd;
     static std::mt19937 gen(rd());
 
@@ -277,15 +289,16 @@ void RenderObserver::updateAntsOffsets(std::set<unsigned int> new_ants, const He
 }
 
 std::string RenderObserver::framePath(size_t index) const noexcept {
-    return std::format("{}/frame_{:06d}.png", frames_dir, index);
+    return std::format("{}/frame_{:06d}.png", settings.output_dir + FRAMES_DIR, index);
 }
 
-void RenderObserver::encodeVideo() const {
+void RenderObserver::encodeVideo(std::string &name) const {
     const std::string command = std::format(
-        "ffmpeg -r {} -i {}/frame_%06d.png -c:v libx264 -pix_fmt yuv420p {}/output.mp4 -loglevel error",
-        fps,
-        frames_dir,
-        save_dir
+        "ffmpeg -r {} -i {}/frame_%06d.png -c:v libx264 -pix_fmt yuv420p {}/{}.mp4 -loglevel error",
+        settings.fps,
+        settings.output_dir + FRAMES_DIR,
+        settings.output_dir,
+        name
     );
 
     const int result = std::system(command.c_str());
@@ -295,7 +308,7 @@ void RenderObserver::encodeVideo() const {
 }
 
 void RenderObserver::clean() const noexcept {
-    if (std::filesystem::exists(frames_dir)) {
-        std::filesystem::remove_all(frames_dir);
+    if (std::filesystem::exists(settings.output_dir + FRAMES_DIR)) {
+        std::filesystem::remove_all(settings.output_dir + FRAMES_DIR);
     }
 }

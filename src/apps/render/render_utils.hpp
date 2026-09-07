@@ -2,6 +2,7 @@
 
 #include <SFML/System/Vector2.hpp>
 #include <stdexcept>
+#include <string>
 
 struct Vector2iCompare {
     bool operator()(const sf::Vector2i& a, const sf::Vector2i& b) const {
@@ -16,3 +17,18 @@ inline float easeInOut(float t) {
     }
     return t < 0.5 ? 2*t*t : (4 - 2*t)*t - 1;
 }
+
+enum class RenderQuality {
+    Low,
+    Medium,
+    High
+};
+
+struct RenderSettings {
+    unsigned int fps;
+    unsigned int frames_per_step;
+
+    RenderQuality quality;
+
+    std::string output_dir;
+};
