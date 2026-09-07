@@ -14,10 +14,18 @@
         ]
     },
 
-    "rendering": {
-        "fps": 30,
-        "frames_per_step": 15,
-        "quality": "medium",
-        "output_directory": "./render_save"
-    }
+    "rendering": [
+        {
+            "fps": 30,
+            "frames_per_step": 15,
+            "quality": "medium",
+            "output_directory": "./render_save"
+        },
+        {
+            "fps": 15,
+            "frames_per_step": 15,
+            "quality": "low",
+            "output_directory": "./render_save"
+        }
+    ]
 }

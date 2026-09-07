@@ -21,7 +21,8 @@ class RenderObserver : public myrmo::Observer {
         explicit RenderObserver();
 
         void observe(const myrmo::snapshot::Snapshot &snapshot) override;
-        void generateVideo(const RenderSettings &render_settings);
+        void generateVideo(const RenderSettings &render_settings, std::string name);
+        void generateVideo(const std::vector<RenderSettings> &render_settings);
 
     private:
         enum class FoodIntensity;
@@ -40,10 +41,10 @@ class RenderObserver : public myrmo::Observer {
         static std::set<sf::Vector2i, Vector2iCompare> getAnthillsCoord(const myrmo::snapshot::Snapshot &snapshot) noexcept;
         static std::map<sf::Vector2i, FoodIntensity, Vector2iCompare> getTileFoodIntensity(const myrmo::snapshot::Snapshot &snapshot) noexcept;
         std::set<unsigned int> updateAntsCoords(const myrmo::snapshot::Snapshot &snapshot) noexcept;
-        void updateAntsOffsets(const std::set<unsigned int>& new_ants, const HexGrid &grid) noexcept;
+        void updateAntsOffsets(const std::set<unsigned int> &new_ants, const HexGrid &grid) noexcept;
 
         std::string framePath(size_t index) const noexcept;
-        void encodeVideo() const;
+        void encodeVideo(std::string &name) const;
         void clean() const noexcept;
 
 

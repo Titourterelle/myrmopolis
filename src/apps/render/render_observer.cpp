@@ -40,16 +40,24 @@ void RenderObserver::observe(const myrmo::snapshot::Snapshot &snapshot) {
     snapshots.push_back(snapshot);
 }
 
-void RenderObserver::generateVideo(const RenderSettings &render_settings) {
+void RenderObserver::generateVideo(const RenderSettings &render_settings, std::string name = "output") {
     settings = render_settings;
     try {
         renderFrames();
-        encodeVideo();
+        encodeVideo(name);
     } catch (const std::exception& e) {
         clean();
         throw;
     }
     clean();
+}
+
+void RenderObserver::generateVideo(const std::vector<RenderSettings> &render_settings) {
+    int i = 1;
+    for (const auto &setting : render_settings){
+        const std::string name = std::format("output{}", i++);
+        generateVideo(setting, name);
+    }
 }
 
 // Private
@@ -279,12 +287,13 @@ std::string RenderObserver::framePath(size_t index) const noexcept {
     return std::format("{}/frame_{:06d}.png", settings.output_dir + FRAMES_DIR, index);
 }
 
-void RenderObserver::encodeVideo() const {
+void RenderObserver::encodeVideo(std::string &name) const {
     const std::string command = std::format(
-        "ffmpeg -r {} -i {}/frame_%06d.png -c:v libx264 -pix_fmt yuv420p {}/output.mp4 -loglevel error",
+        "ffmpeg -r {} -i {}/frame_%06d.png -c:v libx264 -pix_fmt yuv420p {}/{}.mp4 -loglevel error",
         settings.fps,
         settings.output_dir + FRAMES_DIR,
-        settings.output_dir
+        settings.output_dir,
+        name
     );
 
     const int result = std::system(command.c_str());

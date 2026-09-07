@@ -13,7 +13,7 @@ RenderConfigManager::RenderConfigManager(const std::string& filename) : ConfigMa
     importRenderSettings();
 }
 
-const RenderSettings& RenderConfigManager::getRenderSettings() const noexcept {
+std::vector<RenderSettings> RenderConfigManager::getRenderSettings() const noexcept {
     return render_settings;
 }
 
@@ -33,13 +33,20 @@ void RenderConfigManager::importRenderSettings() {
     try {
         nlohmann::json config_json;
         config_stream >> config_json;
-        const nlohmann::json &rendering_config = config_json.at("rendering");
-    
-        render_settings.fps = rendering_config.at("fps").get<unsigned int>();
-        render_settings.frames_per_step = rendering_config.at("frames_per_step").get<unsigned int>();
-        render_settings.output_dir = rendering_config.at("output_directory").get<std::string>();
 
-        render_settings.quality = convertStrToQuality(rendering_config.at("quality").get<std::string>());
+        for (const auto &render : config_json.at("rendering"))
+        {
+            RenderSettings settings;
+
+            settings.fps = render.at("fps").get<unsigned int>();
+            settings.frames_per_step = render.at("frames_per_step").get<unsigned int>();
+            settings.output_dir = render.at("output_directory").get<std::string>();
+
+            settings.quality = convertStrToQuality(render.at("quality").get<std::string>());
+
+            render_settings.push_back(settings);
+
+        }
     }
     catch (const nlohmann::json::parse_error &e) {
         throw std::runtime_error("Invalid JSON format");

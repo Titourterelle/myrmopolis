@@ -10,7 +10,7 @@ class RenderConfigManager : public myrmo::ConfigManager {
         explicit RenderConfigManager(const std::string& filename);
         ~RenderConfigManager() override = default;
 
-        [[nodiscard]] const RenderSettings& getRenderSettings() const noexcept;
+        [[nodiscard]] std::vector<RenderSettings> getRenderSettings() const noexcept;
 
     private:
         static const std::unordered_map<std::string, RenderQuality> str_to_quality;
@@ -19,5 +19,5 @@ class RenderConfigManager : public myrmo::ConfigManager {
 
         void importRenderSettings();
 
-        RenderSettings render_settings;
+        std::vector<RenderSettings> render_settings;
 };
