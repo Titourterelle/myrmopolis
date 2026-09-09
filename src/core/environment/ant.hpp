@@ -13,21 +13,21 @@ class Colony;
 
 class Ant {
     public:
-        explicit Ant(Colony &colony, Tile &spawn_tile) noexcept;
+        explicit Ant(const Colony &colony, Tile &spawn_tile) noexcept;
 
         void act() noexcept;
         void pickFood();
         void dropFood() noexcept;
         
-        unsigned int getId() const noexcept;
-        bool isTransportingFood() const noexcept;
-        const Tile::Coordinates getPosition() const noexcept;
+        [[nodiscard]] unsigned int getId() const noexcept;
+        [[nodiscard]] bool isTransportingFood() const noexcept;
+        [[nodiscard]] Tile::Coordinates getPosition() const noexcept;
 
     private:
         void move(Tile &next_tile) noexcept;
-        const std::vector<AnthillTile*> searchAnthills(const std::vector<Tile*> &tiles_list) const noexcept;
-        void sortTilesByPheromones(std::vector<Tile*> &tiles_list, const PheromoneType pheromone) const noexcept;
-        void removeTile(std::vector<Tile*> &tiles_list, const Tile &tile_to_remove) const noexcept;
+        [[nodiscard]] std::vector<AnthillTile*> searchAnthills(const std::vector<Tile*> &tiles_list) const noexcept;
+        static void sortTilesByPheromones(std::vector<Tile*> &tiles_list, PheromoneType pheromone) noexcept;
+        static void removeTile(std::vector<Tile*> &tiles_list, const Tile &tile_to_remove) noexcept;
 
         static unsigned int id_count;
 

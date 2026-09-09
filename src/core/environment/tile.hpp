@@ -22,15 +22,15 @@ class Tile {
             }
         };
         
-        explicit Tile(const unsigned int x, const unsigned int y) noexcept;
+        explicit Tile(unsigned int x, unsigned int y) noexcept;
         virtual ~Tile() = default;
 
         virtual void interact(Ant &ant) noexcept = 0;
-        virtual snapshot::Tile takeTileSnapshot() const noexcept;
+        [[nodiscard]] virtual snapshot::Tile takeTileSnapshot() const noexcept;
         
-        virtual std::string getType() const noexcept;
-        const Coordinates& getCoordinates() const noexcept;
-        const Pheromones& getPheromones() const noexcept;
+        [[nodiscard]] virtual std::string getType() const noexcept;
+        [[nodiscard]] const Coordinates& getCoordinates() const noexcept;
+        [[nodiscard]] const Pheromones& getPheromones() const noexcept;
 
         bool operator==(const Tile &other_tile) const noexcept;
 

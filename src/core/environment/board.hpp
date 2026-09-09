@@ -20,7 +20,7 @@ class Board {
         void step() const noexcept;
         snapshot::Snapshot createSnapshot() const noexcept;
 
-        const std::vector<Tile*> getAdjacentTiles(const Tile &tile) const noexcept;
+        std::vector<Tile*> getAdjacentTiles(const Tile &tile) const noexcept;
 
     private:
         void checkSettings() const;
