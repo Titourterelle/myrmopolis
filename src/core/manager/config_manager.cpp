@@ -6,6 +6,7 @@
 #include <fstream>
 
 #include <nlohmann/json.hpp>
+#include <utility>
 
 using namespace myrmo;
 
@@ -20,12 +21,12 @@ struct ConfigManager::Impl {
     std::ifstream config_stream;
     SimulationSettings settings;
     
-    Impl(const std::string filename) : config_filename(filename) {}
+    Impl(std::string  filename) : config_filename(std::move(filename)) {}
 };
 
 // Public
 
-ConfigManager::ConfigManager(const std::string filename) : impl_(std::make_unique<Impl>(filename)) {
+ConfigManager::ConfigManager(const std::string &filename) : impl_(std::make_unique<Impl>(filename)) {
     impl_->config_stream.open(impl_->config_filename);
     if (!impl_->config_stream) {
         throw std::runtime_error("Cannot open the config file");
@@ -42,9 +43,8 @@ const SimulationSettings& ConfigManager::getSettings() const noexcept {
 // Private
 
 void ConfigManager::Impl::importSettings() {
-    nlohmann::json config_json;
-
     try {
+        nlohmann::json config_json;
         config_stream >> config_json;
 
         importSimulationSettings(config_json);

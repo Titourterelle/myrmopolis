@@ -7,13 +7,14 @@
 
 #include <memory>
 #include <stdexcept>
+#include <utility>
 #include <vector>
 
 using namespace myrmo;
 
 struct Simulation::Impl {
     void step() noexcept;
-    const snapshot::Snapshot takeSnapshot() const noexcept;
+    [[nodiscard]] snapshot::Snapshot takeSnapshot() const noexcept;
 
     void initBoards() noexcept;
     
@@ -27,8 +28,8 @@ struct Simulation::Impl {
     int current_round = 0;
     const int max_round = 10;
     bool is_over = false;
-    
-    Impl(SimulationSettings sim_settings) : simulation_settings(sim_settings) {}
+
+    explicit Impl(SimulationSettings sim_settings) : simulation_settings(std::move(sim_settings)) {}
 };
 
 // Public
@@ -44,10 +45,10 @@ Simulation::Simulation(const SimulationSettings &settings) : impl_(std::make_uni
 Simulation::~Simulation() = default;
 
 
-void Simulation::run() {
+void Simulation::run() const {
     const snapshot::Snapshot first_snapshot = impl_->takeSnapshot();
 
-    for (auto observer : impl_->observers) {
+    for (const auto observer : impl_->observers) {
         observer->observe(first_snapshot);
     }
 
@@ -56,13 +57,13 @@ void Simulation::run() {
 
         const snapshot::Snapshot snapshot = impl_->takeSnapshot();
 
-        for (auto observer : impl_->observers) {
+        for (const auto observer : impl_->observers) {
             observer->observe(snapshot);
         }
     }
 }
 
-void Simulation::addObserver(Observer &observer) noexcept {
+void Simulation::addObserver(Observer &observer) const noexcept {
     impl_->observers.push_back(&observer);
 }
 
@@ -84,7 +85,7 @@ void Simulation::Impl::step() noexcept
     }
 }
 
-const snapshot::Snapshot Simulation::Impl::takeSnapshot() const noexcept {
+snapshot::Snapshot Simulation::Impl::takeSnapshot() const noexcept {
     snapshot::Snapshot snapshot = current_board->createSnapshot();
 
     snapshot.board_id = index_board;
