@@ -2,14 +2,15 @@
 #include "board.hpp"
 
 #include <stdexcept>
+#include <utility>
 
 using namespace myrmo;
 
 // Public
 
-Colony::Colony(const std::string name, Board &board, AnthillTile &initialAnthill, const int initial_number_of_ants) :
-name(name),
-board(&board)
+Colony::Colony(std::string name, const Board &board, AnthillTile &initialAnthill, const int initial_number_of_ants) :
+    name(std::move(name)),
+    board(&board)
 {
     anthills.push_back(&initialAnthill);
     
@@ -26,7 +27,7 @@ void Colony::step() const noexcept {
     }
 }
 
-int Colony::getNumberOfAnts() const noexcept {
+size_t Colony::getNumberOfAnts() const noexcept {
     return ants.size();
 }
 
@@ -38,7 +39,7 @@ const std::vector<AnthillTile*>& Colony::getAnthills() const noexcept {
     return anthills;
 }
 
-const std::vector<const Ant*> Colony::getAnts() const noexcept {
+std::vector<const Ant*> Colony::getAnts() const noexcept {
     std::vector<const Ant*> return_ants;
     for (const auto& ant : ants) {
         return_ants.push_back(ant.get());

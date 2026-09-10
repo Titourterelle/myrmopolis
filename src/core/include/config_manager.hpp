@@ -12,7 +12,7 @@ class ConfigManager {
         explicit ConfigManager(const std::string& filename);
         virtual ~ConfigManager();
         
-        virtual const SimulationSettings& getSimulationSettings() const noexcept;
+        [[nodiscard]] virtual const SimulationSettings& getSimulationSettings() const noexcept;
 
     protected:
         std::ifstream& getConfigFileStream() const noexcept;

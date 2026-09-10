@@ -6,7 +6,7 @@ using namespace myrmo;
 
 // Public
 
-Tile::Tile(const int x, const int y) noexcept : position(Coordinates(x, y)) {}
+Tile::Tile(const unsigned int x, const unsigned int y) noexcept : position(Coordinates(x, y)) {}
 
 snapshot::Tile Tile::takeTileSnapshot() const noexcept {
     snapshot::Tile snapshot_tile;

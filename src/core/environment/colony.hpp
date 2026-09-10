@@ -12,18 +12,18 @@ class Board;
 
 class Colony {
     public:
-        explicit Colony(const std::string name, Board &board, AnthillTile &initialAnthill, const int initial_number_of_ants);
+        explicit Colony(std::string name, const Board &board, AnthillTile &initialAnthill, int initial_number_of_ants);
 
         void step() const noexcept;
         
-        std::string getName() const noexcept {return name;};
-        int getNumberOfAnts() const noexcept;
-        const Board& getBoard() const noexcept;
-        const std::vector<AnthillTile*>& getAnthills() const noexcept;
-        const std::vector<const Ant*> getAnts() const noexcept;
+        [[nodiscard]] std::string getName() const noexcept {return name;};
+        [[nodiscard]] size_t getNumberOfAnts() const noexcept;
+        [[nodiscard]] const Board& getBoard() const noexcept;
+        [[nodiscard]] const std::vector<AnthillTile*>& getAnthills() const noexcept;
+        [[nodiscard]] std::vector<const Ant*> getAnts() const noexcept;
 
     private:
-        void addAnts(const int number_of_ants) noexcept;
+        void addAnts(int number_of_ants) noexcept;
         
         std::string name;
         const Board *board = nullptr;

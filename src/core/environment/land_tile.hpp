@@ -8,16 +8,16 @@ namespace myrmo {
 
 class LandTile : public Tile {
     public:
-        explicit LandTile(const int x, const int y) noexcept;
+        explicit LandTile(unsigned int x, unsigned int y) noexcept;
 
         void interact(Ant &ant) noexcept override;
-        snapshot::Tile takeTileSnapshot() const noexcept override;
+        [[nodiscard]] snapshot::Tile takeTileSnapshot() const noexcept override;
 
         void addPheromones(const PheromoneType &type) noexcept;
         
     private:
-        void addFood(const unsigned int quantity = 1) noexcept;
-        void removeFood(const unsigned int quantity = 1) noexcept;
+        void addFood(unsigned int quantity) noexcept;
+        void removeFood(unsigned int quantity) noexcept;
 
         int food{10};
 };

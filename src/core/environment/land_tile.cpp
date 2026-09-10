@@ -8,7 +8,7 @@ using namespace myrmo;
 
 // Public
 
-LandTile::LandTile(const int x, const int y) noexcept : Tile(x, y) {}
+LandTile::LandTile(const unsigned int x, const unsigned int y) noexcept : Tile(x, y) {}
 
 void LandTile::interact(Ant &ant) noexcept {
     if (ant.isTransportingFood()) {
@@ -44,10 +44,10 @@ void LandTile::addPheromones(const PheromoneType &type) noexcept {
 
 // Private
 
-void LandTile::addFood(const unsigned int quantity) noexcept {
+void LandTile::addFood(const unsigned int quantity = 1) noexcept {
     food += quantity;
 }
 
-void LandTile::removeFood(const unsigned quantity) noexcept {
+void LandTile::removeFood(const unsigned quantity = 1) noexcept {
     food -= quantity;
 }
