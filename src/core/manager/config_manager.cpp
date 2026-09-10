@@ -1,6 +1,7 @@
 #include "include/config_manager.hpp"
 
 #include <memory>
+#include <nlohmann/json_fwd.hpp>
 #include <stdexcept>
 #include <string>
 #include <fstream>
@@ -26,7 +27,7 @@ struct ConfigManager::Impl {
 
 // Public
 
-ConfigManager::ConfigManager(const std::string &filename) : impl_(std::make_unique<Impl>(filename)) {
+ConfigManager::ConfigManager(const std::string& filename) : impl_(std::make_unique<Impl>(filename)) {
     impl_->config_stream.open(impl_->config_filename);
     if (!impl_->config_stream) {
         throw std::runtime_error("Cannot open the config file");
@@ -36,8 +37,14 @@ ConfigManager::ConfigManager(const std::string &filename) : impl_(std::make_uniq
 
 ConfigManager::~ConfigManager() = default;
 
-const SimulationSettings& ConfigManager::getSettings() const noexcept {
+const SimulationSettings& ConfigManager::getSimulationSettings() const noexcept {
     return impl_->settings;
+}
+
+// Protected
+
+std::ifstream& ConfigManager::getConfigFileStream() const noexcept {
+    return impl_->config_stream;
 }
 
 // Private

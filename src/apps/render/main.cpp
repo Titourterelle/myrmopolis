@@ -1,10 +1,10 @@
 #include "simulation.hpp"
-#include "config_manager.hpp"
+#include "render_config_manager.hpp"
 #include "render_observer.hpp"
 
 int main() {
-    myrmo::ConfigManager cm{"../../config.json"};
-    myrmo::Simulation sim{cm.getSettings()};
+    const RenderConfigManager cm{"../config.json"};
+    myrmo::Simulation sim{cm.getSimulationSettings()};
 
     RenderObserver observer{};
 
@@ -12,7 +12,7 @@ int main() {
 
     sim.run();
 
-    observer.generateVideo(RenderQuality::Medium);
+    observer.generateVideo(cm.getRenderSettings());
 
     return 0;
 }

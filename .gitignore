@@ -44,10 +44,14 @@
 .cache
 
 # Build
+/cmake-build*
 /build
 
 # Clangd
 compile_commands.json
 
 # VS Code
-*.code-workspace
+.vscode
+
+# CLion
+.idea

@@ -1,0 +1,68 @@
+#include "render_config_manager.hpp"
+#include "config_manager.hpp"
+#include "render_utils.hpp"
+
+#include <fstream>
+
+#include <nlohmann/json.hpp>
+#include <string>
+
+// Public
+
+RenderConfigManager::RenderConfigManager(const std::string& filename) : ConfigManager(filename) {
+    importRenderSettings();
+}
+
+std::vector<RenderSettings> RenderConfigManager::getRenderSettings() const noexcept {
+    return render_settings;
+}
+
+// Private
+
+const std::unordered_map<std::string, RenderQuality> RenderConfigManager::str_to_quality {
+    {"low", RenderQuality::Low},
+    {"medium", RenderQuality::Medium},
+    {"high", RenderQuality::High},
+};
+
+void RenderConfigManager::importRenderSettings() {
+    std::ifstream& config_stream = getConfigFileStream();
+    config_stream.clear();
+    config_stream.seekg(0);
+
+    try {
+        nlohmann::json config_json;
+        config_stream >> config_json;
+
+        for (const auto &render : config_json.at("rendering"))
+        {
+            RenderSettings settings;
+
+            settings.fps = render.at("fps").get<unsigned int>();
+            settings.frames_per_step = render.at("frames_per_step").get<unsigned int>();
+            settings.output_dir = render.at("output_directory").get<std::string>();
+
+            settings.quality = convertStrToQuality(render.at("quality").get<std::string>());
+
+            render_settings.push_back(settings);
+
+        }
+    }
+    catch (const nlohmann::json::parse_error &e) {
+        throw std::runtime_error("Invalid JSON format");
+    }
+    catch (const nlohmann::json::out_of_range &e) {
+        throw std::runtime_error("Missing required configuration field");
+    }
+    catch (const nlohmann::json::type_error &e) {
+        throw std::runtime_error("Invalid type in the configuration file");
+    }
+}
+
+RenderQuality RenderConfigManager::convertStrToQuality(const std::string& input) {
+    const auto it = str_to_quality.find(input);
+    if (it == str_to_quality.end()) {
+        throw std::invalid_argument("Unknown render quality: " + input);
+    }
+    return it->second;
+}
