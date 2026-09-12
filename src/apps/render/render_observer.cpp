@@ -41,7 +41,7 @@ void RenderObserver::observe(const myrmo::snapshot::Snapshot &snapshot) {
     snapshots.push_back(snapshot);
 }
 
-void RenderObserver::generateVideo(const RenderSettings &render_settings, std::string name = "output") {
+void RenderObserver::generateVideo(const RenderSettings &render_settings, std::string name) {
     settings = render_settings;
     try {
         renderFrames();

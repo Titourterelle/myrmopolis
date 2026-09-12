@@ -21,7 +21,7 @@ class RenderObserver : public myrmo::Observer {
         explicit RenderObserver();
 
         void observe(const myrmo::snapshot::Snapshot &snapshot) override;
-        void generateVideo(const RenderSettings &render_settings, std::string name);
+        void generateVideo(const RenderSettings &render_settings, std::string name = "output");
         void generateVideo(const std::vector<RenderSettings> &render_settings);
 
     private:

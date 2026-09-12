@@ -44,10 +44,10 @@ void LandTile::addPheromones(const PheromoneType &type) noexcept {
 
 // Private
 
-void LandTile::addFood(const unsigned int quantity = 1) noexcept {
+void LandTile::addFood(const unsigned int quantity) noexcept {
     food += quantity;
 }
 
-void LandTile::removeFood(const unsigned quantity = 1) noexcept {
+void LandTile::removeFood(const unsigned int quantity) noexcept {
     food -= quantity;
 }

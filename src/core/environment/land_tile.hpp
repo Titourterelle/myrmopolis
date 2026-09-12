@@ -16,8 +16,8 @@ class LandTile : public Tile {
         void addPheromones(const PheromoneType &type) noexcept;
         
     private:
-        void addFood(unsigned int quantity) noexcept;
-        void removeFood(unsigned int quantity) noexcept;
+        void addFood(unsigned int quantity = 1) noexcept;
+        void removeFood(unsigned int quantity = 1) noexcept;
 
         int food{10};
 };
