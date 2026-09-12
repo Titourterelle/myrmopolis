@@ -16,11 +16,11 @@ class HexGrid {
     public:
         explicit HexGrid(int cols, int rows, float radius);
 
-        int getHeight() const noexcept;
-        int getWidth() const noexcept;
-        float getCellsRadius() const noexcept;
-        const std::vector<HexCell> getHexCells() const noexcept;
-        const sf::Vector2f getCellCenter(const sf::Vector2i &coords) const;
+        [[nodiscard]] int getHeight() const noexcept;
+        [[nodiscard]] int getWidth() const noexcept;
+        [[nodiscard]] float getCellsRadius() const noexcept;
+        [[nodiscard]] std::vector<HexCell> getHexCells() const noexcept;
+        [[nodiscard]] sf::Vector2f getCellCenter(const sf::Vector2i &coords) const;
 
     private:
         void computeCells() noexcept;

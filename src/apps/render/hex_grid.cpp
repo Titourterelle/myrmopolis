@@ -5,7 +5,7 @@
 
 // Public
 
-HexGrid::HexGrid(int cols, int rows, float radius) : cols(cols), rows(rows), radius(radius) {
+HexGrid::HexGrid(const int cols, const int rows, const float radius) : cols(cols), rows(rows), radius(radius) {
     if (cols == 0) {
         throw std::runtime_error("Columns number can't be null");
     }
@@ -31,11 +31,11 @@ float HexGrid::getCellsRadius() const noexcept {
     return radius;
 }
 
-const std::vector<HexCell> HexGrid::getHexCells() const noexcept {
+std::vector<HexCell> HexGrid::getHexCells() const noexcept {
     return cells;
 }
 
-const sf::Vector2f HexGrid::getCellCenter(const sf::Vector2i &coords) const {
+sf::Vector2f HexGrid::getCellCenter(const sf::Vector2i &coords) const {
     return cells_center.at(coords);
 }
 
