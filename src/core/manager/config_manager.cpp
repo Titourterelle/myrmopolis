@@ -53,6 +53,7 @@ void ConfigManager::Impl::importSettings() {
     try {
         nlohmann::json config_json;
         config_stream >> config_json;
+        config_json = config_json.at("simulation");
 
         importSimulationSettings(config_json);
         importBoardsSettings(config_json);
@@ -70,7 +71,7 @@ void ConfigManager::Impl::importSettings() {
 }
 
 void ConfigManager::Impl::importSimulationSettings(const nlohmann::json &config_json) {
-    settings.number_of_boards = config_json.at("simulation").at("number_of_boards").get<unsigned int>();
+    settings.number_of_boards = config_json.at("number_of_boards").get<unsigned int>();
 }
 
 
