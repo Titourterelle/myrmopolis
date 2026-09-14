@@ -11,7 +11,7 @@ struct Vector2uCompare {
     }
 };
 
-inline float easeInOut(float t) {
+inline float easeInOut(const float t) {
     if (0 > t || t > 1) {
         throw std::invalid_argument("The argument must be between 0 and 1");
     }
