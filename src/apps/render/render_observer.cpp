@@ -119,11 +119,11 @@ void RenderObserver::createStepFrames(const HexGrid &grid) {
     hexagon.setOutlineThickness(2);
     hexagon.setOutlineColor(sf::Color::Black);
 
-    const std::set<sf::Vector2i, Vector2iCompare> anthills = getAnthillsCoord(previous_snapshot);
-    const std::map<sf::Vector2i, RenderObserver::FoodIntensity, Vector2iCompare> tile_food = getTileFoodIntensity(previous_snapshot);
+    const std::set<sf::Vector2u, Vector2uCompare> anthills = getAnthillsCoord(previous_snapshot);
+    const std::map<sf::Vector2u, RenderObserver::FoodIntensity, Vector2uCompare> tile_food = getTileFoodIntensity(previous_snapshot);
 
     for (const auto& cell : grid.getHexCells()) {
-        const sf::Vector2i cell_coords{cell.coords.x, cell.coords.y};
+        const sf::Vector2u cell_coords{cell.coords.x, cell.coords.y};
         if (anthills.contains(cell_coords)) {
             hexagon.setFillColor(sf::Color::Red);
         }
@@ -197,8 +197,8 @@ void RenderObserver::drawAnts(sf::RenderTexture &frame_texture, sf::Sprite &ant_
     }
 }
 
-std::set<sf::Vector2i, Vector2iCompare> RenderObserver::getAnthillsCoord(const myrmo::snapshot::Snapshot &snapshot) noexcept {
-    std::set<sf::Vector2i, Vector2iCompare> anthills;
+std::set<sf::Vector2u, Vector2uCompare> RenderObserver::getAnthillsCoord(const myrmo::snapshot::Snapshot &snapshot) noexcept {
+    std::set<sf::Vector2u, Vector2uCompare> anthills;
     
     for (const auto& colony : snapshot.colonies) {
         for (const auto& anthill : colony.anthills_coords) {
@@ -209,11 +209,11 @@ std::set<sf::Vector2i, Vector2iCompare> RenderObserver::getAnthillsCoord(const m
     return anthills;
 }
 
-std::map<sf::Vector2i, RenderObserver::FoodIntensity, Vector2iCompare> RenderObserver::getTileFoodIntensity(const myrmo::snapshot::Snapshot &snapshot) noexcept {
-    std::map<sf::Vector2i, FoodIntensity, Vector2iCompare> food_per_tile;
+std::map<sf::Vector2u, RenderObserver::FoodIntensity, Vector2uCompare> RenderObserver::getTileFoodIntensity(const myrmo::snapshot::Snapshot &snapshot) noexcept {
+    std::map<sf::Vector2u, FoodIntensity, Vector2uCompare> food_per_tile;
     
     for (const auto& tile : snapshot.tiles) {
-        sf::Vector2i coords{tile.x, tile.y};
+        sf::Vector2u coords{tile.x, tile.y};
         
         if (!tile.food.has_value() || tile.food <= 0) {
             food_per_tile.insert({coords, FoodIntensity::None});
@@ -245,11 +245,11 @@ std::set<unsigned int> RenderObserver::updateAntsCoords(const myrmo::snapshot::S
                 AntVisual *ant_visual = &ants_by_id.at(ant.id);
 
                 ant_visual->previous_tile = ant_visual->current_tile;
-                ant_visual->current_tile = sf::Vector2i{ant.x, ant.y};
+                ant_visual->current_tile = sf::Vector2u{ant.x, ant.y};
             }
             else {
                 AntVisual *ant_visual = &ants_by_id[ant.id];
-                ant_visual->current_tile = sf::Vector2i{ant.x, ant.y};
+                ant_visual->current_tile = sf::Vector2u{ant.x, ant.y};
                 ant_visual->previous_tile = ant_visual->current_tile;
 
                 new_ids.insert(ant.id);

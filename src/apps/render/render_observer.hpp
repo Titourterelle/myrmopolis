@@ -27,8 +27,8 @@ class RenderObserver : public myrmo::Observer {
     private:
         enum class FoodIntensity;
         struct AntVisual {
-            sf::Vector2i previous_tile;
-            sf::Vector2i current_tile;
+            sf::Vector2u previous_tile;
+            sf::Vector2u current_tile;
 
             sf::Vector2f previous_offset;
             sf::Vector2f current_offset;
@@ -38,8 +38,8 @@ class RenderObserver : public myrmo::Observer {
         void createStepFrames(const HexGrid &grid);
         void drawAnts(sf::RenderTexture &frame_texture, sf::Sprite &ant_sprite, float t) const;
 
-        static std::set<sf::Vector2i, Vector2iCompare> getAnthillsCoord(const myrmo::snapshot::Snapshot &snapshot) noexcept;
-        static std::map<sf::Vector2i, FoodIntensity, Vector2iCompare> getTileFoodIntensity(const myrmo::snapshot::Snapshot &snapshot) noexcept;
+        static std::set<sf::Vector2u, Vector2uCompare> getAnthillsCoord(const myrmo::snapshot::Snapshot &snapshot) noexcept;
+        static std::map<sf::Vector2u, FoodIntensity, Vector2uCompare> getTileFoodIntensity(const myrmo::snapshot::Snapshot &snapshot) noexcept;
         std::set<unsigned int> updateAntsCoords(const myrmo::snapshot::Snapshot &snapshot) noexcept;
         void updateAntsOffsets(const std::set<unsigned int> &new_ants, const HexGrid &grid) noexcept;
 

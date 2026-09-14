@@ -4,8 +4,8 @@
 #include <stdexcept>
 #include <string>
 
-struct Vector2iCompare {
-    bool operator()(const sf::Vector2i& a, const sf::Vector2i& b) const {
+struct Vector2uCompare {
+    bool operator()(const sf::Vector2u& a, const sf::Vector2u& b) const {
         if (a.x != b.x) return a.x < b.x;
         return a.y < b.y;
     }

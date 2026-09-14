@@ -5,7 +5,7 @@
 
 // Public
 
-HexGrid::HexGrid(const int cols, const int rows, const float radius) : cols(cols), rows(rows), radius(radius) {
+HexGrid::HexGrid(const unsigned int cols, const unsigned int rows, const float radius) : cols(cols), rows(rows), radius(radius) {
     if (cols == 0) {
         throw std::runtime_error("Columns number can't be null");
     }
@@ -19,11 +19,11 @@ HexGrid::HexGrid(const int cols, const int rows, const float radius) : cols(cols
     computeCells();
 }
 
-int HexGrid::getHeight() const noexcept {
+unsigned int HexGrid::getHeight() const noexcept {
     return height;
 }
     
-int HexGrid::getWidth() const noexcept {
+unsigned int HexGrid::getWidth() const noexcept {
     return width;
 }
 
@@ -35,7 +35,7 @@ std::vector<HexCell> HexGrid::getHexCells() const noexcept {
     return cells;
 }
 
-sf::Vector2f HexGrid::getCellCenter(const sf::Vector2i &coords) const {
+sf::Vector2f HexGrid::getCellCenter(const sf::Vector2u &coords) const {
     return cells_center.at(coords);
 }
 
@@ -44,8 +44,8 @@ sf::Vector2f HexGrid::getCellCenter(const sf::Vector2i &coords) const {
 void HexGrid::computeCells() noexcept {
     cells.clear();
 
-    for (int col = 0; col < cols; ++col) {
-        for (int row = 0; row < rows; ++row) {
+    for (unsigned int col = 0; col < cols; ++col) {
+        for (unsigned int row = 0; row < rows; ++row) {
             const float x = col*radius*std::sqrt(3) + (row % 2 == 0 ? 0 : radius*sqrt(3)/2) - radius*(1-std::sqrt(3)/2);
             const float y = row*radius*1.5f;
 
