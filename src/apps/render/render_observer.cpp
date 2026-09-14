@@ -24,7 +24,7 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/System/Angle.hpp>
 
-const std::string FRAMES_DIR = "/frames";
+#define FRAMES_DIR "/frames"
 
 // Public
 
