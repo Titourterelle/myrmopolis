@@ -181,7 +181,7 @@ void RenderObserver::createStepFrames(const HexGrid &grid) {
     
     sf::RenderTexture frame_texture{{resolution.first, resolution.second}};
 
-    const sf::Vector2f ant_size = {grid.getCellsRadius()/ant_image.getSize().x, grid.getCellsRadius()/ant_image.getSize().y};
+    const sf::Vector2f ant_size = {grid.getCellsRadius()/static_cast<float>(ant_image.getSize().x), grid.getCellsRadius()/static_cast<float>(ant_image.getSize().y)};
     
     sf::Sprite ant_sprite{ant_image};
     ant_sprite.setOrigin(sf::Vector2f(ant_image.getSize()) / 2.f);
@@ -190,7 +190,7 @@ void RenderObserver::createStepFrames(const HexGrid &grid) {
     for (int i = 0; i < settings.frames_per_step; ++i) {
         frame_texture.clear();
         frame_texture.draw(sf::Sprite(base.getTexture()));
-        drawAnts(frame_texture, ant_sprite, (float)i/settings.frames_per_step);
+        drawAnts(frame_texture, ant_sprite, static_cast<float>(i)/static_cast<float>(settings.frames_per_step));
         frame_texture.display();
 
         const sf::Image frame = frame_texture.getTexture().copyToImage();
@@ -207,7 +207,7 @@ void RenderObserver::drawAnts(sf::RenderTexture &frame_texture, sf::Sprite &ant_
     for (const auto& ant : current_board->ants_by_id | std::views::values) {
         const sf::Vector2f delta = ant.current_offset - ant.previous_offset;
         const sf::Vector2f pos = ant.previous_offset + (delta)*ease;
-        const sf::Angle direction = sf::radians(std::atan2(delta.y, delta.x) + std::numbers::pi/2);
+        const sf::Angle direction = sf::radians(static_cast<float>(std::atan2(delta.y, delta.x) + std::numbers::pi/2));
 
         ant_sprite.setPosition(pos);
         ant_sprite.setRotation(direction);
@@ -301,7 +301,7 @@ void RenderObserver::updateAntsOffsets(const std::set<unsigned int> &new_ants, c
     static std::uniform_real_distribution<> rho_dis(0, 1);
     static std::uniform_real_distribution<> theta_dis(0, 2*std::numbers::pi);
 
-    const float radius = grid.getCellsRadius()*std::sqrt(3)/2;
+    const auto radius = static_cast<float>(grid.getCellsRadius()*std::sqrt(3)/2);
 
     for (auto& [id, ant] : current_board->ants_by_id) {
         const sf::Vector2f current_pos = grid.getCellCenter(ant.current_tile);
@@ -312,8 +312,8 @@ void RenderObserver::updateAntsOffsets(const std::set<unsigned int> &new_ants, c
             continue;
         }
 
-        const float rho = radius*std::sqrt(rho_dis(gen));
-        const float theta = theta_dis(gen);
+        const auto rho = static_cast<float>(radius*std::sqrt(rho_dis(gen)));
+        const auto theta = static_cast<float>(theta_dis(gen));
 
         const sf::Vector2f random_delta{rho*std::cos(theta), rho*std::sin(theta)};
 
