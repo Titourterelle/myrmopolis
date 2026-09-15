@@ -141,8 +141,8 @@ void RenderObserver::createStepFrames(const HexGrid &grid) {
     const std::set<sf::Vector2u, Vector2uCompare> anthills = getAnthillsCoord(*previous_snapshot);
     const std::map<sf::Vector2u, FoodIntensity, Vector2uCompare> tile_food = getTileFoodIntensity(*previous_snapshot);
 
-    for (const auto& cell : grid.getHexCells()) {
-        const sf::Vector2u cell_coords{cell.coords.x, cell.coords.y};
+    for (const auto& [px, coords] : grid.getHexCells()) {
+        const sf::Vector2u cell_coords{coords.x, coords.y};
         if (anthills.contains(cell_coords)) {
             hexagon.setFillColor(sf::Color::Red);
         }
@@ -170,7 +170,7 @@ void RenderObserver::createStepFrames(const HexGrid &grid) {
             }
         }
         
-        hexagon.setPosition({cell.px.x, cell.px.y});
+        hexagon.setPosition({px.x, px.y});
         base.draw(hexagon);
     }
     base.display();
@@ -235,8 +235,8 @@ std::set<sf::Vector2u, Vector2uCompare> RenderObserver::getAnthillsCoord(const m
     std::set<sf::Vector2u, Vector2uCompare> anthills;
     
     for (const auto& colony : snapshot.colonies) {
-        for (const auto& anthill : colony.anthills_coords) {
-            anthills.insert({anthill.first, anthill.second});
+        for (const auto& [x, y] : colony.anthills_coords) {
+            anthills.insert({x, y});
         }
     }
 
