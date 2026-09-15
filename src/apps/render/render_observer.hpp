@@ -39,11 +39,13 @@ class RenderObserver : public myrmo::Observer {
 
         static std::set<sf::Vector2u, Vector2uCompare> getAnthillsCoord(const myrmo::snapshot::Snapshot &snapshot) noexcept;
         static std::map<sf::Vector2u, FoodIntensity, Vector2uCompare> getTileFoodIntensity(const myrmo::snapshot::Snapshot &snapshot) noexcept;
-        std::set<unsigned int> updateAntsCoords(const myrmo::snapshot::Snapshot &snapshot) noexcept;
-        void updateAntsOffsets(const std::set<unsigned int> &new_ants, const HexGrid &grid) noexcept;
+
+        std::set<unsigned int> updateAntsCoords(const myrmo::snapshot::Snapshot &snapshot) const noexcept;
+        void updateAntsOffsets(const std::set<unsigned int> &new_ants, const HexGrid &grid) const noexcept;
+
 
         std::string framePath(size_t index) const noexcept;
-        void encodeVideo(std::string &name) const;
+        void encodeVideo(const std::string &name) const;
         void clean() const noexcept;
 
 

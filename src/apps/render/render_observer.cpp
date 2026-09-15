@@ -201,7 +201,7 @@ void RenderObserver::createStepFrames(const HexGrid &grid) {
     }
 }
 
-void RenderObserver::drawAnts(sf::RenderTexture &frame_texture, sf::Sprite &ant_sprite, float t) const {
+void RenderObserver::drawAnts(sf::RenderTexture &frame_texture, sf::Sprite &ant_sprite, const float t) const {
     const float ease = easeInOut(t);
 
     for (const auto& ant : current_board->ants_by_id | std::views::values) {
@@ -269,7 +269,7 @@ std::map<sf::Vector2u, RenderObserver::FoodIntensity, Vector2uCompare> RenderObs
     return food_per_tile;
 }
 
-std::set<unsigned int> RenderObserver::updateAntsCoords(const myrmo::snapshot::Snapshot &snapshot) noexcept {
+std::set<unsigned int> RenderObserver::updateAntsCoords(const myrmo::snapshot::Snapshot &snapshot) const noexcept {
     std::set<unsigned int> new_ids;
 
     for (const auto& colony : snapshot.colonies) {
@@ -294,7 +294,7 @@ std::set<unsigned int> RenderObserver::updateAntsCoords(const myrmo::snapshot::S
     return new_ids;
 }
 
-void RenderObserver::updateAntsOffsets(const std::set<unsigned int> &new_ants, const HexGrid &grid) noexcept {
+void RenderObserver::updateAntsOffsets(const std::set<unsigned int> &new_ants, const HexGrid &grid) const noexcept {
     static std::random_device rd;
     static std::mt19937 gen(rd());
 
@@ -315,7 +315,7 @@ void RenderObserver::updateAntsOffsets(const std::set<unsigned int> &new_ants, c
         const float rho = radius*std::sqrt(rho_dis(gen));
         const float theta = theta_dis(gen);
 
-        sf::Vector2f random_delta{rho*std::cos(theta), rho*std::sin(theta)};
+        const sf::Vector2f random_delta{rho*std::cos(theta), rho*std::sin(theta)};
 
         ant.previous_offset = ant.current_offset;
         ant.current_offset = current_pos + random_delta;
@@ -326,7 +326,7 @@ std::string RenderObserver::framePath(size_t index) const noexcept {
     return std::format("{}/frame_{:06d}.png", settings.output_dir + FRAMES_DIR, index);
 }
 
-void RenderObserver::encodeVideo(std::string &name) const {
+void RenderObserver::encodeVideo(const std::string &name) const {
     const std::string command = std::format(
         "ffmpeg -r {} -i {}/frame_%06d.png -c:v libx264 -pix_fmt yuv420p {}/{}.mp4 -loglevel error",
         settings.fps,
