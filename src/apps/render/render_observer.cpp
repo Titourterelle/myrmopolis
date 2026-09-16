@@ -15,6 +15,7 @@
 #include <utility>
 #include <vector>
 #include <random>
+#include <ranges>
 
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Image.hpp>
@@ -25,6 +26,30 @@
 #include <SFML/System/Angle.hpp>
 
 #define FRAMES_DIR "/frames"
+
+// Custom types
+
+enum class RenderObserver::FoodIntensity {
+    None,
+    Low,
+    Medium,
+    High,
+    Ultra
+};
+
+struct RenderObserver::AntVisual {
+    sf::Vector2u previous_tile;
+    sf::Vector2u current_tile;
+
+    sf::Vector2f previous_offset;
+    sf::Vector2f current_offset;
+};
+
+struct RenderObserver::Board {
+    std::vector<myrmo::snapshot::Snapshot> snapshots;
+    std::map<unsigned int, AntVisual> ants_by_id;
+};
+
 
 // Public
 
@@ -37,20 +62,37 @@ RenderObserver::RenderObserver() {
     }
 }
 
+RenderObserver::~RenderObserver() = default;
+
 void RenderObserver::observe(const myrmo::snapshot::Snapshot &snapshot) {
-    snapshots.push_back(snapshot);
+    for (const auto& [id, board] : boards_by_id) {
+        if (id == snapshot.board_id) {
+            board->snapshots.push_back(snapshot);
+            return;
+        }
+    }
+
+    boards_by_id[snapshot.board_id] = std::make_unique<Board>();
+    boards_by_id.at(snapshot.board_id)->snapshots.push_back(snapshot);
+
 }
 
-void RenderObserver::generateVideo(const RenderSettings &render_settings, std::string name) {
+void RenderObserver::generateVideo(const RenderSettings &render_settings, const std::string &base_name) {
     settings = render_settings;
-    try {
-        renderFrames();
-        encodeVideo(name);
-    } catch (const std::exception& e) {
+
+    for (const auto& [id, board] : boards_by_id) {
+        current_board = board.get();
+        const std::string name = std::format("{}-{}", base_name, id);
+
+        try {
+            renderFrames();
+            encodeVideo(name);
+        } catch (const std::exception& e) {
+            clean();
+            throw;
+        }
         clean();
-        throw;
     }
-    clean();
 }
 
 void RenderObserver::generateVideo(const std::vector<RenderSettings> &render_settings) {
@@ -63,46 +105,23 @@ void RenderObserver::generateVideo(const std::vector<RenderSettings> &render_set
 
 // Private
 
-enum class RenderObserver::FoodIntensity {
-    None,
-    Low,
-    Medium,
-    High,
-    Ultra
-};
-
 void RenderObserver::renderFrames() {
     std::filesystem::create_directories(settings.output_dir + FRAMES_DIR);
 
-    float radius;
-    switch (settings.quality)
-    {
-        case RenderQuality::Low :
-            radius = 20;
-            break;
-        case RenderQuality::Medium :
-            radius = 50;
-            break;
-        case RenderQuality::High :
-            radius = 100;
-            break;
-        default :
-            radius = 50;
-    }
+    current_snapshot = &current_board->snapshots[0];
+    const float radius = getCellsRadiusFromQuality(settings.quality);
 
-    const HexGrid grid{snapshots[0].width, snapshots[0].height, radius};
+    const HexGrid grid{current_snapshot[0].width, current_snapshot[0].height, radius};
 
     auto makeEven = [](const unsigned int v) { return v % 2 == 0 ? v : v + 1; };
     resolution.first  = makeEven(grid.getWidth());
     resolution.second = makeEven(grid.getHeight());
 
-    current_snapshot = snapshots[0];
+    const ProgressBar progress_bar{static_cast<unsigned int>(current_board->snapshots.size())};
 
-    ProgressBar progress_bar{static_cast<unsigned int>(snapshots.size())};
-
-    for (size_t i = 0; i < snapshots.size(); ++i) {
+    for (size_t i = 0; i < current_board->snapshots.size(); ++i) {
         previous_snapshot = current_snapshot;
-        current_snapshot = snapshots[i];
+        current_snapshot = &current_board->snapshots[i];
         createStepFrames(grid);
         
         progress_bar.update(i+1);
@@ -119,11 +138,11 @@ void RenderObserver::createStepFrames(const HexGrid &grid) {
     hexagon.setOutlineThickness(2);
     hexagon.setOutlineColor(sf::Color::Black);
 
-    const std::set<sf::Vector2u, Vector2uCompare> anthills = getAnthillsCoord(previous_snapshot);
-    const std::map<sf::Vector2u, RenderObserver::FoodIntensity, Vector2uCompare> tile_food = getTileFoodIntensity(previous_snapshot);
+    const std::set<sf::Vector2u, Vector2uCompare> anthills = getAnthillsCoord(*previous_snapshot);
+    const std::map<sf::Vector2u, FoodIntensity, Vector2uCompare> tile_food = getTileFoodIntensity(*previous_snapshot);
 
-    for (const auto& cell : grid.getHexCells()) {
-        const sf::Vector2u cell_coords{cell.coords.x, cell.coords.y};
+    for (const auto& [px, coords] : grid.getHexCells()) {
+        const sf::Vector2u cell_coords{coords.x, coords.y};
         if (anthills.contains(cell_coords)) {
             hexagon.setFillColor(sf::Color::Red);
         }
@@ -151,18 +170,18 @@ void RenderObserver::createStepFrames(const HexGrid &grid) {
             }
         }
         
-        hexagon.setPosition({cell.px.x, cell.px.y});
+        hexagon.setPosition({px.x, px.y});
         base.draw(hexagon);
     }
     base.display();
 
     // Ants
-    std::set<unsigned int> new_ants = updateAntsCoords(current_snapshot);
+    const std::set<unsigned int> new_ants = updateAntsCoords(*current_snapshot);
     updateAntsOffsets(new_ants, grid);
     
     sf::RenderTexture frame_texture{{resolution.first, resolution.second}};
 
-    const sf::Vector2f ant_size = {grid.getCellsRadius()/ant_image.getSize().x, grid.getCellsRadius()/ant_image.getSize().y};
+    const sf::Vector2f ant_size = {grid.getCellsRadius()/static_cast<float>(ant_image.getSize().x), grid.getCellsRadius()/static_cast<float>(ant_image.getSize().y)};
     
     sf::Sprite ant_sprite{ant_image};
     ant_sprite.setOrigin(sf::Vector2f(ant_image.getSize()) / 2.f);
@@ -171,24 +190,24 @@ void RenderObserver::createStepFrames(const HexGrid &grid) {
     for (int i = 0; i < settings.frames_per_step; ++i) {
         frame_texture.clear();
         frame_texture.draw(sf::Sprite(base.getTexture()));
-        drawAnts(frame_texture, ant_sprite, (float)i/settings.frames_per_step);
+        drawAnts(frame_texture, ant_sprite, static_cast<float>(i)/static_cast<float>(settings.frames_per_step));
         frame_texture.display();
 
         const sf::Image frame = frame_texture.getTexture().copyToImage();
 
-        if (!frame.saveToFile(framePath(i + current_snapshot.step*settings.frames_per_step))) {
+        if (!frame.saveToFile(framePath(i + current_snapshot->step*settings.frames_per_step))) {
             throw std::runtime_error("Can't save the frame");
         }
     }
 }
 
-void RenderObserver::drawAnts(sf::RenderTexture &frame_texture, sf::Sprite &ant_sprite, float t) const {
+void RenderObserver::drawAnts(sf::RenderTexture &frame_texture, sf::Sprite &ant_sprite, const float t) const {
     const float ease = easeInOut(t);
 
-    for (const auto& [id, ant] : ants_by_id) {
+    for (const auto& ant : current_board->ants_by_id | std::views::values) {
         const sf::Vector2f delta = ant.current_offset - ant.previous_offset;
         const sf::Vector2f pos = ant.previous_offset + (delta)*ease;
-        const sf::Angle direction = sf::radians(std::atan2(delta.y, delta.x) + std::numbers::pi/2);
+        const sf::Angle direction = sf::radians(static_cast<float>(std::atan2(delta.y, delta.x) + std::numbers::pi/2));
 
         ant_sprite.setPosition(pos);
         ant_sprite.setRotation(direction);
@@ -197,12 +216,27 @@ void RenderObserver::drawAnts(sf::RenderTexture &frame_texture, sf::Sprite &ant_
     }
 }
 
+
+float RenderObserver::getCellsRadiusFromQuality(const RenderQuality &quality) {
+    switch (quality)
+    {
+    case RenderQuality::Low :
+        return 20;
+    case RenderQuality::Medium :
+        return 50;
+    case RenderQuality::High :
+        return 100;
+    default :
+        return 50;
+    }
+}
+
 std::set<sf::Vector2u, Vector2uCompare> RenderObserver::getAnthillsCoord(const myrmo::snapshot::Snapshot &snapshot) noexcept {
     std::set<sf::Vector2u, Vector2uCompare> anthills;
     
     for (const auto& colony : snapshot.colonies) {
-        for (const auto& anthill : colony.anthills_coords) {
-            anthills.insert({anthill.first, anthill.second});
+        for (const auto& [x, y] : colony.anthills_coords) {
+            anthills.insert({x, y});
         }
     }
 
@@ -235,24 +269,24 @@ std::map<sf::Vector2u, RenderObserver::FoodIntensity, Vector2uCompare> RenderObs
     return food_per_tile;
 }
 
-std::set<unsigned int> RenderObserver::updateAntsCoords(const myrmo::snapshot::Snapshot &snapshot) noexcept {
+std::set<unsigned int> RenderObserver::updateAntsCoords(const myrmo::snapshot::Snapshot &snapshot) const noexcept {
     std::set<unsigned int> new_ids;
 
     for (const auto& colony : snapshot.colonies) {
-        for (const auto& ant : colony.ants) {
+        for (const auto& [id, x, y] : colony.ants) {
 
-            if (ants_by_id.contains(ant.id)) {
-                AntVisual *ant_visual = &ants_by_id.at(ant.id);
+            if (current_board->ants_by_id.contains(id)) {
+                AntVisual *ant_visual = &current_board->ants_by_id.at(id);
 
                 ant_visual->previous_tile = ant_visual->current_tile;
-                ant_visual->current_tile = sf::Vector2u{ant.x, ant.y};
+                ant_visual->current_tile = sf::Vector2u{x, y};
             }
             else {
-                AntVisual *ant_visual = &ants_by_id[ant.id];
-                ant_visual->current_tile = sf::Vector2u{ant.x, ant.y};
+                AntVisual *ant_visual = &current_board->ants_by_id[id];
+                ant_visual->current_tile = sf::Vector2u{x, y};
                 ant_visual->previous_tile = ant_visual->current_tile;
 
-                new_ids.insert(ant.id);
+                new_ids.insert(id);
             }
         }
     }
@@ -260,16 +294,16 @@ std::set<unsigned int> RenderObserver::updateAntsCoords(const myrmo::snapshot::S
     return new_ids;
 }
 
-void RenderObserver::updateAntsOffsets(const std::set<unsigned int> &new_ants, const HexGrid &grid) noexcept {
+void RenderObserver::updateAntsOffsets(const std::set<unsigned int> &new_ants, const HexGrid &grid) const noexcept {
     static std::random_device rd;
     static std::mt19937 gen(rd());
 
     static std::uniform_real_distribution<> rho_dis(0, 1);
     static std::uniform_real_distribution<> theta_dis(0, 2*std::numbers::pi);
 
-    const float radius = grid.getCellsRadius()*std::sqrt(3)/2;
+    const auto radius = static_cast<float>(grid.getCellsRadius()*std::sqrt(3)/2);
 
-    for (auto& [id, ant] : ants_by_id) {
+    for (auto& [id, ant] : current_board->ants_by_id) {
         const sf::Vector2f current_pos = grid.getCellCenter(ant.current_tile);
 
         if (new_ants.contains(id)) {
@@ -278,10 +312,10 @@ void RenderObserver::updateAntsOffsets(const std::set<unsigned int> &new_ants, c
             continue;
         }
 
-        const float rho = radius*std::sqrt(rho_dis(gen));
-        const float theta = theta_dis(gen);
+        const auto rho = static_cast<float>(radius*std::sqrt(rho_dis(gen)));
+        const auto theta = static_cast<float>(theta_dis(gen));
 
-        sf::Vector2f random_delta{rho*std::cos(theta), rho*std::sin(theta)};
+        const sf::Vector2f random_delta{rho*std::cos(theta), rho*std::sin(theta)};
 
         ant.previous_offset = ant.current_offset;
         ant.current_offset = current_pos + random_delta;
@@ -292,7 +326,7 @@ std::string RenderObserver::framePath(size_t index) const noexcept {
     return std::format("{}/frame_{:06d}.png", settings.output_dir + FRAMES_DIR, index);
 }
 
-void RenderObserver::encodeVideo(std::string &name) const {
+void RenderObserver::encodeVideo(const std::string &name) const {
     const std::string command = std::format(
         "ffmpeg -r {} -i {}/frame_%06d.png -c:v libx264 -pix_fmt yuv420p {}/{}.mp4 -loglevel error",
         settings.fps,

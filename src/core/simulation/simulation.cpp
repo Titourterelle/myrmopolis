@@ -14,6 +14,8 @@ using namespace myrmo;
 
 struct Simulation::Impl {
     void step() noexcept;
+    void giveSnapshotToObservers(const snapshot::Snapshot &snapshot) const noexcept;
+
     [[nodiscard]] snapshot::Snapshot takeSnapshot() const noexcept;
 
     void initBoards() noexcept;
@@ -46,20 +48,11 @@ Simulation::~Simulation() = default;
 
 
 void Simulation::run() const {
-    const snapshot::Snapshot first_snapshot = impl_->takeSnapshot();
-
-    for (const auto observer : impl_->observers) {
-        observer->observe(first_snapshot);
-    }
+    impl_->giveSnapshotToObservers(impl_->takeSnapshot()); // First Snapshot of the first board (t = 0)
 
     while (!impl_->is_over) {
         impl_->step();
-
-        const snapshot::Snapshot snapshot = impl_->takeSnapshot();
-
-        for (const auto observer : impl_->observers) {
-            observer->observe(snapshot);
-        }
+        impl_->giveSnapshotToObservers(impl_->takeSnapshot());
     }
 }
 
@@ -76,12 +69,19 @@ void Simulation::Impl::step() noexcept
 
     if (current_round >= max_round) {
         if (current_board != boards.back().get()) {
+            giveSnapshotToObservers(takeSnapshot()); // Last Snapshot before next board
             current_board = boards.at(++index_board).get();
             current_round = 0;
         }
         else {
             is_over = true;
         }
+    }
+}
+
+void Simulation::Impl::giveSnapshotToObservers(const snapshot::Snapshot &snapshot) const noexcept {
+    for (const auto observer : observers) {
+        observer->observe(snapshot);
     }
 }
 

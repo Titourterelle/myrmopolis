@@ -4,7 +4,7 @@
 
 int main() {
     const RenderConfigManager cm{"../config.json"};
-    myrmo::Simulation sim{cm.getSimulationSettings()};
+    const myrmo::Simulation sim{cm.getSimulationSettings()};
 
     RenderObserver observer{};
 
