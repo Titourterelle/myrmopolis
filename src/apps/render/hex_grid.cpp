@@ -46,10 +46,12 @@ void HexGrid::computeCells() noexcept {
 
     for (unsigned int col = 0; col < cols; ++col) {
         for (unsigned int row = 0; row < rows; ++row) {
-            const float x = col*radius*std::sqrt(3) + (row % 2 == 0 ? 0 : radius*sqrt(3)/2) - radius*(1-std::sqrt(3)/2);
-            const float y = row*radius*1.5f;
+            const auto x = static_cast<float>(
+                static_cast<float>(col)*radius*std::sqrt(3)
+                + (row % 2 == 0 ? 0 : radius*sqrt(3)/2) - radius*(1-std::sqrt(3)/2));
+            const auto y = static_cast<float>(row)*radius*1.5f;
 
-            HexCell cell{{x, y}, {col, row}};
+            HexCell cell{.px = {x, y}, .coords = {col, row}};
             cells.push_back(cell);
 
             const float center_x = x + radius;
@@ -58,6 +60,10 @@ void HexGrid::computeCells() noexcept {
         }
     }
 
-    width = (cols + 0.5f)*radius*std::sqrt(3);
-    height = radius*(rows + (rows+1)/2); // NOLINT(bugprone-integer-division)
+    width = static_cast<unsigned int>(
+            (static_cast<float>(cols) + 0.5f)*radius*std::sqrt(3)
+        );
+    height = static_cast<unsigned int>(
+            radius*(static_cast<float>(rows) + (static_cast<float>(rows)+1)/2)
+        );
 }
