@@ -13,11 +13,11 @@ class RenderConfigManager : public myrmo::ConfigManager {
         [[nodiscard]] std::vector<RenderSettings> getRenderSettings() const noexcept;
 
     private:
-        static const std::unordered_map<std::string, RenderQuality> str_to_quality;
+        static const std::unordered_map<std::string, RenderQuality> STR_TO_QUALITY;
 
         static RenderQuality convertStrToQuality(const std::string& input);
 
         void importRenderSettings();
 
-        std::vector<RenderSettings> render_settings;
+        std::vector<RenderSettings> render_settings_;
 };

@@ -14,10 +14,10 @@ class Tile {
         struct Coordinates {
             unsigned int x;
             unsigned int y;
-            bool operator==(const Coordinates &other) const noexcept {
+            bool operator==(const Coordinates& other) const noexcept {
                 return (x == other.x && y == other.y);
             }
-            bool operator<(const Coordinates &other) const noexcept {
+            bool operator<(const Coordinates& other) const noexcept {
                 return (x < other.x || (x == other.x && y < other.y));
             }
         };
@@ -25,20 +25,20 @@ class Tile {
         explicit Tile(unsigned int x, unsigned int y) noexcept;
         virtual ~Tile() = default;
 
-        virtual void interact(Ant &ant) noexcept = 0;
+        virtual void interact(Ant& ant) noexcept = 0;
         [[nodiscard]] virtual snapshot::Tile takeTileSnapshot() const noexcept;
         
         [[nodiscard]] virtual std::string getType() const noexcept;
         [[nodiscard]] const Coordinates& getCoordinates() const noexcept;
         [[nodiscard]] const Pheromones& getPheromones() const noexcept;
 
-        bool operator==(const Tile &other_tile) const noexcept;
+        bool operator==(const Tile& other_tile) const noexcept;
 
     protected:
-        Pheromones pheromones{0, 0};
+        Pheromones pheromones{.home = 0, .food = 0};
 
     private:
-        const Coordinates position;
+        const Coordinates position_;
 };
 
 }

@@ -5,7 +5,7 @@
 
 // Public
 
-HexGrid::HexGrid(const unsigned int cols, const unsigned int rows, const float radius) : cols(cols), rows(rows), radius(radius) {
+HexGrid::HexGrid(const unsigned int cols, const unsigned int rows, const float radius) : cols_(cols), rows_(rows), radius_(radius) {
     if (cols == 0) {
         throw std::runtime_error("Columns number can't be null");
     }
@@ -20,44 +20,50 @@ HexGrid::HexGrid(const unsigned int cols, const unsigned int rows, const float r
 }
 
 unsigned int HexGrid::getHeight() const noexcept {
-    return height;
+    return height_;
 }
     
 unsigned int HexGrid::getWidth() const noexcept {
-    return width;
+    return width_;
 }
 
 float HexGrid::getCellsRadius() const noexcept {
-    return radius;
+    return radius_;
 }
 
 std::vector<HexCell> HexGrid::getHexCells() const noexcept {
-    return cells;
+    return cells_;
 }
 
-sf::Vector2f HexGrid::getCellCenter(const sf::Vector2u &coords) const {
-    return cells_center.at(coords);
+sf::Vector2f HexGrid::getCellCenter(const sf::Vector2u& coords) const {
+    return cells_center_.at(coords);
 }
 
 //Private
 
 void HexGrid::computeCells() noexcept {
-    cells.clear();
+    cells_.clear();
 
-    for (unsigned int col = 0; col < cols; ++col) {
-        for (unsigned int row = 0; row < rows; ++row) {
-            const float x = col*radius*std::sqrt(3) + (row % 2 == 0 ? 0 : radius*sqrt(3)/2) - radius*(1-std::sqrt(3)/2);
-            const float y = row*radius*1.5f;
+    for (unsigned int col = 0; col < cols_; ++col) {
+        for (unsigned int row = 0; row < rows_; ++row) {
+            const auto x = static_cast<float>(
+                static_cast<float>(col)*radius_*std::sqrt(3)
+                + (row % 2 == 0 ? 0 : radius_*sqrt(3)/2) - radius_*(1-std::sqrt(3)/2));
+            const auto y = static_cast<float>(row)*radius_*1.5f;
 
-            HexCell cell{{x, y}, {col, row}};
-            cells.push_back(cell);
+            HexCell cell{.px = {x, y}, .coords = {col, row}};
+            cells_.push_back(cell);
 
-            const float center_x = x + radius;
-            const float center_y = y + radius;
-            cells_center.insert({{col, row}, {center_x, center_y}});
+            const float center_x = x + radius_;
+            const float center_y = y + radius_;
+            cells_center_.insert({{col, row}, {center_x, center_y}});
         }
     }
 
-    width = (cols + 0.5f)*radius*std::sqrt(3);
-    height = radius*(rows + (rows+1)/2); // NOLINT(bugprone-integer-division)
+    width_ = static_cast<unsigned int>(
+            (static_cast<float>(cols_) + 0.5f)*radius_*std::sqrt(3)
+        );
+    height_ = static_cast<unsigned int>(
+            radius_*(static_cast<float>(rows_) + (static_cast<float>(rows_)+1)/2)
+        );
 }

@@ -8,10 +8,10 @@ using namespace myrmo;
 
 AnthillTile::AnthillTile(const unsigned int x, const unsigned int y) noexcept : Tile(x, y) {}
 
-void AnthillTile::interact(Ant &ant) noexcept {
+void AnthillTile::interact(Ant& ant) noexcept {
     if (ant.isTransportingFood()) {
         ant.dropFood();
-        ++food_reserve;
+        ++food_reserve_;
     }
 }
 

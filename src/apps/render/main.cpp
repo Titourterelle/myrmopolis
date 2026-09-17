@@ -1,6 +1,6 @@
-#include "simulation.hpp"
 #include "render_config_manager.hpp"
 #include "render_observer.hpp"
+#include "simulation.hpp"
 
 int main() {
     const RenderConfigManager cm{"../config.json"};

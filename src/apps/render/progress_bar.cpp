@@ -1,12 +1,12 @@
 #include "progress_bar.hpp"
 
-#include <iostream>
 #include <iomanip>
+#include <iostream>
 #include <stdexcept>
 
 ProgressBar::ProgressBar(const unsigned int total, const unsigned int bar_width) :
-    total(total),
-    bar_width(bar_width)
+    total_(total),
+    bar_width_(bar_width)
 {
     if (total == 0) {
         throw std::invalid_argument("Maximum value of the progress bar cannot be 0");
@@ -18,21 +18,21 @@ ProgressBar::ProgressBar(const unsigned int total, const unsigned int bar_width)
 }
 
 void ProgressBar::update(const unsigned int current) const {
-    if (current > total) {
+    if (current > total_) {
         throw std::invalid_argument("The current value cannot exceed the maximum value");
     }
 
 
-    const float ratio = static_cast<float>(current) / static_cast<float>(total);
-    const auto filled = static_cast<unsigned int>(ratio * static_cast<float>(bar_width));
+    const float ratio = static_cast<float>(current) / static_cast<float>(total_);
+    const auto filled = static_cast<unsigned int>(ratio * static_cast<float>(bar_width_));
 
     std::cout << "\r[";
-    for (unsigned int i = 0; i < bar_width; ++i) {
+    for (unsigned int i = 0; i < bar_width_; ++i) {
         std::cout << (i < filled ? '#' : '-');
     }
-    std::cout << "] " << std::setw(3) << static_cast<int>(ratio * 100) << "% " << "(" << current << "/" << total << ")" << std::flush;
+    std::cout << "] " << std::setw(3) << static_cast<int>(ratio * 100) << "% " << "(" << current << "/" << total_ << ")" << std::flush;
 
-    if (current >= total) {
+    if (current >= total_) {
         std::cout << '\n';
     }
 }

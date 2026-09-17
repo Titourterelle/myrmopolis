@@ -15,7 +15,7 @@ class ConfigManager {
         [[nodiscard]] virtual const SimulationSettings& getSimulationSettings() const noexcept;
 
     protected:
-        std::ifstream& getConfigFileStream() const noexcept;
+        [[nodiscard]] std::ifstream& getConfigFileStream() const noexcept;
         
     private:
         struct Impl;

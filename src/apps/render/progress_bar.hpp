@@ -7,6 +7,6 @@ class ProgressBar {
         void update(unsigned int current) const;
 
     private:
-        unsigned int total;
-        unsigned int bar_width;
+        unsigned int total_;
+        unsigned int bar_width_;
 };
