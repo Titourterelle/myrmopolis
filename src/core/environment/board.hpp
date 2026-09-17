@@ -20,20 +20,20 @@ class Board {
         void step() const noexcept;
         snapshot::Snapshot createSnapshot() const noexcept;
 
-        std::vector<Tile*> getAdjacentTiles(const Tile &tile) const noexcept;
+        std::vector<Tile*> getAdjacentTiles(const Tile& tile) const noexcept;
 
     private:
         void checkSettings() const;
         void createTiles() noexcept;
         void initColonies() noexcept;
 
-        const std::pair<unsigned int, unsigned int> dimensions;
-        const BoardSettings board_settings;
+        const std::pair<unsigned int, unsigned int> dimensions_;
+        const BoardSettings board_settings_;
 
-        std::unordered_map<std::string, AnthillTile*> starting_anthills;
+        std::unordered_map<std::string, AnthillTile*> starting_anthills_;
         
-        std::vector<std::unique_ptr<Colony>> colonies;
-        std::vector<std::vector<std::unique_ptr<Tile>>> tiles;
+        std::vector<std::unique_ptr<Colony>> colonies_;
+        std::vector<std::vector<std::unique_ptr<Tile>>> tiles_;
 };
 
 }

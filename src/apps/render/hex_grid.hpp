@@ -20,17 +20,17 @@ class HexGrid {
         [[nodiscard]] unsigned int getWidth() const noexcept;
         [[nodiscard]] float getCellsRadius() const noexcept;
         [[nodiscard]] std::vector<HexCell> getHexCells() const noexcept;
-        [[nodiscard]] sf::Vector2f getCellCenter(const sf::Vector2u &coords) const;
+        [[nodiscard]] sf::Vector2f getCellCenter(const sf::Vector2u& coords) const;
 
     private:
         void computeCells() noexcept;
 
-        unsigned int height = 0;
-        unsigned int width = 0;
+        unsigned int height_ = 0;
+        unsigned int width_ = 0;
 
-        const unsigned int cols;
-        const unsigned int rows;
-        const float radius;
-        std::vector<HexCell> cells;
-        std::map<sf::Vector2u, sf::Vector2f, Vector2uCompare> cells_center;
+        const unsigned int cols_;
+        const unsigned int rows_;
+        const float radius_;
+        std::vector<HexCell> cells_;
+        std::map<sf::Vector2u, sf::Vector2f, Vector2uCompare> cells_center_;
 };

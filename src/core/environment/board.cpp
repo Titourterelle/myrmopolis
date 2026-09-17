@@ -17,9 +17,9 @@ using namespace myrmo;
 
 // Public
 
-Board::Board(const BoardSettings &settings) :
-    dimensions(settings.column, settings.row),
-    board_settings(settings)
+Board::Board(const BoardSettings& settings) :
+    dimensions_(settings.column, settings.row),
+    board_settings_(settings)
 {
     checkSettings();
     createTiles();
@@ -27,7 +27,7 @@ Board::Board(const BoardSettings &settings) :
 }
 
 void Board::step() const noexcept {
-    for (const auto& colony : colonies) {
+    for (const auto& colony : colonies_) {
         colony->step();
     }
 }
@@ -35,22 +35,22 @@ void Board::step() const noexcept {
 snapshot::Snapshot Board::createSnapshot() const noexcept {
     snapshot::Snapshot snapshot;
 
-    snapshot.width = dimensions.first;
-    snapshot.height = dimensions.second;
+    snapshot.width = dimensions_.first;
+    snapshot.height = dimensions_.second;
 
-    snapshot.number_of_colonies = colonies.size();
+    snapshot.number_of_colonies = colonies_.size();
     snapshot.number_of_ants = 0;
-    for (const auto& colony : colonies) {
+    for (const auto& colony : colonies_) {
         snapshot.number_of_ants += colony->getNumberOfAnts();
     }
 
-    for (const auto& column : tiles) {
+    for (const auto& column : tiles_) {
         for (const auto& tile : column) {
             snapshot.tiles.push_back(tile->takeTileSnapshot());
         }
     }
 
-    for (const auto& colony : colonies) {
+    for (const auto& colony : colonies_) {
         snapshot::Colony snapshot_colony;
         snapshot_colony.name = colony->getName();
         
@@ -85,35 +85,35 @@ std::vector<Tile*> Board::getAdjacentTiles(const Tile &tile) const noexcept {
 
     if (x != 0) {
         left = true;
-        adjacent_tiles.push_back(tiles[x - 1][y].get());
+        adjacent_tiles.push_back(tiles_[x - 1][y].get());
     }
-    if (x + 1 != dimensions.first) {
+    if (x + 1 != dimensions_.first) {
         right = true;
-        adjacent_tiles.push_back(tiles[x + 1][y].get());
+        adjacent_tiles.push_back(tiles_[x + 1][y].get());
     }
     if (y != 0) {
         down = true;
-        adjacent_tiles.push_back(tiles[x][y - 1].get());
+        adjacent_tiles.push_back(tiles_[x][y - 1].get());
     }
-    if (y + 1 != dimensions.second) {
+    if (y + 1 != dimensions_.second) {
         up = true;
-        adjacent_tiles.push_back(tiles[x][y + 1].get());
+        adjacent_tiles.push_back(tiles_[x][y + 1].get());
     }
 
     if (y % 2 == 0) {
         if (up && left) {
-            adjacent_tiles.push_back(tiles[x - 1][y + 1].get());
+            adjacent_tiles.push_back(tiles_[x - 1][y + 1].get());
         }
         if (down && left) {
-            adjacent_tiles.push_back(tiles[x - 1][y - 1].get());
+            adjacent_tiles.push_back(tiles_[x - 1][y - 1].get());
         }
     }
     else {
         if (up && right) {
-            adjacent_tiles.push_back(tiles[x + 1][y + 1].get());
+            adjacent_tiles.push_back(tiles_[x + 1][y + 1].get());
         }
         if (down && right) {
-            adjacent_tiles.push_back(tiles[x + 1][y - 1].get());
+            adjacent_tiles.push_back(tiles_[x + 1][y - 1].get());
         }
     }
     return adjacent_tiles;
@@ -122,14 +122,14 @@ std::vector<Tile*> Board::getAdjacentTiles(const Tile &tile) const noexcept {
 // Private
 
 void Board::checkSettings() const {
-    if (board_settings.row == 0 || board_settings.column == 0) {
+    if (board_settings_.row == 0 || board_settings_.column == 0) {
         throw std::runtime_error("The dimensions are invalid");
     }
 
     std::unordered_set<std::string> colonies_names;
     std::set<std::pair<unsigned int, unsigned int>> anthills_coordinates;
-    for (const auto& colony : board_settings.colonies) {
-        if (colony.x_anthill < 0 || colony.x_anthill >= dimensions.second || colony.y_anthill < 0 || colony.y_anthill >= dimensions.first) {
+    for (const auto& colony : board_settings_.colonies) {
+        if (colony.x_anthill < 0 || colony.x_anthill >= dimensions_.second || colony.y_anthill < 0 || colony.y_anthill >= dimensions_.first) {
             throw std::runtime_error("An anthill cannot be set in the board");
         }
         if (colony.initial_number_of_ants == 0) {
@@ -146,29 +146,29 @@ void Board::checkSettings() const {
 
 void Board::createTiles() noexcept {
     std::map<Tile::Coordinates, std::string> anthill_owner;
-    for (const auto& colony : board_settings.colonies) {
+    for (const auto& colony : board_settings_.colonies) {
         anthill_owner.insert(std::make_pair(Tile::Coordinates(colony.x_anthill, colony.y_anthill), colony.name));
     }
 
-    for (unsigned int c = 0; c < dimensions.first; ++c) {
-        tiles.emplace_back();
-        for (unsigned int r = 0; r < dimensions.second; ++r) {
+    for (unsigned int c = 0; c < dimensions_.first; ++c) {
+        tiles_.emplace_back();
+        for (unsigned int r = 0; r < dimensions_.second; ++r) {
             const Tile::Coordinates targetCoord{c, r};
             
             if (anthill_owner.contains(targetCoord)) {
                 auto anthill = std::make_unique<AnthillTile>(c, r);
-                starting_anthills.insert({anthill_owner.at(targetCoord), anthill.get()});
-                tiles.at(c).push_back(std::move(anthill));
+                starting_anthills_.insert({anthill_owner.at(targetCoord), anthill.get()});
+                tiles_.at(c).push_back(std::move(anthill));
             }
             else {
-                tiles.at(c).push_back(std::make_unique<LandTile>(c, r));
+                tiles_.at(c).push_back(std::make_unique<LandTile>(c, r));
             }
         }
     }
 }
 
 void Board::initColonies() noexcept {
-    for (const auto& colony : board_settings.colonies) {
-        colonies.push_back(std::make_unique<Colony>(colony.name, *this, *starting_anthills.at(colony.name), colony.initial_number_of_ants));
+    for (const auto& colony : board_settings_.colonies) {
+        colonies_.push_back(std::make_unique<Colony>(colony.name, *this, *starting_anthills_.at(colony.name), colony.initial_number_of_ants));
     }
 }

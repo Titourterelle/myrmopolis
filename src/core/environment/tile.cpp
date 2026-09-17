@@ -6,13 +6,13 @@ using namespace myrmo;
 
 // Public
 
-Tile::Tile(const unsigned int x, const unsigned int y) noexcept : position(Coordinates(x, y)) {}
+Tile::Tile(const unsigned int x, const unsigned int y) noexcept : position_(Coordinates(x, y)) {}
 
 snapshot::Tile Tile::takeTileSnapshot() const noexcept {
     snapshot::Tile snapshot_tile;
 
-    snapshot_tile.x = position.x;
-    snapshot_tile.y = position.y;
+    snapshot_tile.x = position_.x;
+    snapshot_tile.y = position_.y;
 
     snapshot_tile.pheromones.insert({snapshot::PheromoneType::Home, pheromones.home});
     snapshot_tile.pheromones.insert({snapshot::PheromoneType::Food, pheromones.food});
@@ -25,13 +25,13 @@ std::string Tile::getType() const noexcept {
 }
 
 const Tile::Coordinates& Tile::getCoordinates() const noexcept {
-    return position;
+    return position_;
 }
 
 const Pheromones& Tile::getPheromones() const noexcept {
     return pheromones;
 }
 
-bool Tile::operator==(const Tile &other_tile) const noexcept {
+bool Tile::operator==(const Tile& other_tile) const noexcept {
     return (this->getCoordinates() == other_tile.getCoordinates());
 }

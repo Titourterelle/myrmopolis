@@ -9,11 +9,11 @@ namespace myrmo {
 
 class Simulation {
     public:
-        explicit Simulation(const SimulationSettings &settings);
+        explicit Simulation(const SimulationSettings& settings);
         ~Simulation();
 
         void run() const;
-        void addObserver(Observer &observer) const noexcept;
+        void addObserver(Observer& observer) const noexcept;
 
     private:
         struct Impl;
