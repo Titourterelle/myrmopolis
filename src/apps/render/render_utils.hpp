@@ -1,8 +1,9 @@
 #pragma once
 
-#include <SFML/System/Vector2.hpp>
 #include <stdexcept>
 #include <string>
+
+#include <SFML/System/Vector2.hpp>
 
 struct Vector2uCompare {
     bool operator()(const sf::Vector2u& a, const sf::Vector2u& b) const {

@@ -1,29 +1,29 @@
 #include "render_observer.hpp"
 #include "hex_grid.hpp"
-#include "render_utils.hpp"
 #include "progress_bar.hpp"
+#include "render_utils.hpp"
 
 #include <cmath>
-#include <numbers>
 #include <cstddef>
 #include <cstdlib>
 #include <format>
-#include <stdexcept>
-#include <string>
-#include <set>
 #include <map>
-#include <utility>
-#include <vector>
+#include <numbers>
 #include <random>
 #include <ranges>
+#include <set>
+#include <stdexcept>
+#include <string>
+#include <utility>
+#include <vector>
 
+#include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Image.hpp>
 #include <SFML/Graphics/RenderTexture.hpp>
-#include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Sprite.hpp>
-#include <SFML/System/Vector2.hpp>
 #include <SFML/System/Angle.hpp>
+#include <SFML/System/Vector2.hpp>
 
 #define FRAMES_DIR "/frames"
 

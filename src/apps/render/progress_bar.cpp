@@ -1,7 +1,7 @@
 #include "progress_bar.hpp"
 
-#include <iostream>
 #include <iomanip>
+#include <iostream>
 #include <stdexcept>
 
 ProgressBar::ProgressBar(const unsigned int total, const unsigned int bar_width) :

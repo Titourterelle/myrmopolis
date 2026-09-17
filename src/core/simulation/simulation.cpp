@@ -1,8 +1,7 @@
 #include "simulation.hpp"
-#include "settings.hpp"
 #include "observer.hpp"
+#include "settings.hpp"
 #include "snapshot.hpp"
-
 #include "environment/board.hpp"
 
 #include <memory>

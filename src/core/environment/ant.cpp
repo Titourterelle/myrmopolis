@@ -1,16 +1,16 @@
 #include "ant.hpp"
-#include "colony.hpp"
 #include "anthill_tile.hpp"
+#include "board.hpp"
+#include "colony.hpp"
 #include "pheromones.hpp"
 #include "tile.hpp"
-#include "board.hpp"
 
+#include <algorithm>
 #include <cstddef>
 #include <map>
 #include <random>
 #include <stdexcept>
 #include <vector>
-#include <algorithm>
 
 using namespace myrmo;
 

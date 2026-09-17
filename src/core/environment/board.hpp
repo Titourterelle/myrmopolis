@@ -1,15 +1,15 @@
 #pragma once
 
-#include "settings.hpp"
 #include "anthill_tile.hpp"
-#include "tile.hpp"
 #include "colony.hpp"
+#include "settings.hpp"
 #include "snapshot.hpp"
+#include "tile.hpp"
 
+#include <memory>
 #include <unordered_map>
 #include <utility>
 #include <vector>
-#include <memory>
 
 namespace myrmo {
 

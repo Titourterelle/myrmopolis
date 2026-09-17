@@ -1,13 +1,13 @@
-#include "include/config_manager.hpp"
+#include "config_manager.hpp"
 
+#include <fstream>
 #include <memory>
-#include <nlohmann/json_fwd.hpp>
 #include <stdexcept>
 #include <string>
-#include <fstream>
+#include <utility>
 
 #include <nlohmann/json.hpp>
-#include <utility>
+#include <nlohmann/json_fwd.hpp>
 
 using namespace myrmo;
 

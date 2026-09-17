@@ -1,8 +1,8 @@
 #include "land_tile.hpp"
-#include "snapshot.hpp"
-#include "tile.hpp"
 #include "ant.hpp"
 #include "pheromones.hpp"
+#include "snapshot.hpp"
+#include "tile.hpp"
 
 using namespace myrmo;
 

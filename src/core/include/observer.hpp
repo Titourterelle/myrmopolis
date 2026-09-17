@@ -2,8 +2,6 @@
 
 #include "snapshot.hpp"
 
-#include <vector>
-
 namespace myrmo {
 
 class Observer {

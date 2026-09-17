@@ -1,7 +1,7 @@
 #pragma once
 
-#include "tile.hpp"
 #include "snapshot.hpp"
+#include "tile.hpp"
 
 namespace myrmo {
 

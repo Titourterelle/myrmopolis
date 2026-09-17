@@ -1,7 +1,7 @@
 #pragma once
 
-#include "settings.hpp"
 #include "observer.hpp"
+#include "settings.hpp"
 
 #include <memory>
 

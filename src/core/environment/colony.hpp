@@ -3,8 +3,8 @@
 #include "ant.hpp"
 #include "anthill_tile.hpp"
 
-#include <vector>
 #include <memory>
+#include <vector>
 
 namespace myrmo {
 

@@ -7,10 +7,10 @@
 #include "render_utils.hpp"
     
 #include <map>
-#include <set>
-#include <utility>
-#include <string>
 #include <memory>
+#include <set>
+#include <string>
+#include <utility>
 
 #include <SFML/Graphics/Image.hpp>
 #include <SFML/Graphics/RenderTexture.hpp>
