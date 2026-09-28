@@ -9,6 +9,7 @@ namespace myrmo {
 class LandTile : public Tile {
     public:
         explicit LandTile(unsigned int x, unsigned int y) noexcept;
+        explicit LandTile(Coordinates coords) noexcept;
 
         void interact(Ant& ant) noexcept override;
         [[nodiscard]] snapshot::Tile takeTileSnapshot() const noexcept override;

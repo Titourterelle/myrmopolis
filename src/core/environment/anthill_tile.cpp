@@ -7,6 +7,7 @@ using namespace myrmo;
 // Public
 
 AnthillTile::AnthillTile(const unsigned int x, const unsigned int y) noexcept : Tile(x, y) {}
+AnthillTile::AnthillTile(const Coordinates coords) noexcept : Tile(coords) {}
 
 void AnthillTile::interact(Ant& ant) noexcept {
     if (ant.isTransportingFood()) {

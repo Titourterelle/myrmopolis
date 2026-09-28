@@ -9,6 +9,7 @@ using namespace myrmo;
 // Public
 
 LandTile::LandTile(const unsigned int x, const unsigned int y) noexcept : Tile(x, y) {}
+LandTile::LandTile(const Coordinates coords) noexcept : Tile(coords) {}
 
 void LandTile::interact(Ant& ant) noexcept {
     if (ant.isTransportingFood()) {
@@ -35,10 +36,10 @@ snapshot::Tile LandTile::takeTileSnapshot() const noexcept {
 
 void LandTile::addPheromones(const PheromoneType& type) noexcept {
     if (type == PheromoneType::Home) {
-        ++pheromones.home;
+        ++pheromones_.home;
     }
     else if (type == PheromoneType::Food) {
-        ++pheromones.food;
+        ++pheromones_.food;
     }
 }
 
