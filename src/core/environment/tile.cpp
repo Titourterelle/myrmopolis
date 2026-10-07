@@ -2,8 +2,7 @@
 #include "pheromones.hpp"
 #include "snapshot.hpp"
 
-using namespace myrmo;
-
+namespace myrmo {
 // Public
 
 Tile::Tile(const unsigned int x, const unsigned int y) noexcept : position_(Coordinates(x, y)) {}
@@ -35,4 +34,5 @@ const Pheromones& Tile::getPheromones() const noexcept {
 
 bool Tile::operator==(const Tile& other_tile) const noexcept {
     return (this->getCoordinates() == other_tile.getCoordinates());
+}
 }

@@ -4,8 +4,7 @@
 #include "snapshot.hpp"
 #include "tile.hpp"
 
-using namespace myrmo;
-
+namespace myrmo {
 // Public
 
 LandTile::LandTile(const unsigned int x, const unsigned int y) noexcept : Tile(x, y) {}
@@ -51,4 +50,5 @@ void LandTile::addFood(const unsigned int quantity) noexcept {
 
 void LandTile::removeFood(const unsigned int quantity) noexcept {
     food_ -= static_cast<int>(quantity);
+}
 }

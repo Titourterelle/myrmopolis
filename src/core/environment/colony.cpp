@@ -4,8 +4,7 @@
 #include <stdexcept>
 #include <utility>
 
-using namespace myrmo;
-
+namespace myrmo {
 // Public
 
 Colony::Colony(std::string name, const Board& board, AnthillTile& initialAnthill, const int initial_number_of_ants) :
@@ -53,4 +52,5 @@ void Colony::addAnts(const int number_of_ants) noexcept {
     for (auto i = 0; i < number_of_ants; ++i) {
         ants_.push_back(std::make_unique<Ant>(*this, *anthills_.at(0)));
     }
+}
 }

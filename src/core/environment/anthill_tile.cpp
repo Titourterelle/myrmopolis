@@ -2,8 +2,7 @@
 #include "ant.hpp"
 #include "snapshot.hpp"
 
-using namespace myrmo;
-
+namespace myrmo {
 // Public
 
 AnthillTile::AnthillTile(const unsigned int x, const unsigned int y) noexcept : Tile(x, y) {}
@@ -23,4 +22,5 @@ snapshot::Tile AnthillTile::takeTileSnapshot() const noexcept {
     snapshot_tile.food = std::nullopt;
 
     return snapshot_tile;
+}
 }

@@ -9,8 +9,7 @@
 #include <nlohmann/json.hpp>
 #include <nlohmann/json_fwd.hpp>
 
-using namespace myrmo;
-
+namespace myrmo {
 struct ConfigManager::Impl {
     void importSettings();
 
@@ -92,4 +91,5 @@ void ConfigManager::Impl::importColoniesSettings(const nlohmann::json& config_js
 
         settings_.board.colonies.push_back(colony_settings);
     }
+}
 }

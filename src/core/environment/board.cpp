@@ -15,6 +15,7 @@
 
 using namespace myrmo;
 
+namespace myrmo {
 // Public
 
 Board::Board(const BoardSettings& settings) :
@@ -172,3 +173,4 @@ void Board::initColonies() noexcept {
         colonies_.push_back(std::make_unique<Colony>(colony.name, *this, *starting_anthills_.at(colony.name), colony.initial_number_of_ants));
     }
 }
+};

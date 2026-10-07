@@ -29,7 +29,7 @@ class Ant {
         static void sortTilesByPheromones(std::vector<Tile*>& tiles_list, const PheromoneType& pheromone) noexcept;
         static void removeTile(std::vector<Tile*>& tiles_list, const Tile& tile_to_remove) noexcept;
 
-        static unsigned int id_count;
+        static unsigned int id_count_;
 
         const unsigned int id_;
         Tile *actual_tile_ = nullptr;
