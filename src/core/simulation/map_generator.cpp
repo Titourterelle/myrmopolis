@@ -6,6 +6,23 @@
 #include <algorithm>
 #include <random>
 
+namespace {
+
+template <typename T, typename URBG>
+void partialFisherYatesShuffle(std::vector<T>& vec, URBG&& gen, const size_t iteration) {
+    using distrib_t = std::uniform_int_distribution<size_t>;
+    using param_t = distrib_t::param_type;
+
+    distrib_t distr;
+    const size_t iter = std::min(iteration, vec.size());
+    for (size_t i = 0; i < iter; ++i)
+    {
+        std::swap(vec[i], vec[distr(gen, param_t(i, vec.size() - 1))]);
+    }
+}
+
+}
+
 namespace myrmo {
 
 // Public
@@ -39,20 +56,19 @@ std::vector<AnthillTile*> MapGenerator::createMap(TileMap& map) {
 // Private
 
 std::set<Tile::Coordinates> MapGenerator::chooseAnthillsCoords(const unsigned int height, const unsigned int width) {
-    // TODO : improve algorithme performance
-    std::vector<Tile::Coordinates> existing_coords;
+    std::vector<unsigned int> existing_coords;
     std::set<Tile::Coordinates> anthills_coords;
 
-    for (auto x = 0; x < width; x++) {
-        for (auto y = 0; y < height; y++) {
-            existing_coords.push_back(Tile::Coordinates(x, y));
-        }
+    for (unsigned int i = 0; i < height*width; i++) {
+        existing_coords.push_back(i);
     }
 
-    std::ranges::shuffle(existing_coords, random_engine_);
-
     const size_t count = std::min(settings_.number_of_colonies, existing_coords.size());
-    anthills_coords.insert(existing_coords.begin(), existing_coords.begin() + static_cast<long>(count));
+    partialFisherYatesShuffle(existing_coords, random_engine_, count);
+
+    for (auto i = 0; i < count; i++) {
+        anthills_coords.insert(Tile::Coordinates(existing_coords[i]/height, existing_coords[i]%height));
+    }
 
     return anthills_coords;
 }
