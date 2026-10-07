@@ -85,8 +85,6 @@ void ConfigManager::Impl::importColoniesSettings(const nlohmann::json& config_js
         ColonySettings colony_settings;
         
         colony_settings.name = colony.at("name").get<std::string>();
-        colony_settings.x_anthill = colony.at("anthill").at(0);
-        colony_settings.y_anthill = colony.at("anthill").at(1);
         colony_settings.initial_number_of_ants = colony.at("initial_ants");
 
         settings_.board.colonies.push_back(colony_settings);

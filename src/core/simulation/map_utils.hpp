@@ -3,7 +3,6 @@
 #include "environment/tile.hpp"
 
 #include <memory>
-#include <set>
 #include <vector>
 
 namespace myrmo {
@@ -18,8 +17,7 @@ struct TileMap {
 };
 
 struct MapSettings {
-    unsigned long seed;
-    std::set<Tile::Coordinates> anthills_coordinates;
+    unsigned long seed, number_of_colonies;
 };
 
 };

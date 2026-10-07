@@ -7,8 +7,6 @@ namespace myrmo {
 
 struct ColonySettings {
     std::string name;
-    unsigned int x_anthill;
-    unsigned int y_anthill;
     unsigned int initial_number_of_ants;
 };
 

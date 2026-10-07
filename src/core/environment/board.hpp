@@ -5,10 +5,10 @@
 #include "settings.hpp"
 #include "snapshot.hpp"
 #include "tile.hpp"
+#include "simulation/map_utils.hpp"
 
 #include <memory>
 #include <unordered_map>
-#include <utility>
 #include <vector>
 
 namespace myrmo {
@@ -20,20 +20,19 @@ class Board {
         void step() const noexcept;
         snapshot::Snapshot createSnapshot() const noexcept;
 
-        std::vector<Tile*> getAdjacentTiles(const Tile& tile) const noexcept;
+        [[nodiscard]] std::vector<Tile*> getAdjacentTiles(const Tile& tile) const noexcept;
 
     private:
         void checkSettings() const;
         void createTiles() noexcept;
         void initColonies() noexcept;
 
-        const std::pair<unsigned int, unsigned int> dimensions_;
         const BoardSettings board_settings_;
 
         std::unordered_map<std::string, AnthillTile*> starting_anthills_;
-        
+
         std::vector<std::unique_ptr<Colony>> colonies_;
-        std::vector<std::vector<std::unique_ptr<Tile>>> tiles_;
+        TileMap map_;
 };
 
 }

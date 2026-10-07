@@ -15,12 +15,12 @@ class LandTile : public Tile {
         [[nodiscard]] snapshot::Tile takeTileSnapshot() const noexcept override;
 
         void addPheromones(const PheromoneType& type) noexcept;
-        
+
     private:
         void addFood(unsigned int quantity = 1) noexcept;
         void removeFood(unsigned int quantity = 1) noexcept;
 
-        int food_ = 10;
+        unsigned int food_ = 0;
 };
 
 }
