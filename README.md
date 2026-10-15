@@ -53,13 +53,109 @@ sudo apt install build-essential cmake nlohmann-json3-dev ffmpeg
 <!-- TODO: explain the architecture -->
 The project is divided into two section...
 
-### Configuration file
-<!-- TODO: fill the configuration file area -->
-All the settings must take place in the `config.json` file
+### Configuration
+All the settings must take place in the `config.json` file.
 
 #### How to use it
 
+_For the **simulation core**:_
+
+| Field                              | Type                         | Required | Default | Description                                       |
+|------------------------------------|------------------------------|----------|---------|---------------------------------------------------|
+| simulation.number_of_boards        | Positive integer             | Yes      |         | The number of simulations with this configuration |
+| simulation.board.row               | Positive integer             | Yes      |         | Number of rows in the boards                      |
+| simulation.board.column            | Positive integer             | Yes      |         | Number of columns in the boards                   |
+| _simulation.colonies[]_            | Array of "Colonies Settings" | Yes      |         | Add each colony with its own settings (see below) |
+| simulation.colonies[].name         | String                       | Yes      |         | Use a different name for each colony              |
+| simulation.colonies[].initial_ants | Positive integer             | Yes      |         | Set the number of ants for the first step         |
+
+_For the **rendering**:_
+
+| Field                        | Type                          | Required (only for the rendering) | Default | Description                                                    |
+|------------------------------|-------------------------------|-----------------------------------|---------|----------------------------------------------------------------|
+| _rendering[]_                | Array of "Rendering Settings" | Yes                               |         | Each block creates a distinct output video                     |
+| rendering[].fps              | Positive integer              | Yes                               |         | Number of frames per second (change the fluidity)              |
+| rendering[].frames_per_step  | Positive integer              | Yes                               |         | Number of frames used to visualize one step (change the speed) |
+| rendering[].quality          | "low", "medium" or "high"     | Yes                               |         | Set the rendering quality                                      |
+| rendering[].output_directory | String                        | Yes                               |         | Set the directory where the video is created                   |
+
 #### Exemples
+<details>
+  <summary>Minimal configuration</summary>
+
+```json
+{
+    "simulation": {
+        "number_of_boards": 1,
+        "board": {
+            "row": 4,
+            "column": 5
+        },
+        "colonies": [
+            {
+                "name":"The Seventh Company",
+                "anthill":[2, 2],
+                "initial_ants": 10
+            }
+        ]
+    },
+  
+    "rendering": [
+        {
+            "fps": 30,
+            "frames_per_step": 15,
+            "quality": "medium",
+            "output_directory": "./render_save"
+        }
+    ]
+}
+```
+
+</details>
+
+<details>
+  <summary>Advanced configuration</summary>
+
+```json
+{
+  "simulation": {
+    "number_of_boards": 3,
+    "board": {
+      "row": 5,
+      "column": 5
+    },
+    "colonies": [
+      {
+        "name":"The Seventh Company",
+        "anthill":[2, 2],
+        "initial_ants": 20
+      },
+      {
+        "name":"The Fellowship of the Ring",
+        "anthill":[0, 4],
+        "initial_ants": 15
+      }
+    ]
+  },
+
+  "rendering": [
+    {
+      "fps": 30,
+      "frames_per_step": 15,
+      "quality": "medium",
+      "output_directory": "./render_save"
+    },
+    {
+      "fps": 15,
+      "frames_per_step": 15,
+      "quality": "low",
+      "output_directory": "./render_save"
+    }
+  ]
+}
+```
+
+</details>
 
 ### Documentation
 For more informations, please refer to the [Documentation](doc/DOCUMENTATION.md)
