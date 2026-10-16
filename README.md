@@ -11,7 +11,7 @@ However, Myrmopolis remains a personal project (to which you can contribute)
   * [Installation](#installation)
 * [Usage](#usage)
   * [Architecture](#architecture)
-  * [Configuration file](#configuration-file)
+  * [Configuration](#configuration)
     * [How to use it](#how-to-use-it)
     * [Exemples](#exemples)
 * [Roadmap](#roadmap)
@@ -25,7 +25,7 @@ However, Myrmopolis remains a personal project (to which you can contribute)
 
 ### Prerequisites
 This project use C++ 23 and [SFML](https://www.sfml-dev.org/fr/) but to build and use this project, you only need :
-* Cmake
+* Cmake 3.28
 * [nlohmann json](https://github.com/nlohmann/json)
 * FFmpeg (_only to execute the rendering_)
 
@@ -40,11 +40,21 @@ sudo apt install build-essential cmake nlohmann-json3-dev ffmpeg
 ```
 
 ### Installation
-<!-- TODO: explicit the installation steps -->
-1. Clone the repo
-   ```sh
-   git clone https://github.com/Titourterelle/myrmopolis.git
-   ```
+First, **clone** the repo
+```sh
+git clone https://github.com/Titourterelle/myrmopolis.git
+cd myrmopolis
+```
+Then, **build** the executable
+```sh
+cmake --preset release
+cmake --build --preset release --target myrmopolis_render
+```
+You can now **run** the simulation
+```sh
+cd build/release
+./myrmopolis_render
+```
 
 <!-- USAGE EXAMPLES -->
 ## Usage
