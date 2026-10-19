@@ -17,7 +17,7 @@ However, Myrmopolis remains a personal project (to which you can contribute)
   * [Architecture](#architecture)
   * [Configuration](#configuration)
     * [How to use it](#how-to-use-it)
-    * [Exemples](#exemples)
+    * [Examples](#examples)
 * [Roadmap](#roadmap)
 * [Contributing](#contributing)
 * [License](#license)
@@ -93,7 +93,7 @@ _For the **rendering**:_
 | rendering[].quality          | "low", "medium" or "high"     | Yes                               |         | Set the rendering quality                                      |
 | rendering[].output_directory | String                        | Yes                               |         | Set the directory where the video is created                   |
 
-#### Exemples
+#### Examples
 <details>
   <summary>Minimal configuration</summary>
 
@@ -195,4 +195,4 @@ Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
 
 <!-- CONTACT -->
 ## Contact
-Titourterelle - [Github](https://github.com/Titourterelle) - titourterelle@gmail.com
+Titourterelle - [GitHub](https://github.com/Titourterelle) - titourterelle@gmail.com
