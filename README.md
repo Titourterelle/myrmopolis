@@ -18,6 +18,9 @@ However, Myrmopolis remains a personal project (to which you can contribute)
     * [Run](#run)
 * [Usage](#usage)
   * [Architecture](#architecture)
+    * [Core](#core)
+    * [Render](#render)
+    * [CLI](#cli)
   * [Configuration](#configuration)
     * [How to use it](#how-to-use-it)
     * [Examples](#examples)
@@ -80,8 +83,19 @@ myrmopolis-render path/to/your/config/file.json
 ## Usage
 
 ### Architecture
-<!-- TODO: explain the architecture -->
-The project is divided into two section...
+The project contains a _library_ (core), a _rendering program_ (render) and a _simple executable_ (cli).
+
+#### Core
+The library handles the simulation and all the calculations.
+It takes some parameters and provides the simulation results via observers.  
+Each executable must create its own **observer** (an object derived from `myrmo::Observer`) to use the information received
+
+#### Render
+The rendering executable uses SFML to **visualize** the simulation.  
+It uses the core library for calculation and uses them to generate videos for the user
+
+#### CLI
+For the moment, this executable just runs the simulation and does nothing.
 
 ### Configuration
 All the settings must take place in the `config.json` file.
