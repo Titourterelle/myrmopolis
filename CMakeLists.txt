@@ -4,9 +4,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(myrmopolis)
 
-set(CORE_NAME ${PROJECT_NAME}_core)
-set(CLI_NAME ${PROJECT_NAME}_cli)
-set(RENDER_NAME ${PROJECT_NAME}_render)
+set(CORE_NAME ${PROJECT_NAME}-core)
+set(CLI_NAME ${PROJECT_NAME}-cli)
+set(RENDER_NAME ${PROJECT_NAME}-render)
 
 # Lib CORE
 find_package(nlohmann_json REQUIRED)
