@@ -25,6 +25,8 @@
 #include <SFML/System/Angle.hpp>
 #include <SFML/System/Vector2.hpp>
 
+#define DATA_DIR "../share/myrmopolis"
+#define ASSETS_DIR "../../assets"
 #define FRAMES_DIR "/frames"
 
 // Custom types
@@ -53,13 +55,14 @@ struct RenderObserver::Board {
 
 // Public
 
+namespace fs = std::filesystem;
+
 RenderObserver::RenderObserver() {
     if (std::system("ffmpeg -version > /dev/null 2>&1") != 0) {
         throw std::runtime_error("FFmpeg not found, please install it");
     }
-    if(!ant_image_.loadFromFile("../../assets/img/ant_64x64.png")) {
-        throw std::runtime_error("Can't load the ant image");
-    }
+
+    loadAssets();
 }
 
 RenderObserver::~RenderObserver() = default;
@@ -105,8 +108,26 @@ void RenderObserver::generateVideo(const std::vector<RenderSettings>& render_set
 
 // Private
 
+void RenderObserver::loadAssets() {
+    const static fs::path prog_path = fs::read_symlink("/proc/self/exe").parent_path();
+    fs::path ant_file;
+    if (fs::exists(prog_path / DATA_DIR "/img/ant_64x64.png")) {
+        ant_file = prog_path / DATA_DIR "/img/ant_64x64.png";
+    }
+    else if (fs::exists(prog_path / ASSETS_DIR "/img/ant_64x64.png")) {
+        ant_file = prog_path / ASSETS_DIR "/img/ant_64x64.png";
+    }
+    else {
+        throw std::runtime_error("Can't find the ant image");
+    }
+
+    if(!ant_image_.loadFromFile(ant_file)) {
+        throw std::runtime_error("Can't load the ant image");
+    }
+}
+
 void RenderObserver::renderFrames() {
-    std::filesystem::create_directories(settings_.output_dir + FRAMES_DIR);
+    fs::create_directories(settings_.output_dir + FRAMES_DIR);
 
     current_snapshot_ = &current_board_->snapshots[0];
     const float radius = getCellsRadiusFromQuality(settings_.quality);
@@ -344,7 +365,7 @@ void RenderObserver::encodeVideo(const std::string& name) const {
 }
 
 void RenderObserver::clean() const noexcept {
-    if (std::filesystem::exists(settings_.output_dir + FRAMES_DIR)) {
-        std::filesystem::remove_all(settings_.output_dir + FRAMES_DIR);
+    if (fs::exists(settings_.output_dir + FRAMES_DIR)) {
+        fs::remove_all(settings_.output_dir + FRAMES_DIR);
     }
 }
