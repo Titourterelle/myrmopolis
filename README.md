@@ -188,7 +188,7 @@ _For the **rendering**:_
 </details>
 
 ### Documentation
-For more informations, please refer to the [Documentation](doc/DOCUMENTATION.md)
+For more information, please refer to the [Documentation](doc/DOCUMENTATION.md)
 
 <!-- ROADMAP -->
 ## Roadmap
