@@ -2,8 +2,22 @@
 #include "render_observer.hpp"
 #include "simulation.hpp"
 
-int main() {
-    const RenderConfigManager cm{"../../config.json"};
+#include <filesystem>
+#include <print>
+
+int main(int argc, char* argv[]) {
+
+    std::filesystem::path config_path = "../../config.json";
+
+    if (argc > 2) {
+        std::printf("Too many arguments\n");
+        return 1;
+    }
+    if (argc == 2) {
+        config_path = argv[1];
+    }
+
+    const RenderConfigManager cm{config_path};
     const myrmo::Simulation sim{cm.getSimulationSettings()};
 
     RenderObserver observer{};
