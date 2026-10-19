@@ -31,6 +31,8 @@ class RenderObserver : public myrmo::Observer {
         struct AntVisual;
         struct Board;
 
+        void loadAssets();
+
         void renderFrames();
         void createStepFrames(const HexGrid& grid);
         void drawAnts(sf::RenderTexture& frame_texture, sf::Sprite& ant_sprite, float t) const;
