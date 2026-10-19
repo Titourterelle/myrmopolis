@@ -13,6 +13,9 @@ However, Myrmopolis remains a personal project (to which you can contribute)
 * [Getting Started](#getting-started)
   * [Prerequisites](#prerequisites)
   * [Installation](#installation)
+    * [First steps](#first-steps)
+    * [System installation](#system-installation)
+    * [Run](#run)
 * [Usage](#usage)
   * [Architecture](#architecture)
   * [Configuration](#configuration)
@@ -44,6 +47,7 @@ sudo apt install build-essential cmake nlohmann-json3-dev ffmpeg
 ```
 
 ### Installation
+#### First steps
 First, **clone** the repo
 ```sh
 git clone https://github.com/Titourterelle/myrmopolis.git
@@ -52,12 +56,24 @@ cd myrmopolis
 Then, **build** the executable
 ```sh
 cmake --preset release
-cmake --build --preset release --target myrmopolis_render
+cmake --build --preset release --target myrmopolis-render
 ```
-You can now **run** the simulation
+You can now **test** the simulation with the default config
 ```sh
 cd build/release
-./myrmopolis_render
+./myrmopolis-render
+```
+
+#### System installation
+Finally, if you want to **install** the project
+```sh
+sudo cmake --install build/release/
+```
+
+#### Run
+You must give a **[configuration](#configuration) file** to the executable
+```sh
+myrmopolis-render path/to/your/config/file.json
 ```
 
 <!-- USAGE EXAMPLES -->
