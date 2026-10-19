@@ -1,4 +1,8 @@
 # Myrmopolis
+> [!WARNING]
+> This project is under construction. If you are not a developer, please wait the first release.
+> Of course, if you are curious, you can explore the repository.
+
 A simulation of ant colonies on a 2D board.  
 The goal is to model the collective behavior of ants as accurately as possible.
 Then, Myrmopolis is an educational project with a scientific focus.  
