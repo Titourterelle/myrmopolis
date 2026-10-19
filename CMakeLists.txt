@@ -39,3 +39,8 @@ target_compile_features(${RENDER_NAME} PRIVATE cxx_std_23)
 
 target_link_libraries(${RENDER_NAME} PRIVATE ${CORE_NAME})
 target_link_libraries(${RENDER_NAME} PRIVATE SFML::Graphics)
+
+# Installation
+include(GNUInstallDirs)
+install(TARGETS ${RENDER_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(DIRECTORY assets/ DESTINATION ${CMAKE_INSTALL_DATADIR}/myrmopolis)
