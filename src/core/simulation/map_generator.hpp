@@ -15,12 +15,14 @@ class MapGenerator {
         [[nodiscard]] std::vector<AnthillTile*> createMap(TileMap& map);
 
     private:
-        std::set<Tile::Coordinates> chooseAnthillsCoords(unsigned int height, unsigned int width);
+        std::set<Tile::Coordinates> chooseAnthillsCoords(unsigned int height, unsigned int width) noexcept;
+        unsigned int chooseFoodQuantity() noexcept;
 
         const MapSettings settings_;
+        const double food_abundance_;
+
         std::mt19937 random_engine_;
-        std::bernoulli_distribution is_containing_food_distrib_;
-        std::uniform_int_distribution<> quantity_food_distrib_;
+
     };
 
 }

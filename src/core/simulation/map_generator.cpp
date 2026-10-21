@@ -6,6 +6,9 @@
 #include <algorithm>
 #include <random>
 
+
+#define MAX_FOOD_QUANTITY 20
+
 namespace {
 
 template <typename T, typename URBG>
@@ -29,9 +32,8 @@ namespace myrmo {
 
 MapGenerator::MapGenerator(const MapSettings settings) :
     settings_(settings),
-    random_engine_(settings_.seed),
-    is_containing_food_distrib_(0.3),
-    quantity_food_distrib_(1, 10) {}
+    food_abundance_(0.3),
+    random_engine_(settings_.seed) {}
 
 std::vector<AnthillTile*> MapGenerator::createMap(TileMap& map) {
     std::vector<AnthillTile*> anthills;
@@ -47,7 +49,7 @@ std::vector<AnthillTile*> MapGenerator::createMap(TileMap& map) {
                 continue;
             }
 
-            map.tiles.push_back(std::make_unique<LandTile>(coords));
+            map.tiles.push_back(std::make_unique<LandTile>(coords, chooseFoodQuantity()));
         }
     }
     return anthills;
@@ -55,7 +57,7 @@ std::vector<AnthillTile*> MapGenerator::createMap(TileMap& map) {
 
 // Private
 
-std::set<Tile::Coordinates> MapGenerator::chooseAnthillsCoords(const unsigned int height, const unsigned int width) {
+std::set<Tile::Coordinates> MapGenerator::chooseAnthillsCoords(const unsigned int height, const unsigned int width) noexcept {
     std::vector<unsigned int> existing_coords;
     std::set<Tile::Coordinates> anthills_coords;
 
@@ -72,4 +74,16 @@ std::set<Tile::Coordinates> MapGenerator::chooseAnthillsCoords(const unsigned in
 
     return anthills_coords;
 }
+
+unsigned int MapGenerator::chooseFoodQuantity() noexcept {
+    static std::uniform_real_distribution<> food_dispersion_distrib_(0, 1);
+    static std::uniform_int_distribution<unsigned int> food_quantity_distrib_(1, MAX_FOOD_QUANTITY);
+
+    if (food_dispersion_distrib_(random_engine_) > food_abundance_) {
+        return 0;
+    }
+
+    return food_quantity_distrib_(random_engine_);
+}
+
 }
