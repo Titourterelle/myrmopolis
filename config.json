@@ -1,20 +1,20 @@
 {
     "simulation": {
-        "number_of_boards": 1,
+        "number-of-boards": 1,
         "board": {
             "row": 5,
             "column": 5,
             "seed": 67,
-            "food_abundance": 0.25
+            "food-abundance": 0.25
         },
         "colonies": [
             {
                 "name": "Galactic Empire",
-                "initial_ants": 1
+                "initial-ants": 1
             },
             {
                 "name": "Galactic Empire 2",
-                "initial_ants": 2
+                "initial-ants": 2
             }
         ]
     },
@@ -22,9 +22,9 @@
     "rendering": [
         {
             "fps": 30,
-            "frames_per_step": 15,
+            "frames-per-step": 15,
             "quality": "low",
-            "output_directory": "./render_save"
+            "output-directory": "./render_save"
         }
     ]
 }

@@ -70,7 +70,7 @@ void ConfigManager::Impl::importSettings() {
 }
 
 void ConfigManager::Impl::importSimulationSettings(const nlohmann::json& config_json) {
-    settings_.number_of_boards = config_json.at("number_of_boards").get<unsigned int>();
+    settings_.number_of_boards = config_json.at("number-of-boards").get<unsigned int>();
 }
 
 
@@ -78,7 +78,7 @@ void ConfigManager::Impl::importBoardsSettings(const nlohmann::json& config_json
     settings_.board.row = config_json.at("board").at("row").get<unsigned int>();
     settings_.board.column = config_json.at("board").at("column").get<unsigned int>();
     settings_.board.seed = config_json.at("board").at("seed").get<unsigned long>();
-    settings_.board.food_abundance = config_json.at("board").at("food_abundance").get<double>();
+    settings_.board.food_abundance = config_json.at("board").at("food-abundance").get<double>();
 }
 
 
@@ -87,7 +87,7 @@ void ConfigManager::Impl::importColoniesSettings(const nlohmann::json& config_js
         ColonySettings colony_settings;
         
         colony_settings.name = colony.at("name").get<std::string>();
-        colony_settings.initial_number_of_ants = colony.at("initial_ants").get<unsigned int>();
+        colony_settings.initial_number_of_ants = colony.at("initial-ants").get<unsigned int>();
 
         settings_.board.colonies.push_back(colony_settings);
     }

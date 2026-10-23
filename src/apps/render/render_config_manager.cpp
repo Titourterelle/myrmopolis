@@ -47,8 +47,8 @@ void RenderConfigManager::importRenderSettings() {
             RenderSettings settings;
 
             settings.fps = render.at("fps").get<unsigned int>();
-            settings.frames_per_step = render.at("frames_per_step").get<unsigned int>();
-            settings.output_dir = render.at("output_directory").get<std::string>();
+            settings.frames_per_step = render.at("frames-per-step").get<unsigned int>();
+            settings.output_dir = render.at("output-directory").get<std::string>();
 
             settings.quality = convertStrToQuality(render.at("quality").get<std::string>());
 

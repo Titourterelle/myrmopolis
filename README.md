@@ -106,14 +106,14 @@ _For the **simulation core**:_
 
 | Field                              | Type                            | Required | Default | Description                                       |
 |------------------------------------|---------------------------------|----------|---------|---------------------------------------------------|
-| simulation.number_of_boards        | Positive integer                | Yes      |         | The number of simulations with this configuration |
+| simulation.number-of-boards        | Positive integer                | Yes      |         | The number of simulations with this configuration |
 | simulation.board.row               | Positive integer                | Yes      |         | Number of rows in the boards                      |
 | simulation.board.column            | Positive integer                | Yes      |         | Number of columns in the boards                   |
 | simulation.board.seed              | Integer                         | Yes      |         | The seed of the map generation                    |
-| simulation.board.food_abundance    | Floating number between 0 and 1 | Yes      |         | The percentage of starting tiles containing food  |
+| simulation.board.food-abundance    | Floating number between 0 and 1 | Yes      |         | The percentage of starting tiles containing food  |
 | _simulation.colonies[]_            | Array of "Colonies Settings"    | Yes      |         | Add each colony with its own settings (see below) |
 | simulation.colonies[].name         | String                          | Yes      |         | Use a different name for each colony              |
-| simulation.colonies[].initial_ants | Positive integer                | Yes      |         | Set the number of ants for the first step         |
+| simulation.colonies[].initial-ants | Positive integer                | Yes      |         | Set the number of ants for the first step         |
 
 _For the **rendering**:_
 
@@ -121,9 +121,9 @@ _For the **rendering**:_
 |------------------------------|-------------------------------|-----------------------------------|---------|----------------------------------------------------------------|
 | _rendering[]_                | Array of "Rendering Settings" | Yes                               |         | Each block creates a distinct output video                     |
 | rendering[].fps              | Positive integer              | Yes                               |         | Number of frames per second (change the fluidity)              |
-| rendering[].frames_per_step  | Positive integer              | Yes                               |         | Number of frames used to visualize one step (change the speed) |
+| rendering[].frames-per-step  | Positive integer              | Yes                               |         | Number of frames used to visualize one step (change the speed) |
 | rendering[].quality          | "low", "medium" or "high"     | Yes                               |         | Set the rendering quality                                      |
-| rendering[].output_directory | String                        | Yes                               |         | Set the directory where the video is created                   |
+| rendering[].output-directory | String                        | Yes                               |         | Set the directory where the video is created                   |
 
 #### Examples
 <details>
@@ -132,17 +132,17 @@ _For the **rendering**:_
 ```json
 {
   "simulation": {
-    "number_of_boards": 1,
+    "number-of-boards": 1,
       "board": {
         "row": 4,
         "column": 5,
         "seed": 42,
-        "food_abundance": 0.3
+        "food-abundance": 0.3
       },
       "colonies": [
         {
           "name":"The Seventh Company",
-          "initial_ants": 10
+          "initial-ants": 10
         }
       ]
     },
@@ -150,9 +150,9 @@ _For the **rendering**:_
     "rendering": [
       {
         "fps": 30,
-        "frames_per_step": 15,
+        "frames-per-step": 15,
         "quality": "medium",
-        "output_directory": "./render_save"
+        "output-directory": "./render_save"
       }
     ]
 }
@@ -166,21 +166,21 @@ _For the **rendering**:_
 ```json
 {
   "simulation": {
-    "number_of_boards": 3,
+    "number-of-boards": 3,
     "board": {
       "row": 5,
       "column": 5,
       "seed": 666,
-      "food_abundance": 0.25
+      "food-abundance": 0.25
     },
     "colonies": [
       {
         "name":"The Seventh Company",
-        "initial_ants": 20
+        "initial-ants": 20
       },
       {
         "name":"The Fellowship of the Ring",
-        "initial_ants": 15
+        "initial-ants": 15
       }
     ]
   },
@@ -188,15 +188,15 @@ _For the **rendering**:_
   "rendering": [
     {
       "fps": 30,
-      "frames_per_step": 15,
+      "frames-per-step": 15,
       "quality": "medium",
-      "output_directory": "./render_save"
+      "output-directory": "./render_save"
     },
     {
       "fps": 15,
-      "frames_per_step": 15,
+      "frames-per-step": 15,
       "quality": "low",
-      "output_directory": "./render_save"
+      "output-directory": "./render_save"
     }
   ]
 }
