@@ -87,7 +87,7 @@ void ConfigManager::Impl::importColoniesSettings(const nlohmann::json& config_js
         ColonySettings colony_settings;
         
         colony_settings.name = colony.at("name").get<std::string>();
-        colony_settings.initial_number_of_ants = colony.at("initial_ants");
+        colony_settings.initial_number_of_ants = colony.at("initial_ants").get<unsigned int>();
 
         settings_.board.colonies.push_back(colony_settings);
     }
