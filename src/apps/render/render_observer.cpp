@@ -272,7 +272,7 @@ std::map<sf::Vector2u, RenderObserver::FoodIntensity, Vector2uCompare> RenderObs
     for (const auto& tile : snapshot.tiles) {
         sf::Vector2u coords{tile.x, tile.y};
         
-        if (!tile.food.has_value() || tile.food <= 0) {
+        if (!tile.food.has_value() || tile.food == 0) {
             food_per_tile.insert({coords, FoodIntensity::None});
         }
         else if (tile.food < 5) {

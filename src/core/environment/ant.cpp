@@ -12,12 +12,11 @@
 #include <stdexcept>
 #include <vector>
 
-using namespace myrmo;
-
+namespace myrmo {
 // Public
 
 Ant::Ant(const Colony& colony, Tile& spawn_tile) noexcept :
-    id_(++id_count),
+    id_(++id_count_),
     actual_tile_(&spawn_tile),
     previous_tile_(actual_tile_),
     colony_(&colony),
@@ -130,4 +129,6 @@ void Ant::removeTile(std::vector<Tile*>& tiles_list, const Tile& tile_to_remove)
     }
 }
 
-unsigned int Ant::id_count = 0;
+unsigned int Ant::id_count_ = 0;
+
+}

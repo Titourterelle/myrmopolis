@@ -4,11 +4,11 @@
 #include "snapshot.hpp"
 #include "tile.hpp"
 
-using namespace myrmo;
-
+namespace myrmo {
 // Public
 
-LandTile::LandTile(const unsigned int x, const unsigned int y) noexcept : Tile(x, y) {}
+LandTile::LandTile(const unsigned int x, const unsigned int y, const unsigned int food) noexcept : Tile(x, y), food_(food) {}
+LandTile::LandTile(const Coordinates coords, const unsigned int food) noexcept : Tile(coords), food_(food) {}
 
 void LandTile::interact(Ant& ant) noexcept {
     if (ant.isTransportingFood()) {
@@ -35,10 +35,10 @@ snapshot::Tile LandTile::takeTileSnapshot() const noexcept {
 
 void LandTile::addPheromones(const PheromoneType& type) noexcept {
     if (type == PheromoneType::Home) {
-        ++pheromones.home;
+        ++pheromones_.home;
     }
     else if (type == PheromoneType::Food) {
-        ++pheromones.food;
+        ++pheromones_.food;
     }
 }
 
@@ -50,4 +50,5 @@ void LandTile::addFood(const unsigned int quantity) noexcept {
 
 void LandTile::removeFood(const unsigned int quantity) noexcept {
     food_ -= static_cast<int>(quantity);
+}
 }

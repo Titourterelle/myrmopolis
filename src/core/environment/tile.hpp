@@ -23,6 +23,7 @@ class Tile {
         };
         
         explicit Tile(unsigned int x, unsigned int y) noexcept;
+        explicit Tile(Coordinates coords) noexcept;
         virtual ~Tile() = default;
 
         virtual void interact(Ant& ant) noexcept = 0;
@@ -35,7 +36,7 @@ class Tile {
         bool operator==(const Tile& other_tile) const noexcept;
 
     protected:
-        Pheromones pheromones{.home = 0, .food = 0};
+        Pheromones pheromones_{.home = 0, .food = 0};
 
     private:
         const Coordinates position_;

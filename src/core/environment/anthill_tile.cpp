@@ -2,11 +2,11 @@
 #include "ant.hpp"
 #include "snapshot.hpp"
 
-using namespace myrmo;
-
+namespace myrmo {
 // Public
 
 AnthillTile::AnthillTile(const unsigned int x, const unsigned int y) noexcept : Tile(x, y) {}
+AnthillTile::AnthillTile(const Coordinates coords) noexcept : Tile(coords) {}
 
 void AnthillTile::interact(Ant& ant) noexcept {
     if (ant.isTransportingFood()) {
@@ -22,4 +22,5 @@ snapshot::Tile AnthillTile::takeTileSnapshot() const noexcept {
     snapshot_tile.food = std::nullopt;
 
     return snapshot_tile;
+}
 }

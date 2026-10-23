@@ -9,8 +9,7 @@
 #include <utility>
 #include <vector>
 
-using namespace myrmo;
-
+namespace myrmo {
 struct Simulation::Impl {
     void step() noexcept;
     void giveSnapshotToObservers(const snapshot::Snapshot& snapshot) const noexcept;
@@ -99,4 +98,5 @@ void Simulation::Impl::initBoards() noexcept {
     }
 
     current_board_ = boards_.at(0).get();
+}
 }
