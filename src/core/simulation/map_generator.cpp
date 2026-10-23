@@ -76,14 +76,14 @@ std::set<Tile::Coordinates> MapGenerator::chooseAnthillsCoords(const unsigned in
 }
 
 unsigned int MapGenerator::chooseFoodQuantity() noexcept {
-    static std::uniform_real_distribution<> food_dispersion_distrib_(0, 1);
-    static std::uniform_int_distribution<unsigned int> food_quantity_distrib_(1, MAX_FOOD_QUANTITY);
+    static std::uniform_real_distribution<> food_abundance_distrib(0, 1);
+    static std::uniform_int_distribution<unsigned int> food_quantity_distrib(1, MAX_FOOD_QUANTITY);
 
-    if (food_dispersion_distrib_(random_engine_) > food_abundance_) {
+    if (food_abundance_distrib(random_engine_) > food_abundance_) {
         return 0;
     }
 
-    return food_quantity_distrib_(random_engine_);
+    return food_quantity_distrib(random_engine_);
 }
 
 }
