@@ -30,9 +30,8 @@ namespace myrmo {
 
 // Public
 
-MapGenerator::MapGenerator(const MapSettings settings) :
+MapGenerator::MapGenerator(const MapSettings &settings) :
     settings_(settings),
-    food_abundance_(0.3),
     random_engine_(settings_.seed) {}
 
 std::vector<AnthillTile*> MapGenerator::createMap(TileMap& map) {
@@ -79,7 +78,7 @@ unsigned int MapGenerator::chooseFoodQuantity() noexcept {
     static std::uniform_real_distribution<> food_abundance_distrib(0, 1);
     static std::uniform_int_distribution<unsigned int> food_quantity_distrib(1, MAX_FOOD_QUANTITY);
 
-    if (food_abundance_distrib(random_engine_) > food_abundance_) {
+    if (food_abundance_distrib(random_engine_) > settings_.food_abundance) {
         return 0;
     }
 

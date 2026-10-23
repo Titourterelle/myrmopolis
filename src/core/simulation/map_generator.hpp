@@ -10,7 +10,7 @@ namespace myrmo {
 
 class MapGenerator {
     public:
-        explicit MapGenerator(MapSettings  settings);
+        explicit MapGenerator(const MapSettings &settings);
 
         [[nodiscard]] std::vector<AnthillTile*> createMap(TileMap& map);
 
@@ -19,7 +19,6 @@ class MapGenerator {
         unsigned int chooseFoodQuantity() noexcept;
 
         const MapSettings settings_;
-        const double food_abundance_;
 
         std::mt19937 random_engine_;
 

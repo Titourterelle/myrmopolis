@@ -125,6 +125,10 @@ void Board::checkSettings() const {
         throw std::runtime_error("The dimensions are invalid");
     }
 
+    if (board_settings_.food_abundance < 0 || board_settings_.food_abundance > 1) {
+        throw std::runtime_error("The food abundance is invalid");
+    }
+
     std::unordered_set<std::string> colonies_names;
     for (const auto& [name, initial_number_of_ants] : board_settings_.colonies) {
         if (initial_number_of_ants == 0) {
@@ -137,8 +141,11 @@ void Board::checkSettings() const {
 }
 
 void Board::createTiles() noexcept {
-    // TODO : make possible to set the seed
-    const MapSettings map_settings{.seed = 0, .number_of_colonies = board_settings_.colonies.size()};
+    const MapSettings map_settings{
+        .seed = board_settings_.seed,
+        .number_of_colonies = board_settings_.colonies.size(),
+        .food_abundance = board_settings_.food_abundance
+    };
     MapGenerator map_gen{map_settings};
 
     const std::vector<AnthillTile*> anthills = map_gen.createMap(map_);

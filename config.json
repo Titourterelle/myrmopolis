@@ -3,7 +3,9 @@
         "number_of_boards": 1,
         "board": {
             "row": 5,
-            "column": 5
+            "column": 5,
+            "seed": 67,
+            "food_abundance": 0.25
         },
         "colonies": [
             {

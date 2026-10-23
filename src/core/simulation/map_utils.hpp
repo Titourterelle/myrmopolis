@@ -18,6 +18,7 @@ struct TileMap {
 
 struct MapSettings {
     unsigned long seed, number_of_colonies;
+    double food_abundance;
 };
 
 };
