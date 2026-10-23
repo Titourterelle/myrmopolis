@@ -56,13 +56,13 @@ void RenderConfigManager::importRenderSettings() {
 
         }
     }
-    catch (const nlohmann::json::parse_error) {
+    catch (const nlohmann::json::parse_error&) {
         throw std::runtime_error("Invalid JSON format");
     }
-    catch (const nlohmann::json::out_of_range) {
+    catch (const nlohmann::json::out_of_range&) {
         throw std::runtime_error("Missing required configuration field");
     }
-    catch (const nlohmann::json::type_error) {
+    catch (const nlohmann::json::type_error&) {
         throw std::runtime_error("Invalid type in the configuration file");
     }
 }
