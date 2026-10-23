@@ -104,14 +104,16 @@ All the settings must take place in the `config.json` file.
 
 _For the **simulation core**:_
 
-| Field                              | Type                         | Required | Default | Description                                       |
-|------------------------------------|------------------------------|----------|---------|---------------------------------------------------|
-| simulation.number_of_boards        | Positive integer             | Yes      |         | The number of simulations with this configuration |
-| simulation.board.row               | Positive integer             | Yes      |         | Number of rows in the boards                      |
-| simulation.board.column            | Positive integer             | Yes      |         | Number of columns in the boards                   |
-| _simulation.colonies[]_            | Array of "Colonies Settings" | Yes      |         | Add each colony with its own settings (see below) |
-| simulation.colonies[].name         | String                       | Yes      |         | Use a different name for each colony              |
-| simulation.colonies[].initial_ants | Positive integer             | Yes      |         | Set the number of ants for the first step         |
+| Field                              | Type                            | Required | Default | Description                                       |
+|------------------------------------|---------------------------------|----------|---------|---------------------------------------------------|
+| simulation.number_of_boards        | Positive integer                | Yes      |         | The number of simulations with this configuration |
+| simulation.board.row               | Positive integer                | Yes      |         | Number of rows in the boards                      |
+| simulation.board.column            | Positive integer                | Yes      |         | Number of columns in the boards                   |
+| simulation.board.seed              | Integer                         | Yes      |         | The seed of the map generation                    |
+| simulation.board.food_abundance    | Floating number between 0 and 1 | Yes      |         | The percentage of starting tiles containing food  |
+| _simulation.colonies[]_            | Array of "Colonies Settings"    | Yes      |         | Add each colony with its own settings (see below) |
+| simulation.colonies[].name         | String                          | Yes      |         | Use a different name for each colony              |
+| simulation.colonies[].initial_ants | Positive integer                | Yes      |         | Set the number of ants for the first step         |
 
 _For the **rendering**:_
 
@@ -129,28 +131,29 @@ _For the **rendering**:_
 
 ```json
 {
-    "simulation": {
-        "number_of_boards": 1,
-        "board": {
-            "row": 4,
-            "column": 5
-        },
-        "colonies": [
-            {
-                "name":"The Seventh Company",
-                "anthill":[2, 2],
-                "initial_ants": 10
-            }
-        ]
+  "simulation": {
+    "number_of_boards": 1,
+      "board": {
+        "row": 4,
+        "column": 5,
+        "seed": 42,
+        "food_abundance": 0.3
+      },
+      "colonies": [
+        {
+          "name":"The Seventh Company",
+          "initial_ants": 10
+        }
+      ]
     },
   
     "rendering": [
-        {
-            "fps": 30,
-            "frames_per_step": 15,
-            "quality": "medium",
-            "output_directory": "./render_save"
-        }
+      {
+        "fps": 30,
+        "frames_per_step": 15,
+        "quality": "medium",
+        "output_directory": "./render_save"
+      }
     ]
 }
 ```
@@ -166,17 +169,17 @@ _For the **rendering**:_
     "number_of_boards": 3,
     "board": {
       "row": 5,
-      "column": 5
+      "column": 5,
+      "seed": 666,
+      "food_abundance": 0.25
     },
     "colonies": [
       {
         "name":"The Seventh Company",
-        "anthill":[2, 2],
         "initial_ants": 20
       },
       {
         "name":"The Fellowship of the Ring",
-        "anthill":[0, 4],
         "initial_ants": 15
       }
     ]
