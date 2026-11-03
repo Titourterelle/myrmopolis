@@ -12,8 +12,8 @@ class Simulation {
         explicit Simulation(const SimulationSettings& settings);
         ~Simulation();
 
-        void run() const;
         void addObserver(Observer& observer) const noexcept;
+        void run() const;
 
     private:
         struct Impl;

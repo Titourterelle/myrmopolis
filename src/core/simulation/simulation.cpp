@@ -44,6 +44,9 @@ Simulation::Simulation(const SimulationSettings& settings) : impl_(std::make_uni
 
 Simulation::~Simulation() = default;
 
+void Simulation::addObserver(Observer& observer) const noexcept {
+    impl_->observers_.push_back(&observer);
+}
 
 void Simulation::run() const {
     impl_->giveSnapshotToObservers(impl_->takeSnapshot()); // First Snapshot of the first board (t = 0)
@@ -54,9 +57,6 @@ void Simulation::run() const {
     }
 }
 
-void Simulation::addObserver(Observer& observer) const noexcept {
-    impl_->observers_.push_back(&observer);
-}
 
 // Private
 
