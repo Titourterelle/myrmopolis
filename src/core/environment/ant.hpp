@@ -17,15 +17,17 @@ class Ant {
 
         void act() noexcept;
         void pickFood();
-        void dropFood() noexcept;
+        void dropFood();
         
         [[nodiscard]] unsigned int getId() const noexcept;
         [[nodiscard]] bool isTransportingFood() const noexcept;
         [[nodiscard]] Tile::Coordinates getPosition() const noexcept;
 
     private:
-        void move(Tile &next_tile) noexcept;
+        void move(Tile* next_tile) noexcept;
+        [[nodiscard]] Tile* chooseMovement() const noexcept;
         [[nodiscard]] std::vector<AnthillTile*> searchAnthills(const std::vector<Tile*>& tiles_list) const noexcept;
+
         static void sortTilesByPheromones(std::vector<Tile*>& tiles_list, const PheromoneType& pheromone) noexcept;
         static void removeTile(std::vector<Tile*>& tiles_list, const Tile& tile_to_remove) noexcept;
 
