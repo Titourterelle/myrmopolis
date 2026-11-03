@@ -83,6 +83,19 @@ void RenderObserver::observe(const myrmo::snapshot::Snapshot& snapshot) {
 void RenderObserver::generateVideo(const RenderSettings& render_settings, const std::string& base_name) {
     settings_ = render_settings;
 
+    if (settings_.output_dir.empty()) {
+        std::fprintf(stderr, "Skipped video generation, no output directory specified\n");
+        return;
+    }
+    if (settings_.fps == 0) {
+        std::fprintf(stderr, "Skipped video generation, invalid frames per second value\n");
+        return;
+    }
+    if (settings_.frames_per_step == 0) {
+        std::fprintf(stderr, "Skipped video generation, invalid frames per step value\n");
+        return;
+    }
+
     for (const auto& [id, board] : boards_by_id_) {
         current_board_ = board.get();
         const std::string name = std::format("{}-{}", base_name, id);
