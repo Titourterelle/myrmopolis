@@ -35,9 +35,9 @@ struct Simulation::Impl {
 // Public
 
 Simulation::Simulation(const SimulationSettings& settings) : impl_(std::make_unique<Impl>(settings)) {
-    if (impl_->simulation_settings_.number_of_boards <= 0)
+    if (impl_->simulation_settings_.number_of_boards == 0)
     {
-        throw std::runtime_error("The number of boards can't be null or negative");
+        throw std::runtime_error("The number of boards can't be null");
     }
     impl_->initBoards();
 }

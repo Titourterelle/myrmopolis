@@ -32,9 +32,20 @@ namespace myrmo {
 
 MapGenerator::MapGenerator(const MapSettings &settings) :
     settings_(settings),
-    random_engine_(settings_.seed) {}
+    random_engine_(settings_.seed)
+{
+    if (settings_.food_abundance < 0 || settings_.food_abundance > 1) {
+        throw std::logic_error("Invalid food abundance");
+    }
+}
 
 std::vector<AnthillTile*> MapGenerator::createMap(TileMap& map) {
+    if (map.height == 0 || map.width == 0) {
+        throw std::logic_error("Invalid map size");
+    }
+
+    map.tiles.clear();
+
     std::vector<AnthillTile*> anthills;
     const std::set<Tile::Coordinates> anthills_coords = chooseAnthillsCoords(map.height, map.width);
 
