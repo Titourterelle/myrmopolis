@@ -7,13 +7,13 @@
 namespace myrmo {
 // Public
 
-Colony::Colony(std::string name, const Board& board, AnthillTile& initialAnthill, const int initial_number_of_ants) :
+Colony::Colony(std::string name, const Board& board, AnthillTile& initialAnthill, const unsigned int initial_number_of_ants) :
     name_(std::move(name)),
     board_(&board)
 {
     anthills_.push_back(&initialAnthill);
     
-    if (initial_number_of_ants <= 0) {
+    if (initial_number_of_ants == 0) {
         throw std::runtime_error("The initial number of ants is invalid");
     }
     
@@ -48,7 +48,7 @@ std::vector<const Ant*> Colony::getAnts() const noexcept {
 
 // Private
 
-void Colony::addAnts(const int number_of_ants) noexcept {
+void Colony::addAnts(const unsigned int number_of_ants) noexcept {
     for (auto i = 0; i < number_of_ants; ++i) {
         ants_.push_back(std::make_unique<Ant>(*this, *anthills_.at(0)));
     }

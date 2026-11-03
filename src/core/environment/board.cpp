@@ -125,6 +125,14 @@ void Board::checkSettings() const {
         throw std::runtime_error("The dimensions are invalid");
     }
 
+    if (board_settings_.colonies.empty()) {
+        throw std::runtime_error("The number of colonies cannot be zero");
+    }
+
+    if (board_settings_.row*board_settings_.column < board_settings_.colonies.size()) {
+        throw std::runtime_error("There are too many colonies on the board.");
+    }
+
     if (board_settings_.food_abundance < 0 || board_settings_.food_abundance > 1) {
         throw std::runtime_error("The food abundance is invalid");
     }
@@ -132,7 +140,7 @@ void Board::checkSettings() const {
     std::unordered_set<std::string> colonies_names;
     for (const auto& [name, initial_number_of_ants] : board_settings_.colonies) {
         if (initial_number_of_ants == 0) {
-            throw std::runtime_error("The initial number of ants is invalid");
+            throw std::runtime_error("The initial number of ants can't be null");
         }
         if (!colonies_names.insert(name).second) {
             throw std::runtime_error("Two colonies cannot have the same name");

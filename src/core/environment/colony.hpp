@@ -12,7 +12,7 @@ class Board;
 
 class Colony {
     public:
-        explicit Colony(std::string name, const Board& board, AnthillTile& initialAnthill, int initial_number_of_ants);
+        explicit Colony(std::string name, const Board& board, AnthillTile& initialAnthill, unsigned int initial_number_of_ants);
 
         void step() const noexcept;
         
@@ -23,7 +23,7 @@ class Colony {
         [[nodiscard]] std::vector<const Ant*> getAnts() const noexcept;
 
     private:
-        void addAnts(int number_of_ants) noexcept;
+        void addAnts(unsigned int number_of_ants) noexcept;
         
         std::string name_;
         const Board *board_ = nullptr;
