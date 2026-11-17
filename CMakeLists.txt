@@ -53,6 +53,10 @@ add_executable(
 target_link_libraries(${RENDER_NAME} PRIVATE ${CORE_NAME})
 target_link_libraries(${RENDER_NAME} PRIVATE SFML::Graphics)
 
+# Tests
+enable_testing()
+add_subdirectory(tests)
+
 # Installation
 include(GNUInstallDirs)
 install(TARGETS ${RENDER_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
