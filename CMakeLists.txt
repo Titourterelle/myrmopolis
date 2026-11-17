@@ -7,18 +7,35 @@ project(myrmopolis)
 set(CORE_NAME ${PROJECT_NAME}-core)
 set(RENDER_NAME ${PROJECT_NAME}-render)
 
+set(CORE_SRC
+        ${CMAKE_SOURCE_DIR}/src/core/environment/ant.cpp
+        ${CMAKE_SOURCE_DIR}/src/core/environment/anthill_tile.cpp
+        ${CMAKE_SOURCE_DIR}/src/core/environment/board.cpp
+        ${CMAKE_SOURCE_DIR}/src/core/environment/colony.cpp
+        ${CMAKE_SOURCE_DIR}/src/core/environment/land_tile.cpp
+        ${CMAKE_SOURCE_DIR}/src/core/environment/tile.cpp
+        ${CMAKE_SOURCE_DIR}/src/core/manager/config_manager.cpp
+        ${CMAKE_SOURCE_DIR}/src/core/simulation/map_generator.cpp
+        ${CMAKE_SOURCE_DIR}/src/core/simulation/simulation.cpp
+)
+set(RENDER_SRC
+        ${CMAKE_SOURCE_DIR}/src/render/hex_grid.cpp
+        ${CMAKE_SOURCE_DIR}/src/render/progress_bar.cpp
+        ${CMAKE_SOURCE_DIR}/src/render/render_config_manager.cpp
+        ${CMAKE_SOURCE_DIR}/src/render/render_observer.cpp
+)
+
+include(FetchContent)
+
 # Lib CORE
 find_package(nlohmann_json REQUIRED)
 
-file(GLOB_RECURSE CORE_SRC_FILES src/core/*.cpp)
-
-add_library(${CORE_NAME} ${CORE_SRC_FILES})
+add_library(${CORE_NAME} ${CORE_SRC})
 
 target_include_directories(${CORE_NAME} PUBLIC src/core/include PRIVATE src/core)
 target_link_libraries(${CORE_NAME} PRIVATE nlohmann_json::nlohmann_json)
 
 # Exe RENDER
-include(FetchContent)
 FetchContent_Declare(SFML
     GIT_REPOSITORY https://github.com/SFML/SFML.git
     GIT_TAG 3.0.2
@@ -27,10 +44,11 @@ FetchContent_Declare(SFML
     SYSTEM)
 FetchContent_MakeAvailable(SFML)
 
-file(GLOB_RECURSE RENDER_SRC_FILES src/apps/render/*.cpp)
-
-add_executable(${RENDER_NAME} ${RENDER_SRC_FILES})
-target_compile_features(${RENDER_NAME} PRIVATE cxx_std_23)
+add_executable(
+        ${RENDER_NAME}
+        src/render/main.cpp
+        ${RENDER_SRC}
+)
 
 target_link_libraries(${RENDER_NAME} PRIVATE ${CORE_NAME})
 target_link_libraries(${RENDER_NAME} PRIVATE SFML::Graphics)
