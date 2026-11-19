@@ -1,5 +1,8 @@
 set(TEST_NAME ${PROJECT_NAME}-test)
 
+set(TEST_SRC
+)
+
 # Google Test
 FetchContent_Declare(
         googletest
@@ -19,6 +22,7 @@ add_executable(
         ${TEST_NAME}
         ${CORE_SRC}
         ${RENDER_SRC}
+        ${TEST_SRC}
 )
 
 target_link_libraries(${TEST_NAME} PRIVATE GTest::gtest_main)
