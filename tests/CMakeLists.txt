@@ -18,12 +18,11 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 include(GoogleTest)
 
-add_executable(
-        ${TEST_NAME}
-        ${CORE_SRC}
-        ${RENDER_SRC}
-        ${TEST_SRC}
-)
+add_executable(${TEST_NAME} ${TEST_SRC})
+
+target_include_directories(${TEST_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/src/core ${PROJECT_SOURCE_DIR}/src/render)
+target_link_libraries(${TEST_NAME} PRIVATE ${CORE_NAME})
+target_link_libraries(${TEST_NAME} PRIVATE ${RENDER_LIB_NAME})
 
 target_link_libraries(${TEST_NAME} PRIVATE GTest::gtest_main)
 gtest_discover_tests(${TEST_NAME})
