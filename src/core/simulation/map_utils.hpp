@@ -14,6 +14,7 @@ struct TileMap {
     TileMap(const unsigned int width, const unsigned int height) : width(width), height(height) {
         tiles.reserve(height * width);
     }
+    TileMap (const TileMap&) = delete;
 };
 
 struct MapSettings {
