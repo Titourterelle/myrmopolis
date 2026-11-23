@@ -1,6 +1,7 @@
 set(TEST_NAME ${PROJECT_NAME}-test)
 
 set(TEST_SRC
+        core/simulation/map_generator_test.cpp
 )
 
 # Google Test
