@@ -1,0 +1,8 @@
+{
+  "simulation": {
+    "board": {
+      "row": 5,
+      "column": 7
+    }
+  }
+}

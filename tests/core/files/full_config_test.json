@@ -1,0 +1,25 @@
+{
+  "simulation": {
+    "number-of-boards": 2,
+    "board": {
+      "row": 5,
+      "column": 7,
+      "seed": 1,
+      "food-abundance": 0.50
+    },
+    "colonies": [
+      {
+        "name": "Name 1",
+        "initial-ants": 1
+      },
+      {
+        "name": "Name 2",
+        "initial-ants": 2
+      },
+      {
+        "name": "Name 3",
+        "initial-ants": 3
+      }
+    ]
+  }
+}

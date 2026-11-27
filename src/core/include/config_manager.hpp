@@ -5,6 +5,13 @@
 #include <memory>
 #include <string>
 
+// Default Settings
+#define DEFAULT_CONFIG_NUMBER_OF_BOARDS 1
+#define DEFAULT_CONFIG_FOOD_ABUNDANCE 0.25
+#define DEFAULT_CONFIG_NUMBER_OF_COLONIES 1
+#define DEFAULT_CONFIG_FIRST_COLONY_NAME 1
+#define DEFAULT_CONFIG_NUMBER_OF_ANTS 20
+
 namespace myrmo {
 
 class ConfigManager {
